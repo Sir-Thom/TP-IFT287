@@ -50,6 +50,14 @@ public class Chambre {
     public void setPrixBase(double prixBase) {
         this.prixBase = prixBase;
     }
-
+    @Override
+    public String toString() {
+        return "Chambre{" +
+                "idChambre=" + idChambre +
+                ", nomChambre='" + nomChambre + '\'' +
+                ", typeLit='" + typeLit + '\'' +
+                ", prixBase=" + prixBase +
+                '}';
+    }
 
 }
