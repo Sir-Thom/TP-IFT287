@@ -9,7 +9,13 @@ public class Client {
         private String nom;
 
         public Client() {}
+        public Client(Document d) {
+            this.idClient = d.getInteger("idClient");
+            this.prenom = d.getString("prenom");
+            this.nom = d.getString("nom");
+            this.age = d.getInteger("age");
 
+         }
         public Client(String prenom, String nom, int age) {
             this.prenom = prenom;
             this.nom = nom;
@@ -44,6 +50,19 @@ public class Client {
         public int getIdClient(){
             return idClient;
         }
+        public void setId(int idClient) {
+            this.idClient = idClient;
+        }
+
+        @Override
+        public String toString() {
+            return "Client{" +
+                    "idClient=" + idClient +
+                    ", prenom='" + prenom + '\'' +
+                    ", nom='" + nom + '\'' +
+                    ", age=" + age +
+                    '}';
+        }
 
     }
-}
+

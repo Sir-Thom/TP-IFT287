@@ -14,11 +14,12 @@ public class Chambres  extends GestionCollection {
 
     private final Connexion cx;
     private final MongoCollection<Document> collectionChambres;
-
+    private final Reservations reservations;
     public Chambres(Connexion cx) {
         super(cx);
         this.cx = cx;
         this.collectionChambres = cx.getDatabase().getCollection("Chambres");
+        this.reservations = new Reservations(cx, this);
     }
 
     private int getNextId() {
@@ -68,7 +69,13 @@ public class Chambres  extends GestionCollection {
     }
 
     public boolean supprimerChambre(String nomChambre) {
-        // À adapter pour vérifier s’il y a des réservations futures avant suppression
+        boolean pris =  reservations.getReservationsFuturesPourChambre(getChambreByNom(nomChambre).getIdChambre()).contains(getChambreByNom(nomChambre));
+
+        if (pris) {
+            return false;
+        }
+
+
         DeleteResult result = collectionChambres.deleteOne(eq("nomChambre", nomChambre));
         return result.getDeletedCount() > 0;
     }

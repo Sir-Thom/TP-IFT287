@@ -40,7 +40,7 @@ public class Reservations extends GestionCollection {
         collectionReservations.insertOne(r.toDocument());
     }
 
-    // ❌ Réservations futures pour une chambre
+
     public List<Reservation> getReservationsFuturesPourChambre(int idChambre) {
         String today = LocalDate.now().toString();
         List<Reservation> resultats = new ArrayList<>();
