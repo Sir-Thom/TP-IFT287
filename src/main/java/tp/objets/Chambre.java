@@ -2,15 +2,20 @@ package tp.objets;
 
 import org.bson.Document;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Chambre {
     private int idChambre;
     private String nomChambre;
     private String typeLit;
     private double prixBase;
+    private List<Integer> commodites = new ArrayList<>();
 
     public Chambre() {
         // Constructeur vide
     }
+
 
     public Chambre(Document d) {
         idChambre = d.getInteger("idChambre");
@@ -24,6 +29,16 @@ public class Chambre {
         this.nomChambre = nomChambre;
         this.typeLit = typeLit;
         this.prixBase = prixBase;
+    }
+
+
+
+    public List<Integer> getCommodites() {
+        return commodites;
+    }
+
+    public void setCommodites(List<Integer> commodites) {
+        this.commodites = commodites;
     }
 
     public int getIdChambre() {
