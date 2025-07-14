@@ -78,7 +78,7 @@ public class GestionChambreTest {
 
         assertEquals("La chambre 'ChambreX' n'existe pas.", ex.getMessage());
     }
-
+//ajouterChambre Chambre1 Queen 120.0
     @Test
     public void testModifierChambre_NouveauNomExisteDeja() {
         Chambre chambre = new Chambre(1, "Chambre1", "Queen", 120.0);
