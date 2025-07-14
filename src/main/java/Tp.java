@@ -1,10 +1,12 @@
 
 import tp.TpExeception;
 import tp.bdd.Connexion;
+import tp.collections.Clients;
 import tp.gestion.GestionChambre;
 import tp.collections.Chambres;
 import tp.collections.Reservations;
 import tp.gestion.GestionClient;
+import tp.gestion.GestionReservation;
 
 import java.io.*;
 import java.sql.SQLException;
@@ -13,6 +15,7 @@ public class Tp {
     private static Connexion cx;
     private static GestionChambre gestionChambre;
     private static GestionClient gestionClient;
+    private static GestionReservation gestionReservation;
 
     public static void main(String[] args) throws Exception {
         if (args.length < 4) {
@@ -25,8 +28,10 @@ public class Tp {
 
         try {
             cx = new Connexion(args[0], args[1], args[2], args[3]);
+
             Chambres chambres = new Chambres(cx);
-            Reservations reservations = new Reservations(cx,chambres);
+            Clients clients = new Clients(cx);
+            Reservations reservations = new Reservations(cx,chambres,clients);
             gestionChambre = new GestionChambre(chambres, reservations);
             gestionClient = new GestionClient(cx);
 
@@ -101,7 +106,16 @@ public class Tp {
             } else if (command.equals("supprimerChambre")) {
                 String nom = readString(tokenizer);
                 gestionChambre.supprimerChambre(nom);
+                
 
+            } else if (command.equals("reserver")) {
+                String nomChambre = readString(tokenizer);
+                String nomClient = readString(tokenizer);
+                String prenomClient = readString(tokenizer);
+                String dateDebut = readString(tokenizer);
+                String dateFin = readString(tokenizer);
+                gestionReservation.reserver(nomChambre, nomClient, prenomClient, dateDebut, dateFin);
+                
             } else if (command.equals("afficherChambre")) {
                 String nom = readString(tokenizer);
                 gestionChambre.afficherChambre(nom);
@@ -121,6 +135,11 @@ public class Tp {
                 String nom = readString(tokenizer);
                 gestionClient.afficherClients(nom, prenom);
                 
+            } else if (command.equals("supprimerClient")) {
+                String nom = readString(tokenizer);
+                String prenom = readString(tokenizer);
+                gestionClient.supprimerClient(nom, prenom);
+
             } else if (command.equals("exit")) {
                 System.out.println("Fin du programme.");
 
@@ -146,6 +165,7 @@ public class Tp {
         System.out.println("  afficherChambresLibres <dateDebut> <dateFin>");
         System.out.println("  ajouterClient <nom> <prenom> <age>");
         System.out.println("  afficherClient <nom> <prenom>");
+        System.out.println("  supprimerClient <nom> <prenom>");
     }
 
     private static String readString(StringTokenizer tokenizer) throws TpExeception {

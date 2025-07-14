@@ -31,5 +31,15 @@ public class GestionClient extends GestionTransactions {
         return client;
     }
 
+    public void supprimerClient(String prenom,String nom) throws TpExeception {
+        Client client = clients.GetClientByNomPrenom(prenom, nom);
+        if (client == null) {
+            throw new TpExeception("Le client '" + prenom + " " + nom + "' n'existe pas.");
+        }
+
+        clients.supprimerClient(prenom, nom);
+
+    }
+
 
 }

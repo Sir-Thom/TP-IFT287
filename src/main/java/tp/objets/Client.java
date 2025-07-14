@@ -30,6 +30,7 @@ public class Client {
 
         public Document toDocument() {
             Document doc = new Document()
+                    .append("idClient", idClient)
                     .append("prenom", prenom)
                     .append("nom", nom)
                     .append("age", age);

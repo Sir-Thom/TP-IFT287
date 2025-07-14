@@ -1,24 +1,28 @@
 package tp.collections;
 
 import com.mongodb.client.MongoCollection;
+import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
 import tp.TpExeception;
 import tp.bdd.Connexion;
-import tp.objets.Chambre;
 import tp.objets.Client;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.mongodb.client.model.Filters.and;
 import static com.mongodb.client.model.Filters.eq;
 
 public class Clients extends GestionCollection{
     private final Connexion cx;
     private final MongoCollection<Document> collectionClients;
+    private final Reservations reservations;
     public Clients(Connexion cx) {
         super(cx);
         this.cx = cx;
         this.collectionClients = cx.getDatabase().getCollection("Clients");
+
+        this.reservations = new Reservations(cx, new Chambres(cx), this);
     }
 
     private int getNextId() {
@@ -44,10 +48,14 @@ public class Clients extends GestionCollection{
         }
     }
     public Client GetClientByNomPrenom(String nom, String prenom) throws TpExeception {
-        Document d = collectionClients.find(eq("nom", nom)).first();
-        if (d == null) return null;
+        Document d = collectionClients.find(and(eq("nom", nom), eq("prenom", prenom))).first();
+
+        if (d == null) {
+            return null;
+        }
 
         return new Client(d);
+
     }
 
     public Document getClientById(int idClient) throws TpExeception {
@@ -67,16 +75,10 @@ public class Clients extends GestionCollection{
             if (client == null) {
                 throw new TpExeception("Le client ne peut pas être null.");
             }
-            if (client.getNom() == null || client.getNom().isEmpty()) {
+            if (client.getNom()  == null && client.getPrenom() == null || client.getNom().isEmpty() || client.getPrenom().isEmpty()) {
                 throw new TpExeception("Le nom du client ne peut pas être vide.");
             }
-            if (existe(client.getNom())) {
-                throw new TpExeception("Un client avec le nom '" + client.getNom() + "' existe déjà.");
-            }
 
-            if (client.getPrenom() == null || client.getPrenom().isEmpty()) {
-                throw new TpExeception("Le prénom du client ne peut pas être vide.");
-            }
             if (client.getAge() <= 0) {
                 throw new TpExeception("L'âge du client doit être supérieur à 0.");
             }
@@ -102,4 +104,33 @@ public class Clients extends GestionCollection{
         return liste;
     }
 
+    public boolean supprimerClient(String prenom,String nom) throws TpExeception {
+        try {
+            if (nom == null || nom.isEmpty() || prenom == null || prenom.isEmpty()) {
+                throw new TpExeception("Le prénom et le nom du client ne peuvent pas être vides.");
+            }
+            System.out.println("Suppression du client : " + prenom + " " + nom);
+            Client clientASupprimer = GetClientByNomPrenom(nom, prenom);
+            if (clientASupprimer == null) {
+                throw new TpExeception("Le client '" + prenom + " " + nom + "' n'existe pas.");
+            }
+
+            if (reservations.clientADesReservations(clientASupprimer.getIdClient())) {
+                throw new TpExeception("Le client '" + prenom + " " + nom + "' a des réservations et ne peut pas être supprimé.");
+            }
+
+            DeleteResult result = collectionClients.deleteOne(eq("idClient", clientASupprimer.getIdClient()));
+
+            if (result.getDeletedCount() == 0) {
+                throw new TpExeception("La suppression a échoué, le client n'a pas été trouvé pour la suppression.");
+            }
+            return result.getDeletedCount() > 0;
+
+        } catch (TpExeception e) {
+            throw e;
+        } catch (Exception e) {
+            throw new TpExeception("Erreur lors de la suppression du client : " + e.getMessage());
+        }
+
+    }
 }

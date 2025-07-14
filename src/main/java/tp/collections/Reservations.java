@@ -1,12 +1,15 @@
 package tp.collections;
 
 import org.bson.Document;
+import tp.TpExeception;
 import tp.bdd.Connexion;
 import tp.objets.Chambre;
+import tp.objets.Client;
 import tp.objets.Reservation;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,11 +19,13 @@ import static com.mongodb.client.model.Filters.*;
 public class Reservations extends GestionCollection {
     private final MongoCollection<Document> collectionReservations;
     private final Chambres chambres;
+    private final Clients clients;
 
-    public Reservations(Connexion cx, Chambres chambres) {
+    public Reservations(Connexion cx, Chambres chambres, Clients clients) {
         super(cx);
         this.collectionReservations = cx.getDatabase().getCollection("Reservations");
         this.chambres = chambres;
+        this.clients = clients;
     }
 
     // Obtenir le prochain ID de réservation
@@ -57,7 +62,6 @@ public class Reservations extends GestionCollection {
         return resultats;
     }
 
-    //  Conflits de réservation pour une chambre entre deux dates
     public List<Reservation> getReservationsPourChambreEntre(int idChambre, String dateDebut, String dateFin) {
         List<Reservation> resultats = new ArrayList<>();
         MongoCursor<Document> cursor = collectionReservations.find(
@@ -74,7 +78,7 @@ public class Reservations extends GestionCollection {
         return resultats;
     }
 
-    // 📅 Liste des chambres réservées pendant une période
+
     public List<Integer> getIdChambresReserveesEntre(String dateDebut, String dateFin) {
         List<Integer> ids = new ArrayList<>();
         MongoCursor<Document> cursor = collectionReservations.find(
@@ -91,10 +95,11 @@ public class Reservations extends GestionCollection {
         return ids;
     }
 
-    //  Toutes les réservations d’un client
-  /*  public List<Reservation> getReservationsClient(String prenom, String nom) {
-       return  Chambres
-    }*/
+
+
+    public boolean clientADesReservations(int idClient) {
+        return collectionReservations.find(eq("idClient", idClient)).first() != null;
+    }
 
     // Réservations en cours pour un client (date système)
     public boolean clientAReservationEnCours(String prenom, String nom) {
