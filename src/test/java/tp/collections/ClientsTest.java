@@ -12,8 +12,6 @@ import tp.TpExeception;
 import tp.bdd.Connexion;
 import tp.objets.Client;
 
-import java.util.Collections;
-
 import static org.mockito.Mockito.*;
 
 public class ClientsTest extends TestCase {

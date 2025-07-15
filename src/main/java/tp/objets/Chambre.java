@@ -21,7 +21,12 @@ public class Chambre {
         idChambre = d.getInteger("idChambre");
         nomChambre = d.getString("nomChambre");
         typeLit = d.getString("typeLit");
-        prixBase = d.getDouble("prixBase");
+        Double prix = d.getDouble("prixBase"); // récupère l'objet Double (peut être null)
+        if (prix == null) {
+            this.prixBase = 0.0;
+        } else {
+            this.prixBase = prix;
+        }
     }
 
     public Chambre(int idChambre, String nomChambre, String typeLit, double prixBase) {
