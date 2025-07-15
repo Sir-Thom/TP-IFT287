@@ -8,7 +8,6 @@ import com.mongodb.client.result.DeleteResult;
 import junit.framework.TestCase;
 
 import org.bson.Document;
-import org.bson.conversions.Bson;
 import tp.bdd.Connexion;
 import tp.objets.Chambre;
 
@@ -56,12 +55,16 @@ public class ChambresTest extends TestCase {
         verify(mockCollection, times(1)).insertOne(any(Document.class));
     }
 
-
-
     public void testExisteTrue() throws Exception {
         @SuppressWarnings("unchecked")
         FindIterable<Document> mockFindIterable = (FindIterable<Document>) mock(FindIterable.class);
-        when(mockCollection.find((Bson) any())).thenReturn(mockFindIterable);
+        @SuppressWarnings("unchecked")
+        MongoCursor<Document> mockCursor = (MongoCursor<Document>) mock(MongoCursor.class);
+        when(mockCollection.find()).thenReturn(mockFindIterable);
+        when(mockFindIterable.iterator()).thenReturn(mockCursor);
+
+        when(mockCursor.hasNext()).thenReturn(true, false);
+
         when(mockFindIterable.first()).thenReturn(new Document("nomChambre", "Suite"));
 
         assertTrue(chambres.existe("Suite"));
@@ -70,7 +73,12 @@ public class ChambresTest extends TestCase {
     public void testExisteFalse() throws Exception {
         @SuppressWarnings("unchecked")
         FindIterable<Document> mockFindIterable = (FindIterable<Document>) mock(FindIterable.class);
-        when(mockCollection.find((Bson) any())).thenReturn(mockFindIterable);
+        @SuppressWarnings("unchecked")
+        MongoCursor<Document> mockCursor = (MongoCursor<Document>) mock(MongoCursor.class);
+        when(mockCollection.find()).thenReturn(mockFindIterable);
+        when(mockFindIterable.iterator()).thenReturn(mockCursor);
+
+        when(mockCursor.hasNext()).thenReturn(true, false);
         when(mockFindIterable.first()).thenReturn(null);
 
         assertFalse(chambres.existe("Inconnue"));
@@ -80,7 +88,11 @@ public class ChambresTest extends TestCase {
         Document doc = new Document("nomChambre", "Suite");
         @SuppressWarnings("unchecked")
         FindIterable<Document> mockFindIterable = (FindIterable<Document>) mock(FindIterable.class);
-        when(mockCollection.find((Bson) any())).thenReturn(mockFindIterable);
+        @SuppressWarnings("unchecked")
+        MongoCursor<Document> mockCursor = (MongoCursor<Document>) mock(MongoCursor.class);
+        when(mockCollection.find()).thenReturn(mockFindIterable);
+        when(mockFindIterable.iterator()).thenReturn(mockCursor);
+        when(mockCursor.hasNext()).thenReturn(true, false);
         when(mockFindIterable.first()).thenReturn(doc);
 
         Chambre c = chambres.getChambreByNom("Suite");
@@ -91,7 +103,12 @@ public class ChambresTest extends TestCase {
     public void testGetChambreByNomNotFound() throws Exception {
         @SuppressWarnings("unchecked")
         FindIterable<Document> mockFindIterable = (FindIterable<Document>) mock(FindIterable.class);
-        when(mockCollection.find((Bson) any())).thenReturn(mockFindIterable);
+        @SuppressWarnings("unchecked")
+        MongoCursor<Document> mockCursor = (MongoCursor<Document>) mock(MongoCursor.class);
+        when(mockCollection.find()).thenReturn(mockFindIterable);
+        when(mockFindIterable.iterator()).thenReturn(mockCursor);
+
+        when(mockCursor.hasNext()).thenReturn(true, false);
         when(mockFindIterable.first()).thenReturn(null);
 
         Chambre c = chambres.getChambreByNom("Inconnue");
@@ -102,7 +119,12 @@ public class ChambresTest extends TestCase {
         Document doc = new Document("idChambre", 1).append("nomChambre", "Suite");
         @SuppressWarnings("unchecked")
         FindIterable<Document> mockFindIterable = (FindIterable<Document>) mock(FindIterable.class);
-        when(mockCollection.find((Bson) any())).thenReturn(mockFindIterable);
+        @SuppressWarnings("unchecked")
+        MongoCursor<Document> mockCursor = (MongoCursor<Document>) mock(MongoCursor.class);
+        when(mockCollection.find()).thenReturn(mockFindIterable);
+        when(mockFindIterable.iterator()).thenReturn(mockCursor);
+
+        when(mockCursor.hasNext()).thenReturn(true, false);
         when(mockFindIterable.first()).thenReturn(doc);
 
         Chambre c = chambres.getChambreById(1);
@@ -113,13 +135,17 @@ public class ChambresTest extends TestCase {
     public void testGetChambreByIdNotFound() throws Exception {
         @SuppressWarnings("unchecked")
         FindIterable<Document> mockFindIterable = (FindIterable<Document>) mock(FindIterable.class);
-        when(mockCollection.find((Bson) any())).thenReturn(mockFindIterable);
+        @SuppressWarnings("unchecked")
+        MongoCursor<Document> mockCursor = (MongoCursor<Document>) mock(MongoCursor.class);
+        when(mockCollection.find()).thenReturn(mockFindIterable);
+        when(mockFindIterable.iterator()).thenReturn(mockCursor);
+
+        when(mockCursor.hasNext()).thenReturn(true, false);
         when(mockFindIterable.first()).thenReturn(null);
 
         Chambre c = chambres.getChambreById(999);
         assertNull(c);
     }
-
 
 
     public void testModifierChambre() throws Exception {

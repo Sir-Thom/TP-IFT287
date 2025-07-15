@@ -16,7 +16,7 @@ import static com.mongodb.client.model.Filters.eq;
 public class Clients extends GestionCollection{
     private final Connexion cx;
     private final MongoCollection<Document> collectionClients;
-    private final Reservations reservations;
+    Reservations reservations;
     public Clients(Connexion cx) {
         super(cx);
         this.cx = cx;
