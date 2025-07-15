@@ -16,7 +16,7 @@ import static com.mongodb.client.model.Filters.eq;
 public class Clients extends GestionCollection{
     private final Connexion cx;
     private final MongoCollection<Document> collectionClients;
-    private final Reservations reservations;
+    Reservations reservations;
     public Clients(Connexion cx) {
         super(cx);
         this.cx = cx;
@@ -48,13 +48,18 @@ public class Clients extends GestionCollection{
         }
     }
     public Client GetClientByNomPrenom(String nom, String prenom) throws TpExeception {
-        Document d = collectionClients.find(and(eq("nom", nom), eq("prenom", prenom))).first();
+      try {
+          Document d = collectionClients.find(and(eq("nom", nom), eq("prenom", prenom))).first();
 
-        if (d == null) {
-            return null;
-        }
+          if (d == null) {
+              throw new TpExeception("Le client '" + prenom + " " + nom + "' n'existe pas.");
 
-        return new Client(d);
+          }
+
+          return new Client(d);
+      }catch (TpExeception e){
+            throw new TpExeception("Erreur lors de la récupération du client : " + e.getMessage());
+      }
 
     }
 

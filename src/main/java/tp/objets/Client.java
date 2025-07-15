@@ -54,6 +54,15 @@ public class Client {
         public void setId(int idClient) {
             this.idClient = idClient;
         }
+        public void setNom(String nom) {
+            this.nom = nom;
+        }
+        public void setPrenom(String prenom) {
+            this.prenom = prenom;
+        }
+        public void setAge(int age) {
+            this.age = age;
+        }
 
         @Override
         public String toString() {

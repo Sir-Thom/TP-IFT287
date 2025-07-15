@@ -3,14 +3,25 @@ package tp.gestion;
 import tp.TpExeception;
 import tp.bdd.Connexion;
 import tp.collections.Clients;
+import tp.collections.Reservations;
 import tp.objets.Chambre;
 import tp.objets.Client;
 
 public class GestionClient extends GestionTransactions {
     private final Clients clients;
+    private final Reservations reservations;
     public GestionClient(Connexion cx) {
         super(cx);
+
         this.clients = new Clients(cx);
+        this.reservations = new Reservations(cx, null, clients); // Passer null pour Chambres car non utilisé ici
+
+    }
+    //constructor pour injecter une instance de Clients pour les tests
+    public GestionClient(Connexion cx, Clients clients,Reservations reservations) {
+        super(cx);
+        this.clients = clients;
+        this.reservations = reservations;
     }
 
     public void ajouterClient(String nom, String prenom, int age) throws TpExeception {
@@ -31,15 +42,19 @@ public class GestionClient extends GestionTransactions {
         return client;
     }
 
-    public void supprimerClient(String prenom,String nom) throws TpExeception {
+    public void supprimerClient(String prenom, String nom) throws TpExeception {
         Client client = clients.GetClientByNomPrenom(prenom, nom);
+
         if (client == null) {
-            throw new TpExeception("Le client '" + prenom + " " + nom + "' n'existe pas.");
+            throw new TpExeception("Client introuvable");
+        }
+
+        boolean aDesResa = reservations.clientADesReservations(client.getIdClient());
+        if (aDesResa) {
+            throw new TpExeception("Impossible de supprimer : le client a des réservations existantes.");
         }
 
         clients.supprimerClient(prenom, nom);
-
+        System.out.println("Client supprimé : " + prenom + " " + nom);
     }
-
-
 }
