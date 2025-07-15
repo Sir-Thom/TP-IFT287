@@ -4,9 +4,10 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import junit.framework.TestCase;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.junit.Before;
+import org.junit.Test;
 import tp.bdd.Connexion;
 import tp.objets.Chambre;
 import tp.objets.Client;
@@ -17,20 +18,19 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class ReservationsTest extends TestCase {
+public class ReservationsTest {
     private MongoDatabase mockDatabase;
-
     private Connexion mockConnexion;
     private MongoCollection<Document> mockCollection;
     private Chambres mockChambres;
     private Clients mockClients;
     private Reservations reservations;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         mockConnexion = mock(Connexion.class);
         mockDatabase = mock(MongoDatabase.class);
         mockCollection = mock(MongoCollection.class);
@@ -43,7 +43,7 @@ public class ReservationsTest extends TestCase {
         reservations = new Reservations(mockConnexion, mockChambres, mockClients);
     }
 
-
+    @Test
     public void testGetNextId() {
         FindIterable<Document> mockFind = mock(FindIterable.class);
         MongoCursor<Document> mockCursor = mock(MongoCursor.class);
@@ -59,6 +59,7 @@ public class ReservationsTest extends TestCase {
         assertEquals(6, reservations.getNextId());
     }
 
+    @Test
     public void testAjouterReservation() {
         Reservation mockReservation = mock(Reservation.class);
         when(mockReservation.toDocument()).thenReturn(new Document("idReservation", 1));
@@ -68,6 +69,7 @@ public class ReservationsTest extends TestCase {
         verify(mockCollection, times(1)).insertOne(any(Document.class));
     }
 
+    @Test
     public void testGetReservationsFuturesPourChambre() {
         int idChambre = 1;
         String today = LocalDate.now().toString();
@@ -86,6 +88,7 @@ public class ReservationsTest extends TestCase {
         assertEquals(1, result.size());
     }
 
+    @Test
     public void testGetReservationsPourChambreEntre() {
         int idChambre = 1;
 
@@ -103,6 +106,7 @@ public class ReservationsTest extends TestCase {
         assertEquals(1, result.size());
     }
 
+    @Test
     public void testGetIdChambresReserveesEntre() {
         FindIterable<Document> mockFind = mock(FindIterable.class);
         MongoCursor<Document> mockCursor = mock(MongoCursor.class);
@@ -119,6 +123,7 @@ public class ReservationsTest extends TestCase {
         assertEquals(5, (int) ids.get(0));
     }
 
+    @Test
     public void testClientADesReservationsTrue() {
         FindIterable<Document> mockFind = mock(FindIterable.class);
         when(mockCollection.find((Bson) any())).thenReturn(mockFind);
@@ -127,6 +132,7 @@ public class ReservationsTest extends TestCase {
         assertTrue(reservations.clientADesReservations(1));
     }
 
+    @Test
     public void testClientADesReservationsFalse() {
         FindIterable<Document> mockFind = mock(FindIterable.class);
         when(mockCollection.find((Bson) any())).thenReturn(mockFind);
@@ -135,6 +141,7 @@ public class ReservationsTest extends TestCase {
         assertFalse(reservations.clientADesReservations(999));
     }
 
+    @Test
     public void testClientAReservationEnCoursTrue() {
         FindIterable<Document> mockFind = mock(FindIterable.class);
         when(mockCollection.find((Bson) any())).thenReturn(mockFind);
@@ -143,6 +150,7 @@ public class ReservationsTest extends TestCase {
         assertTrue(reservations.clientAReservationEnCours("John", "Doe"));
     }
 
+    @Test
     public void testClientAReservationEnCoursFalse() {
         FindIterable<Document> mockFind = mock(FindIterable.class);
         when(mockCollection.find((Bson) any())).thenReturn(mockFind);
@@ -151,6 +159,7 @@ public class ReservationsTest extends TestCase {
         assertFalse(reservations.clientAReservationEnCours("Jane", "Doe"));
     }
 
+    @Test
     public void testGetChambresLibres() {
         Chambre c1 = new Chambre(1, "A", "Queen", 100);
         Chambre c2 = new Chambre(2, "B", "King", 200);

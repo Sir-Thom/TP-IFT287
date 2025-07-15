@@ -35,7 +35,13 @@ public class Chambre {
         this.typeLit = typeLit;
         this.prixBase = prixBase;
     }
-
+    // Constructeur pour créer une chambre avec un nom de suite, un ID et un prix de base pour les tests
+    public Chambre(String suite, int i, double v) {
+        this.nomChambre = suite;
+        this.idChambre = i;
+        this.prixBase = v;
+        this.typeLit = "Lit simple"; // Valeur par défaut, peut être modifiée
+    }
 
 
     public List<Integer> getCommodites() {

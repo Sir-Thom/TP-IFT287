@@ -12,6 +12,11 @@ public class GestionClient extends GestionTransactions {
         super(cx);
         this.clients = new Clients(cx);
     }
+    //constructor pour injecter une instance de Clients pour les tests
+    public GestionClient(Connexion cx, Clients clients) {
+        super(cx);
+        this.clients = clients;
+    }
 
     public void ajouterClient(String nom, String prenom, int age) throws TpExeception {
         if(clients.existe(nom)) {

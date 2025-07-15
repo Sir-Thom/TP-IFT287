@@ -4,24 +4,24 @@ import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
-import junit.framework.TestCase;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.junit.Before;
+import org.junit.Test;
 import tp.bdd.Connexion;
 import tp.objets.Commodite;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class CommoditesTest extends TestCase {
+public class CommoditesTest {
     private MongoDatabase mockDatabase;
-
     private Connexion mockConnexion;
     private MongoCollection<Document> mockCollection;
     private Commodites commodites;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void setUp() throws Exception {
         mockConnexion = mock(Connexion.class);
         mockCollection = mock(MongoCollection.class);
         mockDatabase = mock(MongoDatabase.class);
@@ -31,12 +31,14 @@ public class CommoditesTest extends TestCase {
         commodites = new Commodites(mockConnexion);
     }
 
+    @Test
     public void testInserer() {
         Commodite commodite = new Commodite(1, "Télévision", 25.0);
         commodites.inserer(commodite);
         verify(mockCollection, times(1)).insertOne(any(Document.class));
     }
 
+    @Test
     public void testExisteTrue() {
         @SuppressWarnings("unchecked")
         FindIterable<Document> mockFind = (FindIterable<Document>) mock(FindIterable.class);
@@ -46,6 +48,7 @@ public class CommoditesTest extends TestCase {
         assertTrue(commodites.existe(1));
     }
 
+    @Test
     public void testExisteFalse() {
         @SuppressWarnings("unchecked")
         FindIterable<Document> mockFind = (FindIterable<Document>) mock(FindIterable.class);
@@ -55,6 +58,7 @@ public class CommoditesTest extends TestCase {
         assertFalse(commodites.existe(999));
     }
 
+    @Test
     public void testObtenirCommoditeOK() {
         @SuppressWarnings("unchecked")
         FindIterable<Document> mockFind = (FindIterable<Document>) mock(FindIterable.class);
@@ -70,9 +74,10 @@ public class CommoditesTest extends TestCase {
         assertNotNull(c);
         assertEquals(1, c.getIdCommodite());
         assertEquals("Télévision", c.getDescription());
-        assertEquals(25.0, c.getSurplusPrix());
+        assertEquals(25.0, c.getSurplusPrix(), 0.001);
     }
 
+    @Test
     public void testObtenirCommoditeNotFound() {
         @SuppressWarnings("unchecked")
         FindIterable<Document> mockFind = (FindIterable<Document>) mock(FindIterable.class);
@@ -83,6 +88,7 @@ public class CommoditesTest extends TestCase {
         assertNull(c);
     }
 
+    @Test
     public void testObtenirToutesLesCommodites() {
         @SuppressWarnings("unchecked")
         FindIterable<Document> mockFind = (FindIterable<Document>) mock(FindIterable.class);
@@ -101,6 +107,7 @@ public class CommoditesTest extends TestCase {
         assertEquals(1, commodites.obtenirToutesLesCommodites().size());
     }
 
+    @Test
     public void testGetNextId() {
         @SuppressWarnings("unchecked")
         FindIterable<Document> mockFind = (FindIterable<Document>) mock(FindIterable.class);
