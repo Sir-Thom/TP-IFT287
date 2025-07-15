@@ -54,17 +54,14 @@ public class Client {
         public void setId(int idClient) {
             this.idClient = idClient;
         }
-        public String setNom(String nom) {
+        public void setNom(String nom) {
             this.nom = nom;
-            return this.nom;
         }
-        public String setPrenom(String prenom) {
+        public void setPrenom(String prenom) {
             this.prenom = prenom;
-            return this.prenom;
         }
-        public int setAge(int age) {
+        public void setAge(int age) {
             this.age = age;
-            return this.age;
         }
 
         @Override
