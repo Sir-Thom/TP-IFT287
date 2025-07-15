@@ -9,6 +9,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.junit.Before;
 import org.junit.Test;
+import tp.TpExeception;
 import tp.bdd.Connexion;
 import tp.objets.Chambre;
 
@@ -74,7 +75,7 @@ public class ChambresTest {
     }
 
     @Test
-    public void testGetChambreByNomOK() {
+    public void testGetChambreByNomOK() throws TpExeception {
         Document doc = new Document("nomChambre", "Suite")
                 .append("typeLit", "Queen")
                 .append("prixBase", 120.0)
@@ -88,14 +89,15 @@ public class ChambresTest {
         assertEquals("Suite", c.getNomChambre());
     }
 
-    @Test
-    public void testGetChambreByNomNotFound() {
+    @Test(expected = TpExeception.class)
+    public void testGetChambreByNomNotFound() throws TpExeception {
         FindIterable<Document> mockFindIterable = mock(FindIterable.class);
         when(mockCollection.find(any(Bson.class))).thenReturn(mockFindIterable);
         when(mockFindIterable.first()).thenReturn(null);
 
         Chambre c = chambres.getChambreByNom("Inconnue");
         assertNull(c);
+
     }
 
     @Test

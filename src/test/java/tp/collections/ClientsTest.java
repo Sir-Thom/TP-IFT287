@@ -139,4 +139,21 @@ public class ClientsTest {
 
         spyClients.supprimerClient("Test", "Inconnu");
     }
+
+    @Test(expected = TpExeception.class)
+    public void testSupprimerClientAvecReservations() throws Exception {
+        Client mockClient = new Client();
+        mockClient.setId(1);
+        mockClient.setNom("Dupont");
+        mockClient.setPrenom("Jean");
+
+        Clients spyClients = Mockito.spy(clients);
+        Mockito.doReturn(mockClient).when(spyClients).GetClientByNomPrenom("Dupont", "Jean");
+
+        Reservations mockReservations = mock(Reservations.class);
+        spyClients.reservations = mockReservations;
+        when(mockReservations.clientADesReservations(1)).thenReturn(true);
+
+        spyClients.supprimerClient("Jean", "Dupont");
+    }
 }

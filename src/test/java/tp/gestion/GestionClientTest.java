@@ -10,6 +10,7 @@ import org.mockito.*;
 import tp.TpExeception;
 import tp.bdd.Connexion;
 import tp.collections.Clients;
+import tp.collections.Reservations;
 import tp.objets.Client;
 
 import static org.junit.Assert.*;
@@ -19,7 +20,8 @@ public class GestionClientTest {
 
     @Mock
     private Clients mockClients;
-
+    @Mock
+    private Reservations mockReservations;
     @Mock
     private Connexion mockConnexion;
     @Mock
@@ -105,5 +107,23 @@ public class GestionClientTest {
         when(mockClients.GetClientByNomPrenom(anyString(), anyString())).thenReturn(null);
 
         gestionClient.supprimerClient("Jean", "Inconnu");
+    }
+
+    @Test
+    public void testSupprimerClientAvecReservation() throws TpExeception {
+        // Arrange
+        String prenom = "Jean";
+        String nom = "Dupont";
+        Client mockClient = new Client(1, prenom, nom, 30);
+
+        when(mockClients.GetClientByNomPrenom(prenom, nom)).thenReturn(mockClient);
+        when(mockReservations.clientADesReservations(mockClient.getIdClient())).thenReturn(true);
+
+        try {
+            gestionClient.supprimerClient(prenom, nom);
+            fail("Une TpExeception aurait dû être lancée");
+        } catch (TpExeception e) {
+            assertEquals("Impossible de supprimer : le client a des réservations existantes.", e.getMessage());
+        }
     }
 }

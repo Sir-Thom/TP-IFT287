@@ -8,6 +8,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.junit.Before;
 import org.junit.Test;
+import tp.TpExeception;
 import tp.bdd.Connexion;
 import tp.objets.Chambre;
 import tp.objets.Client;
@@ -89,7 +90,7 @@ public class ReservationsTest {
     }
 
     @Test
-    public void testGetReservationsPourChambreEntre() {
+    public void testGetReservationsPourChambreEntre() throws TpExeception {
         int idChambre = 1;
 
         FindIterable<Document> mockFind = mock(FindIterable.class);
