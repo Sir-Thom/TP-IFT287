@@ -2,6 +2,7 @@ package tp.collections;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
+import tp.TpExeception;
 import tp.bdd.Connexion;
 import tp.objets.Chambre;
 
@@ -36,10 +37,17 @@ public class Chambres  extends GestionCollection {
         return collectionChambres.find(eq("nomChambre", nomChambre)).first() != null;
     }
 
-    public Chambre getChambreByNom(String nomChambre) {
-        Document d = collectionChambres.find(eq("nomChambre", nomChambre)).first();
-        if (d == null) return null;
-        return new Chambre(d);
+    public Chambre getChambreByNom(String nomChambre) throws TpExeception {
+        try {
+            Document d = collectionChambres.find(eq("nomChambre", nomChambre)).first();
+            if (d == null) {
+                throw new TpExeception("Chambre avec le nom " + nomChambre + " n'existe pas.");
+            }
+            return new Chambre(d);
+        } catch (TpExeception e) {
+            throw new TpExeception("Erreur lors de la récupération de la chambre : " + e.getMessage());
+        }
+
     }
 
     public Chambre getChambreById(int idChambre) {

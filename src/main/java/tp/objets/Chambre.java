@@ -21,7 +21,12 @@ public class Chambre {
         idChambre = d.getInteger("idChambre");
         nomChambre = d.getString("nomChambre");
         typeLit = d.getString("typeLit");
-        prixBase = d.getDouble("prixBase");
+        Double prix = d.getDouble("prixBase"); // récupère l'objet Double (peut être null)
+        if (prix == null) {
+            this.prixBase = 0.0;
+        } else {
+            this.prixBase = prix;
+        }
     }
 
     public Chambre(int idChambre, String nomChambre, String typeLit, double prixBase) {
@@ -30,7 +35,13 @@ public class Chambre {
         this.typeLit = typeLit;
         this.prixBase = prixBase;
     }
-
+    // Constructeur pour créer une chambre avec un nom de suite, un ID et un prix de base pour les tests
+    public Chambre(String suite, int i, double v) {
+        this.nomChambre = suite;
+        this.idChambre = i;
+        this.prixBase = v;
+        this.typeLit = "Lit simple"; // Valeur par défaut, peut être modifiée
+    }
 
 
     public List<Integer> getCommodites() {
