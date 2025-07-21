@@ -1,16 +1,10 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-    if(getServletContext().getAttribute("serveur") != null)
-    {%>
-<jsp:forward page="/WEB-INF/login.jsp" />
-<%}
-%>
+
 <!DOCTYPE html>
 <html>
 <head>
-    <title>IFT287 - Système de gestion de bibliothèque</title>
-    <meta name="author" content="Vincent Ducharme">
-    <meta name="description" content="Page d'accueil du système de gestion de la bilbiothèque.">
+    <title>TP Auberginn</title>
+    <meta name="description"
+          content="Page d'accueil du système de gestion des reservations.">
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -21,11 +15,11 @@
 </head>
 <body>
 <div class="container">
-    <h1 class="text-center">Système de gestion de la bibliothèque</h1>
+    <h1 class="text-center">Systeme de gestion de reservation</h1>
     <div class="col-md-4 offset-md-4">
         <form action="Login" method="POST">
             <div class="form-group">
-                <label for="userIdBD">Nom d'utilisateur de la base de donnée</label>
+                <label for="userIdBD">Nom d'utilisateur de la base de donnee</label>
                 <input class="form-control" type="TEXT" name="userIdBD" value="<%= (request.getAttribute("userIdBD") != null ? (String)request.getAttribute("userIdBD") : "") %>" placeholder="ift287_XX">
             </div>
             <div class="form-group">
@@ -40,7 +34,7 @@
                 </select>
             </div>
             <div class="form-group">
-                <label for="bd">Nom de la base de donnée</label>
+                <label for="bd">Nom de la base de donnee</label>
                 <input class="form-control" type="TEXT" name="bd" value="<%= (request.getAttribute("bd") != null ? (String)request.getAttribute("bd") : "") %>" placeholder="ift287_XXdb">
             </div>
             <input class="btn btn-primary" type="SUBMIT" name="connecter" value="Se connecter">
