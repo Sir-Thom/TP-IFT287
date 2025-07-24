@@ -16,6 +16,6 @@
 <body>
 <h2>Hello World!</h2>
 
-<jsp:include page="/WEB-INF/accueil.jsp" />
+
 </body>
 </html>

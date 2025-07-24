@@ -34,45 +34,26 @@ public class InnHelper {
     /**
      * Vérifie si on peut procéder (utilisateur connecté ET BD configurée)
      */
-    public static boolean peutProceder(ServletContext context, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
-    {
-        if(infoBDValide(context))
-        {
-            HttpSession session = request.getSession(false);
-            if (InnHelper.estConnecte(session))
-            {
-                return true;
+    public static boolean peutProceder(ServletContext context, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        HttpSession session = request.getSession(true);
+
+        if (!gestionnairesCrees(session)) {
+            try {
+                creerGestionnaire(context, session);
+            } catch (Exception e) {
+                e.printStackTrace();
+                throw new ServletException("Erreur lors de la création des gestionnaires.", e);
             }
-            DispatchToLogin(request, response);
-            return false;
         }
-        else
-        {
-            DispatchToBDConnect(request, response);
-            return false;
-        }
+
+        return true;
     }
 
     /**
      * Vérifie si on peut procéder au login (BD configurée)
      */
-    public static boolean peutProcederLogin(ServletContext context, HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException
-    {
-        if(infoBDValide(context))
-        {
-            HttpSession session = request.getSession(false);
-            if (session != null)
-            {
-                // Invalider la session existante pour un nouveau login
-                session.invalidate();
-            }
-            return true;
-        }
-        else
-        {
-            DispatchToBDConnect(request, response);
-            return false;
-        }
+    public static boolean peutProcederLogin(ServletContext context, HttpServletRequest request, HttpServletResponse response) {
+        return true;
     }
 
     /**
@@ -148,6 +129,10 @@ public class InnHelper {
         String bd = (String) c.getAttribute("bd");
         String userIdBD = (String) c.getAttribute("user");
         String pass = (String) c.getAttribute("pass");
+        System.out.println("serveur = " + serveur);
+        System.out.println("bd = " + bd);
+        System.out.println("user = " + userIdBD);
+        System.out.println("pass = " + pass);
 
         TpGestion InInterrogation = new TpGestion(serveur, bd, userIdBD, pass);
         InInterrogation.getConnexion();

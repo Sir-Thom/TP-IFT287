@@ -138,4 +138,12 @@ public class Clients extends GestionCollection{
         }
 
     }
+
+    public List<Client> getAllClients() {
+        List<Client> liste = new ArrayList<>();
+        for (Document doc : collectionClients.find()) {
+            liste.add(new Client(doc));
+        }
+        return liste;
+    }
 }

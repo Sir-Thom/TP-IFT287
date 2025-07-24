@@ -7,6 +7,9 @@ import tp.collections.Reservations;
 import tp.objets.Chambre;
 import tp.objets.Client;
 
+import java.sql.SQLException;
+import java.util.List;
+
 public class GestionClient extends GestionTransactions {
     private final Clients clients;
     private final Reservations reservations;
@@ -41,6 +44,17 @@ public class GestionClient extends GestionTransactions {
         System.out.println(client.toString());
         return client;
     }
+
+    public  List<Client> getListClients() throws TpExeception {
+     // in mongo
+        List<Client> listeClients = clients.getAllClients();
+        if (listeClients.isEmpty()) {
+            throw new TpExeception("Aucun client trouvé.");
+        }
+        return listeClients;
+
+    }
+
 
     public void supprimerClient(String prenom, String nom) throws TpExeception {
         Client client = clients.GetClientByNomPrenom(prenom, nom);

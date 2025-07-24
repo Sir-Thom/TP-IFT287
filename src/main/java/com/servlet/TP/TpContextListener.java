@@ -2,23 +2,33 @@ package com.servlet.TP;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.util.Enumeration;
+import java.util.Map;
 
 public class TpContextListener implements ServletContextListener{
 
-        public void contextInitialized(ServletContextEvent sce)
-        {
-            System.out.println("Contexte du TP WEB démarré : " + sce.getServletContext().getServletContextName());
-            System.out.println("Voici les paramètres du contexte tels que définis dans web.xml");
-            Enumeration<String> initParams = sce.getServletContext().getInitParameterNames();
-            while (initParams.hasMoreElements())
-            {
-                String name = (String) initParams.nextElement();
-                System.out.println(name + ":" + sce.getServletContext().getInitParameter(name));
-            }
-        }
 
-        public void contextDestroyed(ServletContextEvent sce)
+    public void contextInitialized(ServletContextEvent sce) {
+        System.out.println("Contexte du TP WEB démarré : " + sce.getServletContext().getServletContextName());
+
+        String envPath = sce.getServletContext().getRealPath("/") + ".env";
+        Map<String, String> env = EnvLoader.loadEnv(envPath);
+
+        sce.getServletContext().setAttribute("serveur", env.getOrDefault("SERVEUR", ""));
+        sce.getServletContext().setAttribute("bd", env.getOrDefault("BD", ""));
+        sce.getServletContext().setAttribute("user", env.getOrDefault("USER", ""));
+        sce.getServletContext().setAttribute("pass", env.getOrDefault("PASS", ""));
+
+
+
+
+        System.out.println("Connexion BD automatique configurée via .env.");
+    }
+
+
+
+
+
+    public void contextDestroyed(ServletContextEvent sce)
         {
             System.out.println("Le contexte de l'application GestionTP vient d'être détruit.");
         }
