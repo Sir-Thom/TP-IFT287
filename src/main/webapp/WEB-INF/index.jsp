@@ -1,10 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%
-    if(getServletContext().getAttribute("serveur") != null)
-    {%>
-<jsp:forward page="/WEB-INF/login.jsp" />
-<%}
-%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,33 +18,11 @@
 <div class="container">
     <h1 class="text-center">Système de gestion de la bibliothèque</h1>
     <div class="col-md-4 offset-md-4">
-        <form action="Login" method="POST">
-            <div class="form-group">
-                <label for="userIdBD">Nom d'utilisateur de la base de donnée</label>
-                <input class="form-control" type="TEXT" name="userIdBD" value="<%= (request.getAttribute("userIdBD") != null ? (String)request.getAttribute("userIdBD") : "") %>" placeholder="ift287_XX">
-            </div>
-            <div class="form-group">
-                <label for="motDePasseBD">Mot de passe</label>
-                <input class="form-control" type="PASSWORD" name="motDePasseBD" value="<%= (request.getAttribute("motDePasseBD") != null ? (String)request.getAttribute("motDePasseBD") : "") %>">
-            </div>
-            <div class="form-group">
-                <label for="serveur">Serveur</label>
-                <select class="custom-select" name="serveur">
-                    <option value="local" <%= (request.getAttribute("serveur") != null ? (((String)request.getAttribute("serveur")).equals("local") ? "selected" : "") : "") %>>local
-                    <option value="dinf" <%= (request.getAttribute("serveur") != null ? (((String)request.getAttribute("serveur")).equals("dinf") ? "selected" : "") : "selected") %>>dinf
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="bd">Nom de la base de donnée</label>
-                <input class="form-control" type="TEXT" name="bd" value="<%= (request.getAttribute("bd") != null ? (String)request.getAttribute("bd") : "") %>" placeholder="ift287_XXdb">
-            </div>
-            <input class="btn btn-primary" type="SUBMIT" name="connecter" value="Se connecter">
-        </form>
+        <h1>hey</h1>
     </div>
 </div>
 <br>
 <%-- inclusion d'une autre page pour l'affichage des messages d'erreur--%>
-<jsp:include page="/WEB-INF/messageErreur.jsp" />
 <br>
 
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
