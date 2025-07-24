@@ -10,13 +10,18 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class Commodites {
+public class Commodites extends GestionCollection {
 
+    private final Connexion cx;
     private final MongoCollection<Document> collection;
 
     public Commodites(Connexion cx) {
+        super(cx);
+        this.cx = cx;
         this.collection = cx.getDatabase().getCollection("Commodite");
     }
+
+
 
     /**
      * Insère une nouvelle commodité dans la base
