@@ -62,8 +62,5 @@ public class Connexion {
         return database;
     }
 
-    public void setIsolationReadCommited() throws SQLException
-    {
-        client.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-    }
+
 }
