@@ -132,7 +132,7 @@ public class InnHelper {
 
     /**
      *  Vérifie si les gestionnaires sont crées pour cette session
-    */
+     */
     public static boolean gestionnairesCrees(HttpSession session)
     {
         if(session == null)
@@ -150,7 +150,7 @@ public class InnHelper {
         String pass = (String) c.getAttribute("pass");
 
         TpGestion InInterrogation = new TpGestion(serveur, bd, userIdBD, pass);
-        InInterrogation.getConnexion().setIsolationReadCommited();
+        InInterrogation.getConnexion();
         s.setAttribute("TpGestion", InInterrogation);
 
         TpGestion innUpdate = new TpGestion(serveur, bd, userIdBD, pass);
