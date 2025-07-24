@@ -4,6 +4,9 @@ import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
 import com.mongodb.client.MongoDatabase;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+
 /**
  * Gestionnaire d'une connexion avec une BD NoSQL via MongoDB.
  */
@@ -57,5 +60,10 @@ public class Connexion {
      */
     public MongoDatabase getDatabase() {
         return database;
+    }
+
+    public void setIsolationReadCommited() throws SQLException
+    {
+        client.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
     }
 }

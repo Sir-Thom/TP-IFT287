@@ -1,5 +1,6 @@
 package tp.gestion;
 
+import tp.bdd.Connexion;
 import tp.collections.Commodites;
 import tp.collections.Chambres;
 import tp.objets.Commodite;
@@ -8,15 +9,30 @@ import tp.objets.Chambre;
 import java.util.ArrayList;
 import java.util.List;
 
-public class GestionCommodite {
+public class GestionCommodite extends GestionTransactions {
 
     private final Commodites commodites;
     private final Chambres chambres;
 
-    public GestionCommodite(Commodites commodites, Chambres chambres) {
+    public GestionCommodite(Connexion cx) {
+        super(cx);
+        this.commodites = new Commodites(cx);
+        this.chambres = new Chambres(cx);
+    }
+    public GestionCommodite(Connexion cx, Commodites commodites, Chambres chambres) {
+        super(cx);
         this.commodites = commodites;
         this.chambres = chambres;
     }
+
+    public GestionCommodite(Commodites commodites, Chambres chambres) {
+        super(commodites.getConnexion());
+        this.commodites = commodites;
+        this.chambres = chambres;
+    }
+
+
+
 
     /** Au cas où.
      * Ajoute une commodité dans le système.

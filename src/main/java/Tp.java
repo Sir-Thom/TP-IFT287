@@ -6,6 +6,7 @@ import tp.gestion.GestionChambre;
 import tp.collections.Chambres;
 import tp.collections.Reservations;
 import tp.gestion.GestionClient;
+import tp.gestion.GestionCommodite;
 import tp.gestion.GestionReservation;
 
 import java.io.*;
@@ -16,6 +17,7 @@ public class Tp {
     private static GestionChambre gestionChambre;
     private static GestionClient gestionClient;
     private static GestionReservation gestionReservation;
+    private static GestionCommodite gestionCommodite;
 
     public static void main(String[] args) throws Exception {
         if (args.length < 4) {
@@ -34,6 +36,7 @@ public class Tp {
             Reservations reservations = new Reservations(cx,chambres,clients);
             gestionChambre = new GestionChambre(chambres, reservations);
             gestionClient = new GestionClient(cx);
+            gestionCommodite = new GestionCommodite(cx);
 
             String nomFichier = null;
             if (args.length == 5) nomFichier = args[4];
@@ -90,9 +93,14 @@ public class Tp {
 
             if (command.equals("aide")) {
                 afficherAide();
-            } else if (command.equals("ajouterChambre")) {
+            }
+            // ajouterChambre <nomChambre> <type de lit> <prix de base>
+            else if (command.equals("ajouterChambre")) {
+                // 1. <nomChambre>
                 String nom = readString(tokenizer);
+                // 2. <type de lit>
                 String typeLit = readString(tokenizer);
+                // 3. <prix de base>
                 double prixBase = readDouble(tokenizer);
                 gestionChambre.ajouterChambre(nom, typeLit, prixBase);
 
@@ -103,44 +111,101 @@ public class Tp {
                 double prixBase = readDouble(tokenizer);
                 gestionChambre.modifierChambre(nomActuel, nouveauNom, typeLit, prixBase);
 
-            } else if (command.equals("supprimerChambre")) {
+            }
+            // supprimerChambre <nomChambre>
+            else if (command.equals("supprimerChambre")) {
                 String nom = readString(tokenizer);
                 gestionChambre.supprimerChambre(nom);
                 
 
-            } else if (command.equals("reserver")) {
-                String nomChambre = readString(tokenizer);
-                String nomClient = readString(tokenizer);
+            }
+            // reserver <prenom> <nom> <nomChambre> <dateDebut> <dateFin>
+            else if (command.equals("reserver")) {
+                // 1. <prenom>
                 String prenomClient = readString(tokenizer);
+                // 2. <nom>
+                String nomClient = readString(tokenizer);
+                // 3. <nomChambre>
+                String nomChambre = readString(tokenizer);
+                // 4 <dateDebut>
                 String dateDebut = readString(tokenizer);
+                // 5. <dateFin>
                 String dateFin = readString(tokenizer);
-                gestionReservation.reserver(nomChambre, nomClient, prenomClient, dateDebut, dateFin);
-                
-            } else if (command.equals("afficherChambre")) {
-                String nom = readString(tokenizer);
-                gestionChambre.afficherChambre(nom);
 
-            } else if (command.equals("afficherChambresLibres")) {
+                gestionReservation.reserver(prenomClient, nomClient, nomChambre, dateDebut, dateFin);
+                
+            }
+            // afficherChambre <nomChambre>
+            else if (command.equals("afficherChambre")) {
+                String nomChambre = readString(tokenizer);
+                gestionChambre.afficherChambre(nomChambre);
+
+            }
+            // afficherChambresLibres <dateDebut> <dateFin>
+            else if (command.equals("afficherChambresLibres")) {
+                // 1. <dateDebut>
                 String dateDebut = readString(tokenizer);
+                // 2. <dateFin>
                 String dateFin = readString(tokenizer);
                 gestionChambre.afficherChambresLibres(dateDebut, dateFin);
 
-            } else if (command.equals("ajouterClient")) {
-                String nom = readString(tokenizer);
+            }
+            // ajouterClient <prenom> <nom> <age>
+            else if (command.equals("ajouterClient")) {
+                // 1. <prenom>
                 String prenom = readString(tokenizer);
+                // 2. <nom>
+                String nom = readString(tokenizer);
+                // 3. <age>
                 int age = readInt(tokenizer);
-                gestionClient.ajouterClient(nom, prenom, age);
-            } else if (command.equals("afficherClient")) {
+                gestionClient.ajouterClient(prenom, nom,age);
+            }
+            // afficherClient <prenom> <nom>
+            else if (command.equals("afficherClient")) {
+                // 1. <prenom>
                 String prenom = readString(tokenizer);
+                // 2. <nom>
                 String nom = readString(tokenizer);
-                gestionClient.afficherClients(nom, prenom);
+                gestionClient.afficherClients(prenom, nom);
                 
-            } else if (command.equals("supprimerClient")) {
-                String nom = readString(tokenizer);
+            }
+            // supprimerClient <prenom> <nom>
+            else if (command.equals("supprimerClient")) {
+                // 1. <prenom>
                 String prenom = readString(tokenizer);
-                gestionClient.supprimerClient(nom, prenom);
-
-            } else if (command.equals("exit")) {
+                // 2. <nom>
+                String nom = readString(tokenizer);
+                gestionClient.supprimerClient(prenom, nom);
+            }
+            // ajouterCommodite <idCommodite> <description> <surplus prix>
+            else if (command.equals("ajouterCommodite")) {
+                // 1. <idCommodite>
+                int id = readInt(tokenizer);
+                // 2. <description>
+                String description = readString(tokenizer);
+                // 3. <surplus prix>
+                double surplus = readDouble(tokenizer);
+                gestionCommodite.ajouterCommodite(id, description, surplus);
+            }
+            // inclureCommodite <nomChambre> <idCommodite>
+            else if (command.equals("inclureCommodite")) {
+                // 1. <nomChambre>
+                String nomChambre = readString(tokenizer);
+                // 2. <idCommodite>
+                int idCommodite = readInt(tokenizer);
+                gestionCommodite.inclureCommodite(nomChambre, idCommodite);
+            }
+            // enleverCommodite <nomChambre> <idCommodite>
+            else if(command.equals("enleverCommodite")) {
+                // 1. <nomChambre>
+                String nomChambre = readString(tokenizer);
+                // 2. <idCommodite>
+                int idCommodite = readInt(tokenizer);
+                gestionCommodite.enleverCommodite(nomChambre, idCommodite);
+            }
+            // **************************************************************
+            // quitter le programme
+            else if (command.equals("exit")) {
                 System.out.println("Fin du programme.");
 
             } else if (command.equals("--")) {
