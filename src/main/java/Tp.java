@@ -231,6 +231,9 @@ public class Tp {
         System.out.println("  ajouterClient <nom> <prenom> <age>");
         System.out.println("  afficherClient <nom> <prenom>");
         System.out.println("  supprimerClient <nom> <prenom>");
+        System.out.println("  inclureCommodite <nomChambre> <idCommodite>");
+        System.out.println("  enleverCommodite <nomChambre> <idCommodite>");
+        System.out.println("  ajouterCommodite <idCommodite> <description> <surplus prix>");
     }
 
     private static String readString(StringTokenizer tokenizer) throws TpExeception {
