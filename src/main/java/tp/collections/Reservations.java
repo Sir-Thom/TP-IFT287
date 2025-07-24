@@ -62,7 +62,7 @@ public class Reservations extends GestionCollection {
         return resultats;
     }
 
-    public List<Reservation> getReservationsPourChambreEntre(int idChambre, String dateDebut, String dateFin) {
+    public List<Reservation> getReservationsPourChambreEntre(int idChambre, String dateDebut, String dateFin) throws TpExeception {
         List<Reservation> resultats = new ArrayList<>();
         MongoCursor<Document> cursor = collectionReservations.find(
                 and(
@@ -75,6 +75,10 @@ public class Reservations extends GestionCollection {
         while (cursor.hasNext()) {
             resultats.add(new Reservation(cursor.next()));
         }
+        if (resultats.isEmpty()) {
+            throw new TpExeception("Aucune réservation trouvée pour la chambre " + idChambre + " entre " + dateDebut + " et " + dateFin);
+        }
+
         return resultats;
     }
 
@@ -98,6 +102,10 @@ public class Reservations extends GestionCollection {
 
 
     public boolean clientADesReservations(int idClient) {
+        if (idClient <= 0) {
+            throw new IllegalArgumentException("L'ID du client doit être supérieur à 0.");
+        }
+
         return collectionReservations.find(eq("idClient", idClient)).first() != null;
     }
 
