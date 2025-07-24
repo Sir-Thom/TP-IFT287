@@ -1,14 +1,13 @@
 package com.servlet.TP;
 
-package biblioServlet;
+import tp.TpExeception;
+import tp.bdd.Connexion;
 
 import java.util.*;
 import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 
-import Bibliotheque.BiblioException;
-import Bibliotheque.Connexion;
 
 /**
  * Servlet qui g�re l'acc�s � la base de donn�e
@@ -46,9 +45,9 @@ public class Login extends HttpServlet
         {
             System.out.println("Servlet Login : POST");
             // Si on a d�j� entr� les informations de connexion valide
-            if (BiblioHelper.infoBDValide(getServletContext()))
+            if (InnHelper.infoBDValide(getServletContext()))
             {
-                BiblioHelper.DispatchToLogin(request, response);
+                InnHelper.DispatchToLogin(request, response);
                 return;
             }
 
@@ -64,17 +63,17 @@ public class Login extends HttpServlet
             request.setAttribute("bd", bd);
 
             if(userId == null || userId.equals(""))
-                throw new BiblioException("Vous devez entrer un nom d'utilisateur.");
+                throw new TpExeception("Vous devez entrer un nom d'utilisateur.");
 
             if(motDePasse == null || motDePasse.equals(""))
-                throw new BiblioException("Vous devez entrer un mot de passe.");
+                throw new TpExeception("Vous devez entrer un mot de passe.");
 
             if(bd == null || bd.equals(""))
-                throw new BiblioException("Vous devez entrer un nom de base de donn�e.");
+                throw new TpExeception("Vous devez entrer un nom de base de donn�e.");
 
             if (serveur == null || serveur.equals(""))
             {
-                throw new BiblioException("Vous devez choisir un serveur.");
+                throw new TpExeception("Vous devez choisir un serveur.");
             }
 
             try
@@ -108,7 +107,7 @@ public class Login extends HttpServlet
             }
 
         }
-        catch (BiblioException e)
+        catch (TpExeception e)
         {
             List<String> listeMessageErreur = new LinkedList<String>();
             listeMessageErreur.add(e.getMessage());
@@ -130,15 +129,14 @@ public class Login extends HttpServlet
     {
         System.out.println("Servlet Login : GET");
         // Si on a d�j� entr� les informations de connexion valide
-        if (BiblioHelper.infoBDValide(getServletContext()))
+        if (InnHelper.infoBDValide(getServletContext()))
         {
-            BiblioHelper.DispatchToLogin(request, response);
+            InnHelper.DispatchToLogin(request, response);
         }
         else
         {
-            BiblioHelper.DispatchToBDConnect(request, response);
+            InnHelper.DispatchToBDConnect(request, response);
         }
     }
 
 } // class
-

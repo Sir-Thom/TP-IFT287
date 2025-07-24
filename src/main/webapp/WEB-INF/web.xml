@@ -32,7 +32,7 @@
 </listener>
   <servlet>
     <servlet-name>Login</servlet-name>
-    <servlet-class>com.servlet.TP</servlet-class>
+    <servlet-class>com.servlet.TP.Login</servlet-class>
   </servlet>
   <servlet-mapping>
     <servlet-name>Login</servlet-name>
