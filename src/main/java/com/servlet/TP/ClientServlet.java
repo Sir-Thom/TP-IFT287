@@ -41,7 +41,7 @@ public class ClientServlet extends HttpServlet {
             if (tpGestion == null) {
                 System.out.println("Erreur: tpGestion is null. Session might be expired."); // ✅ 4. Check here
                 request.setAttribute("erreur", "Session expirée. Veuillez vous reconnecter.");
-                // request.getRequestDispatcher("/index.jsp").forward(request, response);
+                request.getRequestDispatcher("/index.jsp").forward(request, response);
                 return;
             }
 

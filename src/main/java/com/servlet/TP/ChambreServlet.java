@@ -82,13 +82,13 @@ public class ChambreServlet extends HttpServlet {
 
                 default:
                     request.setAttribute("erreur", "Action non reconnue: " + action);
-                    request.getRequestDispatcher("/menu.jsp").forward(request, response);
+                   // request.getRequestDispatcher("/menu.jsp").forward(request, response);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
             request.setAttribute("erreur", "Erreur système: " + e.getMessage());
-            request.getRequestDispatcher("/menu.jsp").forward(request, response);
+            //request.getRequestDispatcher("/menu.jsp").forward(request, response);
         }
     }
 
@@ -113,9 +113,7 @@ public class ChambreServlet extends HttpServlet {
     }
 
     // ✅ MÉTHODES EXISTANTES avec chemins corrigés
-    private void ajouterChambre(HttpServletRequest request, HttpServletResponse response
-                                ) throws ServletException, IOException {
-        HttpSession session = request.getSession();
+    private void ajouterChambre(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         try {
             String nom = request.getParameter("nom");
@@ -140,20 +138,22 @@ public class ChambreServlet extends HttpServlet {
                 throw new TpExeception("Le prix de base doit être un nombre valide");
             }
             System.out.println("Attempting to add room: " + nom);
-            InnHelper.getInnInterro(session);
 
 
             GestionChambre gestionChambre =
-                    InnHelper.getInnInterro(session).getGestionChambre();
+                    InnHelper.getInnInterro(request.getSession()).getGestionChambre();
+
+            // print the gestionChambre object for debugging all chambres
             if (gestionChambre == null) {
                 throw new Exception("Module gestion chambre non disponible");
             }
             // Appel de la méthode métier
             gestionChambre.ajouterChambre(nom.trim(), typeLit.trim(), prixBase);
+            System.out.println("GestionChambre object: " + gestionChambre.afficherChambre(nom));
 
             request.setAttribute("message", "Chambre '" + nom + "' ajoutée avec succès!");
             // ✅ CHEMIN CORRIGÉ vers WEB-INF
-            request.getRequestDispatcher("/WEB-INF/chambres/ajouterChambre.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/chambres/chambresLibres.jsp").forward(request, response);
 
         } catch (TpExeception e) {
             // Préserver les valeurs saisies en cas d'erreur
@@ -188,8 +188,6 @@ public class ChambreServlet extends HttpServlet {
 
             gestionChambre.modifierChambre(nomActuel.trim(), nouveauNom.trim(), typeLit.trim(), prixBase);
 
-            request.setAttribute("message", "Chambre modifiée avec succès!");
-            // ✅ CHEMIN CORRIGÉ (créer ce JSP plus tard)
             request.setAttribute("message", "Chambre modifiée avec succès!");
             request.getRequestDispatcher("/menu.jsp").forward(request, response);
 

@@ -35,6 +35,8 @@ public class GestionClient extends GestionTransactions {
             if (clientExistant != null) {
                 throw new TpExeception("Le client '" + prenom + " " + nom + "' existe déjà.");
             }
+            Client nouveauClient = new Client(0, nom, prenom, age);
+            clients.ajouterClient(nouveauClient); // Ajout.
         } catch (TpExeception e) {
             // Si le client n'existe pas, c'est ce qu'on veut -> on continue
             if (!e.getMessage().contains("n'existe pas")) {
@@ -42,8 +44,7 @@ public class GestionClient extends GestionTransactions {
             }
         }
 
-        Client nouveauClient = new Client(0, nom, prenom, age);
-        clients.ajouterClient(nouveauClient); // Ajout.
+
     }
 
     public Client afficherClients(String nom,String prenom) throws TpExeception {

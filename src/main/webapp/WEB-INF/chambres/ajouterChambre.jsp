@@ -52,7 +52,7 @@
                     <h3 class="mb-0">🛏️ Ajouter une nouvelle chambre</h3>
                 </div>
                 <div class="card-body">
-                    <form action="${pageContext.request.contextPath}/ChambreServlet" method="POST">
+                    <form action="ChambreServlet" method="POST">
 
 
                     <input type="hidden" name="action" value="ajouter">
