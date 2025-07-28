@@ -12,7 +12,7 @@
         crossorigin="anonymous">
 </head>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="../menu.jsp">
+  <a class="navbar-brand" href="../TP_war_exploded/menu.jsp">
     🏨 <strong>Auberg-Inn</strong>
   </a>
 

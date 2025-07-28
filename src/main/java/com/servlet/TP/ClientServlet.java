@@ -24,15 +24,27 @@ public class ClientServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
+
         request.setCharacterEncoding("UTF-8");
+
         HttpSession session = request.getSession();
-
-
-
-
         String action = request.getParameter("action");
+        System.out.println("Action parameter: " + action);
 
         try {
+            // Vérifier si on peut procéder
+            if (!InnHelper.peutProceder(getServletContext(), request, response)) {
+                System.out.println("Erreur: InnHelper.peutProceder returned false."); // ✅ 3. Check here
+                return;
+            }
+            TpGestion tpGestion = InnHelper.getInnInterro(session);
+            if (tpGestion == null) {
+                System.out.println("Erreur: tpGestion is null. Session might be expired."); // ✅ 4. Check here
+                request.setAttribute("erreur", "Session expirée. Veuillez vous reconnecter.");
+                // request.getRequestDispatcher("/index.jsp").forward(request, response);
+                return;
+            }
+
 
 
             System.out.println("session = " + session.toString());
@@ -45,8 +57,10 @@ public class ClientServlet extends HttpServlet {
                 response.sendRedirect("index.jsp");
                 return;
             }
-            InnHelper.peutProceder(getServletContext(), request, response);
-            TpGestion tpGestion = InnHelper.getInnInterro(session);
+
+
+
+
             if (tpGestion == null) {
                 System.err.println("Erreur: tpGestion est null dans la session");
                 throw new TpExeception("Session expirée ou non initialisée");
@@ -78,6 +92,7 @@ public class ClientServlet extends HttpServlet {
             response.sendRedirect("index.jsp");
             return;
         }
+
 
         String action = request.getParameter("action");
         try {
