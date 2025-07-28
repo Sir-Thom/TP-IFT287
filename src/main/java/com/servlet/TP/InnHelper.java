@@ -141,7 +141,9 @@ public class InnHelper {
         TpGestion innUpdate = new TpGestion(serveur, bd, userIdBD, pass);
         s.setAttribute("TpUpdate", innUpdate);
     }
-
+    public static void setInnInterro(HttpSession session, TpGestion tpGestion) {
+        session.setAttribute("innInterro", tpGestion);
+    }
     public static TpGestion getInnInterro(HttpSession session)
     {
         return (TpGestion)session.getAttribute("TpGestion");

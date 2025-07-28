@@ -2,6 +2,7 @@ package com.servlet.TP;
 
 import tp.TpExeception;
 import tp.gestion.GestionChambre;
+import tp.gestion.GestionClient;
 import tp.gestion.TpGestion;
 import tp.objets.Chambre;
 
@@ -21,22 +22,23 @@ public class ChambreServlet extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
-        response.setCharacterEncoding("UTF-8");
 
         HttpSession session = request.getSession();
         String action = request.getParameter("action");
+        System.out.println("Action parameter: " + action);
 
         try {
             // Vérifier si on peut procéder
             if (!InnHelper.peutProceder(getServletContext(), request, response)) {
+                System.out.println("Erreur: InnHelper.peutProceder returned false."); // ✅ 3. Check here
                 return;
             }
 
-            // Récupération du gestionnaire depuis la session
             TpGestion tpGestion = InnHelper.getInnInterro(session);
             if (tpGestion == null) {
+                System.out.println("Erreur: tpGestion is null. Session might be expired."); // ✅ 4. Check here
                 request.setAttribute("erreur", "Session expirée. Veuillez vous reconnecter.");
-                request.getRequestDispatcher("/index.jsp").forward(request, response);
+               // request.getRequestDispatcher("/index.jsp").forward(request, response);
                 return;
             }
 
@@ -59,7 +61,7 @@ public class ChambreServlet extends HttpServlet {
 
                 // ✅ ACTIONS EXISTANTES (traitement des données)
                 case "ajouter":
-                    ajouterChambre(request, response, gestionChambre);
+                    ajouterChambre(request, response);
                     break;
 
                 case "modifier":
@@ -111,8 +113,10 @@ public class ChambreServlet extends HttpServlet {
     }
 
     // ✅ MÉTHODES EXISTANTES avec chemins corrigés
-    private void ajouterChambre(HttpServletRequest request, HttpServletResponse response,
-                                GestionChambre gestionChambre) throws ServletException, IOException {
+    private void ajouterChambre(HttpServletRequest request, HttpServletResponse response
+                                ) throws ServletException, IOException {
+        HttpSession session = request.getSession();
+
         try {
             String nom = request.getParameter("nom");
             String typeLit = request.getParameter("typeLit");
@@ -135,7 +139,15 @@ public class ChambreServlet extends HttpServlet {
             } catch (NumberFormatException e) {
                 throw new TpExeception("Le prix de base doit être un nombre valide");
             }
+            System.out.println("Attempting to add room: " + nom);
+            InnHelper.getInnInterro(session);
 
+
+            GestionChambre gestionChambre =
+                    InnHelper.getInnInterro(session).getGestionChambre();
+            if (gestionChambre == null) {
+                throw new Exception("Module gestion chambre non disponible");
+            }
             // Appel de la méthode métier
             gestionChambre.ajouterChambre(nom.trim(), typeLit.trim(), prixBase);
 
@@ -151,6 +163,8 @@ public class ChambreServlet extends HttpServlet {
             request.setAttribute("erreur", e.getMessage());
             // ✅ CHEMIN CORRIGÉ vers WEB-INF
             request.getRequestDispatcher("/WEB-INF/chambres/ajouterChambre.jsp").forward(request, response);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

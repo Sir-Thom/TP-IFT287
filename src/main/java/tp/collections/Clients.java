@@ -101,9 +101,9 @@ public class Clients extends GestionCollection{
         }
     }
 
-    public List<Client> getClients() throws TpExeception {
+    public List<Client> getClients() {
         List<Client> liste = new ArrayList<>();
-        try {
+
             // Vérifier si la collection existe
             if (collectionClients != null) {
                 for (Document doc : collectionClients.find()) {
@@ -121,10 +121,7 @@ public class Clients extends GestionCollection{
             } else {
                 System.err.println("La collection clients n'est pas initialisée");
             }
-        } catch (Exception e) {
-            System.err.println("Erreur lors de la récupération des clients: " + e.getMessage());
-            // Retourner ici une liste vide au lieu de lancer une exception
-        }
+
         return liste; // Retourne toujours une liste, même si vide !!
     }
 

@@ -61,14 +61,9 @@ public class GestionClient extends GestionTransactions {
      * extra vérification lorsqu'il y a pas de client !
      */
 
-    public List<Client> getListClients() throws TpExeception {
-        try {
+    public List<Client> getListClients()  {
             return clients.getClients();
-        } catch (TpExeception e) {
-            // Ici, on log l'erreur et retourne une liste vide (plutôt que null)
-            System.err.println("Erreur lors de la récupération des clients: " + e.getMessage());
-            return new ArrayList<>();
-        }
+
     }
 
 
