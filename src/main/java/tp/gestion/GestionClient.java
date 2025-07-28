@@ -28,12 +28,22 @@ public class GestionClient extends GestionTransactions {
         this.reservations = reservations;
     }
 
+
     public void ajouterClient(String nom, String prenom, int age) throws TpExeception {
-        if(clients.existe(nom)) {
-            throw new TpExeception("Le client avec le nom '" + nom + "' existe déjà.");
+        try {
+            Client clientExistant = clients.GetClientByNomPrenom(nom, prenom);
+            if (clientExistant != null) {
+                throw new TpExeception("Le client '" + prenom + " " + nom + "' existe déjà.");
+            }
+        } catch (TpExeception e) {
+            // Si le client n'existe pas, c'est ce qu'on veut -> on continue
+            if (!e.getMessage().contains("n'existe pas")) {
+                throw e;
+            }
         }
+
         Client nouveauClient = new Client(0, nom, prenom, age);
-        clients.ajouterClient(nouveauClient);
+        clients.ajouterClient(nouveauClient); // Ajout.
     }
 
     public Client afficherClients(String nom,String prenom) throws TpExeception {
