@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.2//EN" "http://java.sun.com/j2ee/dtds/web-app_2_2.dtd">
 <web-app id="tp">
+    <display-name>Auberg-Inn - Système de gestion</display-name>
+    <description>Application de gestion d'auberge avec MongoDB</description>
+
+    <!-- Page d'accueil par défaut -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <!--
     <display-name>Système de gestion de resevation WEB</display-name>
     <welcome-file-list>
         <welcome-file>accueil.jsp</welcome-file>
     </welcome-file-list>
+    -->
 
     <context-param>
         <param-name>exempleParam1</param-name>
@@ -51,4 +60,24 @@
         <servlet-name>Accueil</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+    <!-- Servlet pour la gestion des chambres -->
+    <servlet>
+        <servlet-name>ChambreServlet</servlet-name>
+        <servlet-class>com.servlet.TP.ChambreServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ChambreServlet</servlet-name>
+        <url-pattern>/ChambreServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlet pour la gestion des clients -->
+    <servlet>
+        <servlet-name>ClientServlet</servlet-name>
+        <servlet-class>com.servlet.TP.ClientServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ClientServlet</servlet-name>
+        <url-pattern>/ClientServlet</url-pattern>
+    </servlet-mapping>
+
 </web-app>
