@@ -100,13 +100,32 @@ public class Clients extends GestionCollection{
             throw new TpExeception("Erreur lors de l'ajout du client : " + e.getMessage());
         }
     }
+
     public List<Client> getClients() throws TpExeception {
         List<Client> liste = new ArrayList<>();
-        for (Document doc : collectionClients.find()) {
-            liste.add(new Client(doc));
-            System.out.println(doc.toJson());
+        try {
+            // Vérifier si la collection existe
+            if (collectionClients != null) {
+                for (Document doc : collectionClients.find()) {
+                    if (doc != null) {
+                        try {
+                            Client client = new Client(doc);
+                            liste.add(client);
+                            System.out.println(doc.toJson());
+                        } catch (Exception e) {
+                            System.err.println("Erreur lors de la création du client à partir du document: " + e.getMessage());
+                            // On continue avec les autres documents plutot que de s'arreter
+                        }
+                    }
+                }
+            } else {
+                System.err.println("La collection clients n'est pas initialisée");
+            }
+        } catch (Exception e) {
+            System.err.println("Erreur lors de la récupération des clients: " + e.getMessage());
+            // Retourner ici une liste vide au lieu de lancer une exception
         }
-        return liste;
+        return liste; // Retourne toujours une liste, même si vide !!
     }
 
     public boolean supprimerClient(String prenom,String nom) throws TpExeception {

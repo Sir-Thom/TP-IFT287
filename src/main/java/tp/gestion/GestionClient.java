@@ -8,6 +8,7 @@ import tp.objets.Chambre;
 import tp.objets.Client;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class GestionClient extends GestionTransactions {
@@ -20,7 +21,7 @@ public class GestionClient extends GestionTransactions {
         this.reservations = new Reservations(cx, null, clients); // Passer null pour Chambres car non utilisé ici
 
     }
-    //constructor pour injecter une instance de Clients pour les tests
+    //constructor pour injecter une instance de Clients pour les tests..
     public GestionClient(Connexion cx, Clients clients,Reservations reservations) {
         super(cx);
         this.clients = clients;
@@ -45,14 +46,19 @@ public class GestionClient extends GestionTransactions {
         return client;
     }
 
-    public  List<Client> getListClients() throws TpExeception {
-     // in mongo
-        List<Client> listeClients = clients.getAllClients();
-        if (listeClients.isEmpty()) {
-            throw new TpExeception("Aucun client trouvé.");
-        }
-        return listeClients;
+    /**
+     *
+     * extra vérification lorsqu'il y a pas de client !
+     */
 
+    public List<Client> getListClients() throws TpExeception {
+        try {
+            return clients.getClients();
+        } catch (TpExeception e) {
+            // Ici, on log l'erreur et retourne une liste vide (plutôt que null)
+            System.err.println("Erreur lors de la récupération des clients: " + e.getMessage());
+            return new ArrayList<>();
+        }
     }
 
 

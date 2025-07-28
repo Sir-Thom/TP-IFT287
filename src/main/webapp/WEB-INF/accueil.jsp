@@ -1,5 +1,6 @@
 <%@ page import="tp.objets.Client" %>
 <%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 <%@ page import="com.servlet.TP.InnHelper" %>
 <!DOCTYPE html>
 <html>
@@ -31,15 +32,54 @@
             </thead>
             <tbody>
             <%
-                List<Client> clients = InnHelper.getInnInterro(session).getGestionClient().getListClients();
+                List<Client> clients = null;
+                String errorMessage = null;
+
+                try {
+                    // Vérification étape par étape afin d'identifier le problème quoi
+                    if (InnHelper.getInnInterro(session) != null) {
+                        if (InnHelper.getInnInterro(session).getGestionClient() != null) {
+                            clients = InnHelper.getInnInterro(session).getGestionClient().getListClients();
+                        } else {
+                            errorMessage = "GestionClient n'est pas initialisé";
+                        }
+                    } else {
+                        errorMessage = "InnInterro n'est pas initialisé dans la session";
+                    }
+                } catch (Exception e) {
+                    errorMessage = "Erreur lors de la récupération des clients: " + e.getMessage();
+                    e.printStackTrace(); // Pour le debug
+                }
+
+                // Si clients est null, initialiser une liste vide
+                if (clients == null) {
+                    clients = new ArrayList<>();
+                }
+
+                if (clients.isEmpty()) {
+            %>
+            <tr>
+                <td colspan="3" class="text-center text-muted">
+                    <% if (errorMessage != null) { %>
+                    <div class="alert alert-warning">
+                        <%= errorMessage %>
+                    </div>
+                    <% } else { %>
+                    Aucun client enregistré pour le moment.
+                    <% } %>
+                </td>
+            </tr>
+            <%
+            } else {
                 for (Client c : clients) {
             %>
             <tr>
-                <td><%= c.getNom() %></td>
-                <td><%= c.getPrenom() %></td>
+                <td><%= c.getNom() != null ? c.getNom() : "N/A" %></td>
+                <td><%= c.getPrenom() != null ? c.getPrenom() : "N/A" %></td>
                 <td><%= c.getAge() %></td>
             </tr>
             <%
+                    }
                 }
             %>
             </tbody>
