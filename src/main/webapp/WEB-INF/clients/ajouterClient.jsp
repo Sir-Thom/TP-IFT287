@@ -22,6 +22,7 @@
     <!-- Navigation -->
     <jsp:include page="/WEB-INF/navigation.jsp" />
 
+
     <!-- Header -->
     <div class="row mt-4">
         <div class="col">
@@ -92,12 +93,9 @@
         </div>
     </div>
 
-    <!-- Messages d'erreur/succès -->
-    <div class="row mt-3">
-        <div class="col">
+
             <jsp:include page="/WEB-INF/messageErreur.jsp" />
-        </div>
-    </div>
+
 
 </div>
 

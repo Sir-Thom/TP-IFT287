@@ -133,14 +133,18 @@ public class ClientServlet extends HttpServlet {
             GestionClient gestionClient = InnHelper.getInnInterro(request.getSession()).getGestionClient();
             gestionClient.ajouterClient(nom.trim(), prenom.trim(), age);
 
+
             response.sendRedirect("ClientServlet?action=lister");
 
         } catch (TpExeception | NumberFormatException e) {
             request.setAttribute("erreur", e.getMessage());
+            System.out.println(request.getAttribute("erreur"));
             request.setAttribute("nom", nom);
             request.setAttribute("prenom", prenom);
             request.setAttribute("age", ageStr);
             request.getRequestDispatcher("/WEB-INF/clients/ajouterClient.jsp").forward(request, response);
+            // use envoyerErreur
+        } catch (Exception e) {
         }
     }
 

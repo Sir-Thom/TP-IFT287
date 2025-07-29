@@ -1,11 +1,21 @@
-<%@ page import="java.util.*" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page import="java.util.List" %>
 
 <%
-  // affichage de la liste des messages d'erreur
-  if (request.getAttribute("listeMessageErreur") != null)
-  {
-    for(String text : (List<String>)request.getAttribute("listeMessageErreur"))
-    {
+  // Affichage des messages d'erreur
+  if (request.getAttribute("erreur") != null) {
+    String erreur = (String) request.getAttribute("erreur");
+%>
+<div class="alert alert-danger" role="alert">
+  <%= erreur %>
+</div>
+<%
+  }
+
+  // Ancien code pour les listes (conservé pour compatibilité)
+  if (request.getAttribute("listeMessageErreur") != null) {
+    List<String> listeErreurs = (List<String>) request.getAttribute("listeMessageErreur");
+    for(String text : listeErreurs) {
 %>
 <div class="alert alert-danger" role="alert">
   <%= text %>

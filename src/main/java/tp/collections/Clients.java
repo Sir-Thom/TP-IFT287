@@ -51,32 +51,21 @@ public class Clients extends GestionCollection{
     }
     public Client GetClientByNomPrenom(String nom, String prenom) throws TpExeception {
         try {
-            System.out.println("DEBUG - Input parameters: nom='" + nom + "', prenom='" + prenom + "'");
 
-            // 1. Verify collection exists and has documents
-            long count = collectionClients.countDocuments();
-            System.out.println("DEBUG - Total documents in collection: " + count);
 
-            // 2. Print first document structure
-            Document firstDoc = collectionClients.find().first();
-            System.out.println("DEBUG - First document structure: " + (firstDoc != null ? firstDoc.toJson() : "Collection empty!"));
-
-            // 3. Execute query with exact matching
+            if (nom == null || prenom == null || nom.isEmpty() || prenom.isEmpty()) {
+                throw new TpExeception("Le nom et le prénom du client ne peuvent pas être vides.");
+            }
 
             Document query = new Document("nom", nom)
                     .append("prenom", prenom);
 
-            System.out.println("DEBUG - Query sent to MongoDB: " + query);
-            for (Document doc : collectionClients.find(query)) { // Or collection.find(filter)
-                System.out.println(doc.toJson());
-            }
+
             Document clientDoc = collectionClients.find(query).first();
             if (clientDoc == null) {
-                System.out.println("DEBUG - No client found with nom='" + nom + "' and prenom='" + prenom + "'");
-                return null; // Client not found
+                return null;
             }
-            System.out.println("DEBUG - Client found: " + clientDoc.toJson());
-            return new Client(clientDoc); // Convert Document to Client object
+            return new Client(clientDoc);
 
         } catch (Exception e) {
             System.err.println("FULL ERROR: " + e);
@@ -126,7 +115,6 @@ public class Clients extends GestionCollection{
     public List<Client> getClients() {
         List<Client> liste = new ArrayList<>();
 
-            // Vérifier si la collection existe
             if (collectionClients != null) {
                 for (Document doc : collectionClients.find()) {
                     if (doc != null) {
@@ -136,7 +124,6 @@ public class Clients extends GestionCollection{
                             System.out.println(doc.toJson());
                         } catch (Exception e) {
                             System.err.println("Erreur lors de la création du client à partir du document: " + e.getMessage());
-                            // On continue avec les autres documents plutot que de s'arreter
                         }
                     }
                 }
@@ -144,7 +131,7 @@ public class Clients extends GestionCollection{
                 System.err.println("La collection clients n'est pas initialisée");
             }
 
-        return liste; // Retourne toujours une liste, même si vide !!
+        return liste;
     }
 
     public boolean supprimerClient(String prenom,String nom) throws TpExeception {

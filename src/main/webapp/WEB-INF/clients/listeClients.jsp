@@ -13,12 +13,7 @@
 
     <h1 class="text-center my-4">Liste des Clients</h1>
 
-    <%-- Message de débogage --%>
-    <div class="alert alert-info">
-        <strong>Debug Info:</strong><br>
-        Taille de la liste: ${clients.size()}<br>
-        Session ID: <%= session.getId() %>
-    </div>
+
 
     <c:choose>
         <c:when test="${empty clients}">
