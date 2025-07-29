@@ -12,9 +12,6 @@
     <jsp:include page="/WEB-INF/navigation.jsp" />
 
     <h1 class="text-center my-4">Liste des Clients</h1>
-
-
-
     <c:choose>
         <c:when test="${empty clients}">
             <div class="alert alert-warning text-center">

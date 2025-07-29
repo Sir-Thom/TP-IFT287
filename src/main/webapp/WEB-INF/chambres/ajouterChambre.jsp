@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,16 +13,15 @@
 <body>
 <div class="container">
     <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="../../../menu.jsp">🏨 Auberg-Inn</a>
-    </nav>
+    <jsp:include page="/WEB-INF/navigation.jsp" />
+
 
     <!-- Header -->
     <div class="row mt-4">
         <div class="col">
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="../../../menu.jsp">Menu</a></li>
+                    <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/menu.jsp">Menu</a></li>
                     <li class="breadcrumb-item active">Ajouter Chambre</li>
                 </ol>
             </nav>
@@ -52,7 +51,7 @@
                     <h3 class="mb-0">🛏️ Ajouter une nouvelle chambre</h3>
                 </div>
                 <div class="card-body">
-                    <form action="ChambreServlet" method="POST">
+                    <form action="chambres" method="POST">
 
 
                     <input type="hidden" name="action" value="ajouter">
@@ -98,7 +97,7 @@
                                     </button>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="../../../menu.jsp" class="btn btn-secondary btn-block">
+                                    <a href="/" class="btn btn-secondary btn-block">
                                         <i class="fas fa-arrow-left"></i> Retour au menu
                                     </a>
                                 </div>

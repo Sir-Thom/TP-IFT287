@@ -1,4 +1,4 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -54,25 +54,50 @@
                     <form action="../../../ReservationServlet" method="POST">
                         <input type="hidden" name="action" value="reserver">
 
+                        <!-- Remplacer les champs texte par des combobox -->
+
                         <div class="form-group">
-                            <label for="prenom">Prénom du client *</label>
-                            <input type="text" class="form-control" id="prenom" name="prenom"
-                                   value="<%= request.getAttribute("prenom") != null ? request.getAttribute("prenom") : "" %>"
-                                   required>
+                            <label for="client">Client *</label>
+                            <select class="form-control" id="client" name="clientId" required>
+                                <option value="">Sélectionner un client</option>
+                                <%
+                                    List<Client> clients = (List<Client>) request.getAttribute("clients");
+                                    if (clients != null) {
+                                        for (Client client : clients) {
+                                %>
+                                <option value="<%= client.getId() %>"
+                                        <%= (request.getAttribute("clientId") != null &&
+                                                request.getAttribute("clientId").equals(String.valueOf(client.getId())) ?
+                                                "selected" : "" %>>
+                                    <%= client.getPrenom() + " " + client.getNom() %>
+                                </option>
+                                <%
+                                        }
+                                    }
+                                %>
+                            </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="nom">Nom du client *</label>
-                            <input type="text" class="form-control" id="nom" name="nom"
-                                   value="<%= request.getAttribute("nom") != null ? request.getAttribute("nom") : "" %>"
-                                   required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="chambre">Nom de la chambre *</label>
-                            <input type="text" class="form-control" id="chambre" name="chambre"
-                                   value="<%= request.getAttribute("chambre") != null ? request.getAttribute("chambre") : "" %>"
-                                   required>
+                            <label for="chambre">Chambre *</label>
+                            <select class="form-control" id="chambre" name="chambreId" required>
+                                <option value="">Sélectionner une chambre</option>
+                                <%
+                                    List<Chambre> chambres = (List<Chambre>) request.getAttribute("chambres");
+                                    if (chambres != null) {
+                                        for (Chambre chambre : chambres) {
+                                %>
+                                <option value="<%= chambre.getId() %>"
+                                        <%= (request.getAttribute("chambreId") != null &&
+                                                request.getAttribute("chambreId").equals(String.valueOf(chambre.getId())) ?
+                                                "selected" : "" %>>
+                                    <%= chambre.getNom() %>
+                                </option>
+                                <%
+                                        }
+                                    }
+                                %>
+                            </select>
                         </div>
 
                         <div class="form-group">

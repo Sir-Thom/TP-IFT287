@@ -5,7 +5,7 @@
   Time: 5:05 a.m.
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,7 +42,7 @@
                     <h3 class="mb-0">👤 Enregistrer un nouveau client</h3>
                 </div>
                 <div class="card-body">
-                    <form action="ClientServlet" method="POST">
+                    <form action="client" method="POST">
                         <input type="hidden" name="action" value="ajouter">
 
                         <div class="form-group">
@@ -78,7 +78,7 @@
                                     </button>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="index.jsp" class="btn btn-secondary btn-block">
+                                    <a href="${pageContext.request.contextPath}/" class="btn btn-secondary btn-block">
                                         <i class="fas fa-arrow-left"></i> Retour au menu
                                     </a>
                                 </div>
