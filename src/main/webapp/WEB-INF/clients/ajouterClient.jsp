@@ -45,17 +45,16 @@
                         <input type="hidden" name="action" value="ajouter">
 
                         <div class="form-group">
-                            <label for="nom">Nom de famille *</label>
-                            <input type="text" class="form-control" id="nom" name="nom"
-                                   value="<%= request.getAttribute("nom") != null ? request.getAttribute("nom") : "" %>"
-                                   placeholder="Dupont" required>
-                        </div>
-
-                        <div class="form-group">
                             <label for="prenom">Prénom *</label>
                             <input type="text" class="form-control" id="prenom" name="prenom"
                                    value="<%= request.getAttribute("prenom") != null ? request.getAttribute("prenom") : "" %>"
                                    placeholder="Jean" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nom">Nom de famille *</label>
+                            <input type="text" class="form-control" id="nom" name="nom"
+                                   value="<%= request.getAttribute("nom") != null ? request.getAttribute("nom") : "" %>"
+                                   placeholder="Dupont" required>
                         </div>
 
                         <div class="form-group">

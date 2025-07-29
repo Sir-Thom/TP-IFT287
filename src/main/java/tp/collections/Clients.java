@@ -3,6 +3,8 @@ package tp.collections;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
+import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 import tp.TpExeception;
 import tp.bdd.Connexion;
 import tp.objets.Client;
@@ -48,20 +50,40 @@ public class Clients extends GestionCollection{
         }
     }
     public Client GetClientByNomPrenom(String nom, String prenom) throws TpExeception {
-      try {
-          Document d = collectionClients.find(and(eq("nom", nom), eq("prenom", prenom))).first();
+        try {
+            System.out.println("DEBUG - Input parameters: nom='" + nom + "', prenom='" + prenom + "'");
 
-          if (d == null) {
-              throw new TpExeception("Le client '" + prenom + " " + nom + "' n'existe pas.");
+            // 1. Verify collection exists and has documents
+            long count = collectionClients.countDocuments();
+            System.out.println("DEBUG - Total documents in collection: " + count);
 
-          }
+            // 2. Print first document structure
+            Document firstDoc = collectionClients.find().first();
+            System.out.println("DEBUG - First document structure: " + (firstDoc != null ? firstDoc.toJson() : "Collection empty!"));
 
-          return new Client(d);
-      }catch (TpExeception e){
+            // 3. Execute query with exact matching
+
+            Document query = new Document("nom", nom)
+                    .append("prenom", prenom);
+
+            System.out.println("DEBUG - Query sent to MongoDB: " + query);
+            for (Document doc : collectionClients.find(query)) { // Or collection.find(filter)
+                System.out.println(doc.toJson());
+            }
+            Document clientDoc = collectionClients.find(query).first();
+            if (clientDoc == null) {
+                System.out.println("DEBUG - No client found with nom='" + nom + "' and prenom='" + prenom + "'");
+                return null; // Client not found
+            }
+            System.out.println("DEBUG - Client found: " + clientDoc.toJson());
+            return new Client(clientDoc); // Convert Document to Client object
+
+        } catch (Exception e) {
+            System.err.println("FULL ERROR: " + e);
             throw new TpExeception("Erreur lors de la récupération du client : " + e.getMessage());
-      }
-
+        }
     }
+
 
     public Document getClientById(int idClient) throws TpExeception {
         try {
