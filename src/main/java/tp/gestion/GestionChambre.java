@@ -82,4 +82,9 @@ public class GestionChambre extends GestionTransactions{
         }
         return libres;
     }
+
+    public List<Chambre> getAllChambres() {
+        return chambres.getToutesChambres();
+    }
+
 }

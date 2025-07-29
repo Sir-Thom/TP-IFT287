@@ -63,22 +63,36 @@
     </servlet-mapping>
     <!-- Servlet pour la gestion des chambres -->
     <servlet>
-        <servlet-name>ChambreServlet</servlet-name>
+        <servlet-name>chambres</servlet-name>
         <servlet-class>com.servlet.TP.ChambreServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ChambreServlet</servlet-name>
-        <url-pattern>/ChambreServlet</url-pattern>
+        <servlet-name>chambres</servlet-name>
+        <url-pattern>/chambres</url-pattern>
     </servlet-mapping>
-    <!-- Servlet pour la gestion des clients -->
     <servlet>
-        <servlet-name>ClientServlet</servlet-name>
+        <servlet-name>client</servlet-name>
         <servlet-class>com.servlet.TP.ClientServlet</servlet-class>
     </servlet>
-
     <servlet-mapping>
-        <servlet-name>ClientServlet</servlet-name>
-        <url-pattern>/ClientServlet</url-pattern>
+        <servlet-name>client</servlet-name>
+        <url-pattern>/client</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ReservationServlet</servlet-name>
+        <servlet-class>com.servlet.TP.ReservationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReservationServlet</servlet-name>
+        <url-pattern>/ReservationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>CommoditeServlet</servlet-name>
+        <servlet-class>com.servlet.TP.CommoditeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CommoditeServlet</servlet-name>
+        <url-pattern>/CommoditeServlet</url-pattern>
     </servlet-mapping>
 
 </web-app>

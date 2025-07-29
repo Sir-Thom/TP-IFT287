@@ -3,7 +3,7 @@
   Auteur : zowes
   Date : 28 juillet 2025
 --%>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <%
   // Vérifier la configuration BD
   if (!com.servlet.TP.InnHelper.infoBDValide(application)) {
@@ -113,7 +113,7 @@
           <div class="card menu-card text-center">
             <div class="card-body">
               <h5>Ajouter une nouvelle chambre</h5>
-              <a href="ChambreServlet?action=afficherFormAjouter" class="btn myBtn">Accéder</a>
+              <a href="chambres?action=afficherFormAjouter" class="btn myBtn">Accéder</a>
             </div>
           </div>
         </div>
@@ -123,7 +123,7 @@
           <div class="card menu-card text-center">
             <div class="card-body">
               <h5>Supprimer une chambre</h5>
-              <a href="ChambreServlet?action=afficherFormSupprimer" class="btn myBtn">Accéder</a>
+              <a href="chambres?action=afficherFormSupprimer" class="btn myBtn">Accéder</a>
             </div>
           </div>
         </div>
@@ -133,7 +133,7 @@
           <div class="card menu-card text-center">
             <div class="card-body">
               <h5>Voir une chambre</h5>
-              <a href="ChambreServlet?action=afficherFormRecherche" class="btn myBtn">Accéder</a>
+              <a href="chambres?action=afficherFormRecherche" class="btn myBtn">Accéder</a>
             </div>
           </div>
         </div>
@@ -143,7 +143,7 @@
           <div class="card menu-card text-center">
             <div class="card-body">
               <h5>Afficher les chambres libres</h5>
-              <a href="ChambreServlet?action=afficherFormChambresLibres" class="btn myBtn">Accéder</a>
+              <a href="chambres?action=afficherFormChambresLibres" class="btn myBtn">Accéder</a>
             </div>
           </div>
         </div>
@@ -159,7 +159,7 @@
           <div class="card menu-card text-center">
             <div class="card-body">
               <h5>Ajouter un client</h5>
-              <a href="ClientServlet?action=afficherFormAjouter" class="btn myBtn">Accéder</a>
+              <a href="client?action=afficherFormAjouter" class="btn myBtn">Accéder</a>
             </div>
           </div>
         </div>
@@ -168,7 +168,7 @@
           <div class="card menu-card text-center">
             <div class="card-body">
               <h5>Retirer un client</h5>
-              <a href="ClientServlet?action=afficherFormAjouter" class="btn myBtn">Accéder</a>
+              <a href="client?action=afficherFormRetirer" class="btn myBtn">Accéder</a>
             </div>
           </div>
         </div>
@@ -181,7 +181,7 @@
               <h5>Afficher un client</h5>
               <p> Affiche toutes les informations sur un client, incluant les réservations présentes et
                 passées. Les réservations contiennent le prix total de la réservation, sans les taxes.</p>
-              <a href="ClientServlet?action=lister" class="btn myBtn">Accéder</a>
+              <a href="client?action=lister" class="btn myBtn">Accéder</a>
             </div>
           </div>
         </div>

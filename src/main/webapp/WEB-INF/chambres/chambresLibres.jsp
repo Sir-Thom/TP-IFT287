@@ -10,7 +10,7 @@
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="com.servlet.TP.InnHelper" %>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -32,7 +32,7 @@
     <div class="col">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="../index.jsp">Accueil</a></li>
+          <li class="breadcrumb-item"><a href=${pageContext.request.contextPath}/menu.jsp>Accueil</a></li>
           <li class="breadcrumb-item active">Chambres Libres</li>
         </ol>
       </nav>
@@ -47,7 +47,7 @@
           <h3 class="mb-0"> Rechercher les chambres disponibles</h3>
         </div>
         <div class="card-body">
-          <form action="ChambreServlet" method="GET">
+          <form action="chambres" method="GET">
             <input type="hidden" name="action" value="chambresLibres">
 
             <div class="row">
@@ -175,11 +175,12 @@
   <!-- Bouton retour -->
   <div class="row mt-4">
     <div class="col text-center">
-      <a href="../index.jsp" class="btn btn-secondary">
+      <a href="${pageContext.request.contextPath}/menu.jsp" class="btn btn-secondary">
         <i class="fas fa-arrow-left"></i> Retour au menu principal
       </a>
     </div>
   </div>
+  <jsp:include page="/WEB-INF/messageErreur.jsp" />
 
 </div>
 
