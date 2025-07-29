@@ -53,7 +53,7 @@ public class ChambreServlet extends HttpServlet {
                     afficherChambre(request, response, gestionChambre);
                     break;
                 case "chambresLibres" :
-                    afficherChambresLibres(request, response, gestionChambre);
+                    afficherChambresLibres(request, response);
                     break;
                 default :
                     request.setAttribute("erreur", "Action GET non reconnue : " + action);
@@ -151,7 +151,7 @@ public class ChambreServlet extends HttpServlet {
         }
     }
 
-    private void afficherChambresLibres(HttpServletRequest request, HttpServletResponse response, GestionChambre gestionChambre)
+    private void afficherChambresLibres(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             String dateDebut = request.getParameter("dateDebut");
@@ -160,7 +160,7 @@ public class ChambreServlet extends HttpServlet {
             if (dateDebut == null || dateFin == null || dateDebut.isEmpty() || dateFin.isEmpty()) {
                 throw new TpExeception("Les deux dates sont obligatoires");
             }
-
+            GestionChambre gestionChambre = getGestionChambre(request);
             List<Chambre> chambresLibres = gestionChambre.afficherChambresLibres(dateDebut, dateFin);
             request.setAttribute("chambresLibres", chambresLibres);
             request.setAttribute("dateDebut", dateDebut);
