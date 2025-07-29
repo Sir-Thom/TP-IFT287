@@ -3,6 +3,8 @@ package tp.collections;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
+import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 import tp.TpExeception;
 import tp.bdd.Connexion;
 import tp.objets.Client;
@@ -48,20 +50,29 @@ public class Clients extends GestionCollection{
         }
     }
     public Client GetClientByNomPrenom(String nom, String prenom) throws TpExeception {
-      try {
-          Document d = collectionClients.find(and(eq("nom", nom), eq("prenom", prenom))).first();
+        try {
 
-          if (d == null) {
-              throw new TpExeception("Le client '" + prenom + " " + nom + "' n'existe pas.");
 
-          }
+            if (nom == null || prenom == null || nom.isEmpty() || prenom.isEmpty()) {
+                throw new TpExeception("Le nom et le prénom du client ne peuvent pas être vides.");
+            }
 
-          return new Client(d);
-      }catch (TpExeception e){
+            Document query = new Document("nom", nom)
+                    .append("prenom", prenom);
+
+
+            Document clientDoc = collectionClients.find(query).first();
+            if (clientDoc == null) {
+                return null;
+            }
+            return new Client(clientDoc);
+
+        } catch (Exception e) {
+            System.err.println("FULL ERROR: " + e);
             throw new TpExeception("Erreur lors de la récupération du client : " + e.getMessage());
-      }
-
+        }
     }
+
 
     public Document getClientById(int idClient) throws TpExeception {
         try {
@@ -101,10 +112,9 @@ public class Clients extends GestionCollection{
         }
     }
 
-    public List<Client> getClients() throws TpExeception {
+    public List<Client> getClients() {
         List<Client> liste = new ArrayList<>();
-        try {
-            // Vérifier si la collection existe
+
             if (collectionClients != null) {
                 for (Document doc : collectionClients.find()) {
                     if (doc != null) {
@@ -114,18 +124,14 @@ public class Clients extends GestionCollection{
                             System.out.println(doc.toJson());
                         } catch (Exception e) {
                             System.err.println("Erreur lors de la création du client à partir du document: " + e.getMessage());
-                            // On continue avec les autres documents plutot que de s'arreter
                         }
                     }
                 }
             } else {
                 System.err.println("La collection clients n'est pas initialisée");
             }
-        } catch (Exception e) {
-            System.err.println("Erreur lors de la récupération des clients: " + e.getMessage());
-            // Retourner ici une liste vide au lieu de lancer une exception
-        }
-        return liste; // Retourne toujours une liste, même si vide !!
+
+        return liste;
     }
 
     public boolean supprimerClient(String prenom,String nom) throws TpExeception {

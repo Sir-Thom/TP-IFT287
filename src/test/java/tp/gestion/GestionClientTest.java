@@ -61,10 +61,13 @@ public class GestionClientTest {
         String prenom = "Jean";
         int age = 30;
 
-        when(mockClients.existe(nom)).thenReturn(true);
+        Client clientExistant = new Client(1, nom, prenom, age);
+        when(mockClients.GetClientByNomPrenom(nom, prenom)).thenReturn(clientExistant);
 
         gestionClient.ajouterClient(nom, prenom, age);
     }
+
+
 
     @Test
     public void testAfficherClients_OK() throws TpExeception {

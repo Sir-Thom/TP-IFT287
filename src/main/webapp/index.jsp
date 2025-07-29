@@ -15,6 +15,7 @@
 <%
     // Vérifier si la BD est déjà configurée
     if (com.servlet.TP.InnHelper.infoBDValide(application)) {
+        System.out.println("Base de données déjà configurée, redirection vers le menu principal.");
         // Redirection vers le menu principal si BD configurée
         response.sendRedirect("menu.jsp");
         return;

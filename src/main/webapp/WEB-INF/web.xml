@@ -41,6 +41,7 @@
         <load-on-startup>3</load-on-startup>
     </servlet>
     <listener>
+
         <listener-class>com.servlet.TP.TpContextListener</listener-class>
     </listener>
     <servlet>
@@ -69,12 +70,12 @@
         <servlet-name>ChambreServlet</servlet-name>
         <url-pattern>/ChambreServlet</url-pattern>
     </servlet-mapping>
-
     <!-- Servlet pour la gestion des clients -->
     <servlet>
         <servlet-name>ClientServlet</servlet-name>
         <servlet-class>com.servlet.TP.ClientServlet</servlet-class>
     </servlet>
+
     <servlet-mapping>
         <servlet-name>ClientServlet</servlet-name>
         <url-pattern>/ClientServlet</url-pattern>

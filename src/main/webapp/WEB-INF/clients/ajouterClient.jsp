@@ -22,6 +22,7 @@
     <!-- Navigation -->
     <jsp:include page="/WEB-INF/navigation.jsp" />
 
+
     <!-- Header -->
     <div class="row mt-4">
         <div class="col">
@@ -45,17 +46,16 @@
                         <input type="hidden" name="action" value="ajouter">
 
                         <div class="form-group">
-                            <label for="nom">Nom de famille *</label>
-                            <input type="text" class="form-control" id="nom" name="nom"
-                                   value="<%= request.getAttribute("nom") != null ? request.getAttribute("nom") : "" %>"
-                                   placeholder="Dupont" required>
-                        </div>
-
-                        <div class="form-group">
                             <label for="prenom">Prénom *</label>
                             <input type="text" class="form-control" id="prenom" name="prenom"
                                    value="<%= request.getAttribute("prenom") != null ? request.getAttribute("prenom") : "" %>"
                                    placeholder="Jean" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nom">Nom de famille *</label>
+                            <input type="text" class="form-control" id="nom" name="nom"
+                                   value="<%= request.getAttribute("nom") != null ? request.getAttribute("nom") : "" %>"
+                                   placeholder="Dupont" required>
                         </div>
 
                         <div class="form-group">
@@ -66,21 +66,7 @@
                             <small class="form-text text-muted">L'âge doit être entre 1 et 120 ans</small>
                         </div>
 
-                        <div class="form-group">
-                            <label for="email">Email (optionnel)</label>
-                            <input type="email" class="form-control" id="email" name="email"
-                                   value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>"
-                                   placeholder="jean.dupont@email.com">
-                            <small class="form-text text-muted">Pour les confirmations de réservation</small>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="telephone">Téléphone (optionnel)</label>
-                            <input type="tel" class="form-control" id="telephone" name="telephone"
-                                   value="<%= request.getAttribute("telephone") != null ? request.getAttribute("telephone") : "" %>"
-                                   placeholder="(819) 555-1234">
-                            <small class="form-text text-muted">Format: (819) 555-1234</small>
-                        </div>
 
                         <hr>
 
@@ -107,12 +93,9 @@
         </div>
     </div>
 
-    <!-- Messages d'erreur/succès -->
-    <div class="row mt-3">
-        <div class="col">
+
             <jsp:include page="/WEB-INF/messageErreur.jsp" />
-        </div>
-    </div>
+
 
 </div>
 
