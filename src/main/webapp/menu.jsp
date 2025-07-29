@@ -21,11 +21,13 @@
   <!-- Bootstrap & icones  -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <!-- google-->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=hotel" />
 
   <!-- Les styles ! -->
   <style>
     body {
-      background: #f9fafc;
+      background: #252459;
       font-family: 'Segoe UI', Roboto, sans-serif;
       color: #343a40;
     }
@@ -47,10 +49,10 @@
       border-bottom: 2px solid #eaeaea;
       padding-bottom: .5rem;
       margin-bottom: 1.5rem;
-      color: #87CEEB;
+      color: #231a8a;
     }
     .menu-card {
-      border: none;
+      border: 1px solid #252459;
       border-radius: 10px;
       background: #ffffff;
       transition: transform .2s, box-shadow .2s;
@@ -72,46 +74,75 @@
       border-width: 2px;
     }
     .myBtn {
-        background-color: #87CEEB;
-        border-color: #87CEEB;
-
+      background-color: #252459;
+      border-color: #9591F2;
+      color: #FFFFFF;
     }
-  </style>
 
+     .material-symbols-outlined {
+       font-variation-settings:
+               'FILL' 0,
+               'wght' 400,
+               'GRAD' 0,
+               'opsz' 24
+     }
+
+  </style>
 </head>
 <body>
 
 <div class="container-fluid px-0">
 
-  <!-- Navigation -->
+  <!-- La navigation -->
   <jsp:include page="/WEB-INF/navigation.jsp" />
 
-  <!-- Header -->
+  <!-- En tete -->
   <div class="jumbotron text-center text-white mb-4">
-    <h1 class="display-4"><i class="fas fa-hotel"></i> Auberg-Inn</h1>
+    <h1 class="display-4"><i class="fas fa-hotel"></i> Auberge-Inn</h1>
   </div>
 
   <div class="container">
 
-    <!-- Chambres -->
+
+    <!-- ============== GESTION DES CHAMBRES ============== -->
     <div class="menu-section">
-      <h2><i class="fas fa-bed"></i> Gestion des Chambres</h2>
+      <h2 style="color:white;"><span class="material-symbols-outlined" style="color:white;" >hotel</span> Gestion des Chambres</h2>
       <div class="row">
+        <!-- AJOUTER CHAMBRE -->
         <div class="col-md-4 mb-4">
           <div class="card menu-card text-center">
             <div class="card-body">
-              <h5>Ajouter</h5>
-              <p>Créer une nouvelle chambre</p>
+              <h5>Ajouter une nouvelle chambre</h5>
               <a href="ChambreServlet?action=afficherFormAjouter" class="btn myBtn">Accéder</a>
             </div>
           </div>
         </div>
 
+        <!-- SUPPRIMER CHAMBRE -->
         <div class="col-md-4 mb-4">
           <div class="card menu-card text-center">
             <div class="card-body">
-              <h5> Disponibilités</h5>
-              <p>Voir les chambres libres par date</p>
+              <h5>Supprimer une chambre</h5>
+              <a href="ChambreServlet?action=afficherFormSupprimer" class="btn myBtn">Accéder</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- AFFICHER CHAMBRE -->
+        <div class="col-md-4 mb-4">
+          <div class="card menu-card text-center">
+            <div class="card-body">
+              <h5>Voir une chambre</h5>
+              <a href="ChambreServlet?action=afficherFormRecherche" class="btn myBtn">Accéder</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- CHAMBRES LIBRES -->
+        <div class="col-md-4 mb-4">
+          <div class="card menu-card text-center">
+            <div class="card-body">
+              <h5>Afficher les chambres libres</h5>
               <a href="ChambreServlet?action=afficherFormChambresLibres" class="btn myBtn">Accéder</a>
             </div>
           </div>
@@ -119,73 +150,74 @@
       </div>
     </div>
 
-    <!-- Clients -->
-    <!-- Ajouter un client -->
+    <!-- ============== GESTION DES CLIENTS ============== -->
     <div class="menu-section">
-      <h2><i class="fas fa-users"></i> Gestion des Clients</h2>
+      <h2 style="color:white;"><i class="fas fa-users" style="color:white;"></i> Gestion des Clients</h2>
       <div class="row">
+        <!-- AJOUTER CLIENT -->
         <div class="col-md-4 mb-4">
           <div class="card menu-card text-center">
             <div class="card-body">
-              <h5> Ajouter</h5>
-              <p>Enregistrer un nouveau client</p>
+              <h5>Ajouter un client</h5>
               <a href="ClientServlet?action=afficherFormAjouter" class="btn myBtn">Accéder</a>
             </div>
           </div>
         </div>
-    <!-- Afficher le client -->
+        <!-- RETIRER CLIENT -->
         <div class="col-md-4 mb-4">
           <div class="card menu-card text-center">
             <div class="card-body">
-              <h5> Liste</h5>
-              <p>Afficher tous les clients enregistrés</p>
+              <h5>Retirer un client</h5>
+              <a href="ClientServlet?action=afficherFormAjouter" class="btn myBtn">Accéder</a>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- AFFICHER CLIENTS -->
+        <div class="col-md-4 mb-4">
+          <div class="card menu-card text-center">
+            <div class="card-body">
+              <h5>Afficher un client</h5>
+              <p> Affiche toutes les informations sur un client, incluant les réservations présentes et
+                passées. Les réservations contiennent le prix total de la réservation, sans les taxes.</p>
               <a href="ClientServlet?action=lister" class="btn myBtn">Accéder</a>
             </div>
           </div>
         </div>
       </div>
     </div>
-    <!-- Supprimer un client -->
-    <div class="col-md-4 mb-4">
-      <div class="card menu-card text-center">
-        <div class="card-body">
-          <h5> Liste</h5>
-          <p>Afficher tous les clients enregistrés</p>
-          <a href="ClientServlet?action=lister" class="btn myBtn">Accéder</a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
 
 
-    <!-- Commodités -->
+    <!-- ============== GESTION DES COMMODITÉS ============== -->
     <div class="menu-section">
-      <h2><i class="fas fa-concierge-bell"></i> Gestion des Commodités</h2>
+      <h2 style="color:white;"><i class="fas fa-concierge-bell" style="color:white;"></i> Gestion des Commodités</h2>
       <div class="row">
+        <!-- AJOUTER COMMODITÉ -->
         <div class="col-md-4 mb-4">
           <div class="card menu-card text-center">
             <div class="card-body">
-              <h5> Créer</h5>
-              <p>Nouvelle commodité</p>
+              <h5>Ajouter une commodité</h5>
               <a href="CommoditeServlet?action=afficherFormAjouter" class="btn myBtn">Accéder</a>
             </div>
           </div>
         </div>
+
+        <!-- INCLURE COMMODITÉ -->
         <div class="col-md-4 mb-4">
           <div class="card menu-card text-center">
             <div class="card-body">
-              <h5> Ajouter à une chambre</h5>
-              <p>Associer commodités</p>
+              <h5>Inclure une commodité</h5>
               <a href="CommoditeServlet?action=afficherFormInclure" class="btn myBtn">Accéder</a>
             </div>
           </div>
         </div>
+
+        <!-- ENLEVER COMMODITÉ -->
         <div class="col-md-4 mb-4">
           <div class="card menu-card text-center">
             <div class="card-body">
-              <h5> Retirer d'une chambre</h5>
-              <p>Enlever commodités</p>
+              <h5>Enlever une commodité</h5>
               <a href="CommoditeServlet?action=afficherFormEnlever" class="btn myBtn">Accéder</a>
             </div>
           </div>
@@ -193,56 +225,28 @@
       </div>
     </div>
 
-    <!-- Réservations -->
+    <!-- ============== GESTION DES RÉSERVATIONS ============== -->
     <div class="menu-section">
-      <h2><i class="fas fa-calendar-check"></i> Gestion des Réservations</h2>
+      <h2 style="color:white;"><i class="fas fa-calendar-check" style="color:white;"></i> Gestion des Reservations</h2>
       <div class="row">
+        <!-- RÉSERVER -->
         <div class="col-md-4 mb-4">
           <div class="card menu-card text-center">
             <div class="card-body">
-              <h5> Nouvelle</h5>
-              <p>Créer une réservation</p>
+              <h5>Reserver ici !</h5>
               <a href="ReservationServlet?action=afficherFormAjouter" class="btn myBtn">Accéder</a>
             </div>
           </div>
         </div>
-        <div class="col-md-4 mb-4">
-          <div class="card menu-card text-center">
-            <div class="card-body">
-              <h5>Liste</h5>
-              <p>Voir toutes les réservations</p>
-              <a href="ReservationServlet?action=lister" class="btn myBtn">Accéder</a>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
 
-    <!-- Configuration système -->
-    <div class="alert alert-secondary mt-4">
-      <div class="row align-items-center">
-        <div class="col-md-6">
-          <h5 class="mb-1"> Configuration Système</h5>
-          <small><strong>Base de données :</strong>
-            <%= application.getAttribute("serveur") %> — <%= application.getAttribute("bd") %>
-          </small>
-        </div>
-        <div class="col-md-6 text-md-right mt-3 mt-md-0">
-          <a href="Connexion?action=reconfigurer" class="btn btn-outline-warning btn-sm mr-2">
-            <i class="fas fa-tools"></i> Reconfigurer
-          </a>
-          <a href="Connexion?action=deconnecter" class="btn btn-outline-secondary btn-sm">
-            <i class="fas fa-sign-out-alt"></i> Déconnexion
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <!-- Erreurs -->
+    <!-- Messages d'erreur -->
     <jsp:include page="/WEB-INF/messageErreur.jsp" />
 
-  </div>
-</div>
+  </div> <!-- close container -->
+
+</div> <!-- close container-fluid -->
 
 <!-- Scripts -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
