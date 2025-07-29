@@ -47,7 +47,7 @@
           <h3 class="mb-0"> Rechercher les chambres disponibles</h3>
         </div>
         <div class="card-body">
-          <form action="ChambreServlet" method="POST">
+          <form action="ChambreServlet" method="GET">
             <input type="hidden" name="action" value="chambresLibres">
 
             <div class="row">
