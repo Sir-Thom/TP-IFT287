@@ -169,7 +169,7 @@ public class ClientsTest {
         when(mockCollection.find(any(Document.class))).thenReturn(mockFindIterable);
         when(mockFindIterable.first()).thenReturn(doc);
 
-        Document result = clients.getClientById(1);
+        Document result = clients.getClientById(1).toDocument();
         assertEquals("Dupont", result.getString("nom"));
     }
 

@@ -180,6 +180,7 @@
       </a>
     </div>
   </div>
+  <jsp:include page="/WEB-INF/messageErreur.jsp" />
 
 </div>
 

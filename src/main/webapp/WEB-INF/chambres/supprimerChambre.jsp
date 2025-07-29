@@ -40,12 +40,6 @@
                 </div>
             </c:if>
 
-            <c:if test="${not empty erreur}">
-                <div class="alert alert-danger alert-dismissible fade show">
-                    <strong>Erreur!</strong> ${erreur}
-                    <button type="button" class="close" data-dismiss="alert">&times;</button>
-                </div>
-            </c:if>
 
             <div class="card">
                 <div class="card-header bg-danger text-white">
@@ -90,6 +84,8 @@
             </div>
         </div>
     </div>
+    <jsp:include page="/WEB-INF/messageErreur.jsp" />
+
 </div>
 
 <!-- Scripts -->

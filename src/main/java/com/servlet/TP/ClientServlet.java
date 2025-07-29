@@ -42,6 +42,9 @@ public class ClientServlet extends HttpServlet {
                 case "afficherFormAjouter":
                     afficherFormulaireAjouter(request, response);
                     break;
+                case "afficherFormRetirer":
+                    afficherFormulaireRetirer(request, response);
+                    break;
                 case "lister":
                     listerClients(request, response);
                     break;
@@ -73,6 +76,10 @@ public class ClientServlet extends HttpServlet {
                 case "ajouter":
                     ajouterClient(request, response);
                     break;
+                case "retirer":
+                    retirerClient(request, response);
+                    break;
+
                 default:
                     throw new TpExeception("Action POST non valide : " + action);
             }
@@ -98,6 +105,14 @@ public class ClientServlet extends HttpServlet {
             throws ServletException, IOException {
 
         request.getRequestDispatcher("/WEB-INF/clients/ajouterClient.jsp").forward(request, response);
+    }
+    private void afficherFormulaireRetirer(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, TpExeception {
+        TpGestion tpGestion = InnHelper.getInnInterro(request.getSession());
+        GestionClient gestionClient = tpGestion.getGestionClient();
+        List<Client> clients = gestionClient.getListClients();
+        request.setAttribute("clients", clients);
+        request.getRequestDispatcher("/WEB-INF/clients/retirerClient.jsp").forward(request, response);
     }
 
     private void listerClients(HttpServletRequest request, HttpServletResponse response)
@@ -134,7 +149,7 @@ public class ClientServlet extends HttpServlet {
             gestionClient.ajouterClient(nom.trim(), prenom.trim(), age);
 
 
-            response.sendRedirect("ClientServlet?action=lister");
+            response.sendRedirect("client?action=lister");
 
         } catch (TpExeception | NumberFormatException e) {
             request.setAttribute("erreur", e.getMessage());
@@ -148,6 +163,44 @@ public class ClientServlet extends HttpServlet {
         }
     }
 
+    private void retirerClient(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, TpExeception {
+        // Récupérer l'identifiant composite du client
+        String clientIdentifier = request.getParameter("clientIdentifier");
+
+        if (clientIdentifier == null || clientIdentifier.trim().isEmpty()) {
+            request.setAttribute("erreur", "Veuillez sélectionner un client.");
+            afficherFormulaireRetirer(request, response);
+            return;
+        }
+
+        try {
+            // Séparer le prénom et le nom (séparés par '|')
+            String[] parts = clientIdentifier.split("\\|");
+            if (parts.length != 2) {
+                throw new TpExeception("Identifiant client invalide");
+            }
+
+            String prenom = parts[0];
+            String nom = parts[1];
+
+            TpGestion tpGestion = InnHelper.getInnInterro(request.getSession());
+            GestionClient gestionClient = tpGestion.getGestionClient();
+
+            // Supprimer le client en utilisant prénom et nom
+            gestionClient.supprimerClient(prenom, nom);
+
+            // Recharger la liste des clients
+            List<Client> clients = gestionClient.getListClients();
+            request.setAttribute("clients", clients);
+            request.setAttribute("message", "Le client " + prenom + " " + nom + " a été retiré avec succès.");
+            request.getRequestDispatcher("/WEB-INF/clients/retirerClient.jsp").forward(request, response);
+
+        } catch (TpExeception e) {
+            request.setAttribute("erreur", e.getMessage());
+            afficherFormulaireRetirer(request, response);
+        }
+    }
     private void envoyerErreur(HttpServletRequest request, HttpServletResponse response, Exception e)
             throws ServletException, IOException {
 

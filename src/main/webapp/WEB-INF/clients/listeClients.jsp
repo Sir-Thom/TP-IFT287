@@ -41,6 +41,8 @@
             </table>
         </c:otherwise>
     </c:choose>
+    <jsp:include page="/WEB-INF/messageErreur.jsp" />
+
 </div>
 </body>
 </html>

@@ -168,7 +168,7 @@
           <div class="card menu-card text-center">
             <div class="card-body">
               <h5>Retirer un client</h5>
-              <a href="client?action=afficherFormAjouter" class="btn myBtn">Accéder</a>
+              <a href="client?action=afficherFormRetirer" class="btn myBtn">Accéder</a>
             </div>
           </div>
         </div>

@@ -74,13 +74,13 @@ public class Clients extends GestionCollection{
     }
 
 
-    public Document getClientById(int idClient) throws TpExeception {
+    public Client getClientById(int idClient) throws TpExeception {
         try {
             Document clientDoc = collectionClients.find(new Document("idClient", idClient)).first();
             if (clientDoc == null) {
                 throw new TpExeception("Le client avec l'ID '" + idClient + "' n'existe pas.");
             }
-            return clientDoc;
+            return new Client(clientDoc);
         } catch (TpExeception e) {
             throw new TpExeception("Erreur lors de la récupération du client : " + e.getMessage());
         }
