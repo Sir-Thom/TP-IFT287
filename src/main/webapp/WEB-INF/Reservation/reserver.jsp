@@ -1,4 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,52 +54,34 @@
                     <h3 class="mb-0">📅 Réserver une chambre</h3>
                 </div>
                 <div class="card-body">
-                    <form action="../../../ReservationServlet" method="POST">
+                    <form action="ReservationServlet" method="POST">
                         <input type="hidden" name="action" value="reserver">
 
                         <!-- Remplacer les champs texte par des combobox -->
 
                         <div class="form-group">
-                            <label for="client">Client *</label>
-                            <select class="form-control" id="client" name="clientId" required>
-                                <option value="">Sélectionner un client</option>
-                                <%
-                                    List<Client> clients = (List<Client>) request.getAttribute("clients");
-                                    if (clients != null) {
-                                        for (Client client : clients) {
-                                %>
-                                <option value="<%= client.getId() %>"
-                                        <%= (request.getAttribute("clientId") != null &&
-                                                request.getAttribute("clientId").equals(String.valueOf(client.getId())) ?
-                                                "selected" : "" %>>
-                                    <%= client.getPrenom() + " " + client.getNom() %>
-                                </option>
-                                <%
-                                        }
-                                    }
-                                %>
+                            <label for="client">Sélectionnez le client à retirer *</label>
+                            <select class="form-control" id="client" name="clientIdentifier" required>
+                                <c:forEach items="${clients}" var="client">
+                                    <c:set var="fullIdentifier" value="${client.prenom}|${client.nom}" />
+                                    <option value="${fullIdentifier}"
+                                            <c:if test="${param.clientIdentifier eq fullIdentifier}">selected</c:if>>
+                                            ${client.nom}, ${client.prenom} (${client.age} ans)
+                                    </option>
+                                </c:forEach>
                             </select>
                         </div>
 
                         <div class="form-group">
-                            <label for="chambre">Chambre *</label>
-                            <select class="form-control" id="chambre" name="chambreId" required>
-                                <option value="">Sélectionner une chambre</option>
-                                <%
-                                    List<Chambre> chambres = (List<Chambre>) request.getAttribute("chambres");
-                                    if (chambres != null) {
-                                        for (Chambre chambre : chambres) {
-                                %>
-                                <option value="<%= chambre.getId() %>"
-                                        <%= (request.getAttribute("chambreId") != null &&
-                                                request.getAttribute("chambreId").equals(String.valueOf(chambre.getId())) ?
-                                                "selected" : "" %>>
-                                    <%= chambre.getNom() %>
-                                </option>
-                                <%
-                                        }
-                                    }
-                                %>
+                            <label for="chambre">Sélectionnez la chambre à reserver *</label>
+                            <select class="form-control" id="chambre" name="nomChambre" required>
+                                <option value="">-- Sélectionnez une chambre --</option>
+                                <c:forEach items="${chambres}" var="chambre">
+                                    <option value="${chambre.nomChambre}"
+                                            <c:if test="${param.nom eq chambre.nomChambre}">selected</c:if>>
+                                            ${chambre.nomChambre} - ${chambre.typeLit} (<fmt:formatNumber value="${chambre.prixBase}" pattern="#,##0.00" />$)
+                                    </option>
+                                </c:forEach>
                             </select>
                         </div>
 

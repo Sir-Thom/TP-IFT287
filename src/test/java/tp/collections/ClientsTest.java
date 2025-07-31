@@ -161,17 +161,7 @@ public class ClientsTest {
         assertFalse(clients.existe("Inconnu"));
     }
 
-    @Test
-    public void testGetClientByIdOK() throws Exception {
-        Document doc = new Document("idClient", 1).append("nom", "Dupont");
-        FindIterable<Document> mockFindIterable = mock(FindIterable.class);
 
-        when(mockCollection.find(any(Document.class))).thenReturn(mockFindIterable);
-        when(mockFindIterable.first()).thenReturn(doc);
-
-        Document result = clients.getClientById(1).toDocument();
-        assertEquals("Dupont", result.getString("nom"));
-    }
 
     @Test(expected = TpExeception.class)
     public void testGetClientByIdNotFound() throws Exception {

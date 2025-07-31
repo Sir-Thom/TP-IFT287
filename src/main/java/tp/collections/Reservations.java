@@ -75,9 +75,9 @@ public class Reservations extends GestionCollection {
         while (cursor.hasNext()) {
             resultats.add(new Reservation(cursor.next()));
         }
-        if (resultats.isEmpty()) {
-            throw new TpExeception("Aucune réservation trouvée pour la chambre " + idChambre + " entre " + dateDebut + " et " + dateFin);
-        }
+//       if (resultats.isEmpty()) {
+//            throw new TpExeception("Aucune réservation trouvée pour la chambre " + idChambre + " entre " + dateDebut + " et " + dateFin);
+//        }
 
         return resultats;
     }
