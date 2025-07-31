@@ -8,12 +8,6 @@
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
-    <!--
-    <display-name>Système de gestion de resevation WEB</display-name>
-    <welcome-file-list>
-        <welcome-file>accueil.jsp</welcome-file>
-    </welcome-file-list>
-    -->
 
     <context-param>
         <param-name>exempleParam1</param-name>
@@ -23,6 +17,7 @@
         <param-name>exempleParam2</param-name>
         <param-value>valeurDeExempleParam2</param-value>
     </context-param>
+
     <servlet>
         <servlet-name>jsp</servlet-name>
         <servlet-class>org.apache.jasper.servlet.JspServlet</servlet-class>
@@ -40,26 +35,48 @@
         </init-param>
         <load-on-startup>3</load-on-startup>
     </servlet>
+
     <listener>
         <listener-class>com.servlet.TP.TpContextListener</listener-class>
     </listener>
+
     <servlet>
         <servlet-name>Login</servlet-name>
         <servlet-class>com.servlet.TP.Login</servlet-class>
     </servlet>
+
     <servlet>
         <servlet-name>Accueil</servlet-name>
         <servlet-class>com.servlet.TP.Accueil</servlet-class>
     </servlet>
+
+    <!-- MAPPINGS CORRIGÉS : Plus spécifiques pour éviter de capturer les fichiers statiques -->
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
-
     </servlet-mapping>
+
+    <!-- CHANGEMENT ICI : Au lieu de "/", on utilise "/accueil" -->
     <servlet-mapping>
         <servlet-name>Accueil</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/accueil</url-pattern>
     </servlet-mapping>
+
+    <!-- Ajout d'un mapping pour la racine vers index.jsp -->
+    <servlet-mapping>
+        <servlet-name>Accueil</servlet-name>
+        <url-pattern>/home</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>ConnexionServlet</servlet-name>
+        <servlet-class>com.servlet.TP.ConnexionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ConnexionServlet</servlet-name>
+        <url-pattern>/ConnexionServlet</url-pattern>
+    </servlet-mapping>
+
     <!-- Servlet pour la gestion des chambres -->
     <servlet>
         <servlet-name>ChambreServlet</servlet-name>
@@ -78,6 +95,47 @@
     <servlet-mapping>
         <servlet-name>ClientServlet</servlet-name>
         <url-pattern>/ClientServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- servlet pour gestion Commodité -->
+    <servlet>
+        <servlet-name>CommoditeServlet</servlet-name>
+        <servlet-class>com.servlet.TP.CommoditeServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CommoditeServlet</servlet-name>
+        <url-pattern>/CommoditeServlet</url-pattern>
+    </servlet-mapping>
+
+    <!-- NOUVEAU : Servlet par défaut pour servir les fichiers statiques -->
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/assets/*</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.css</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.js</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.jpg</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.gif</url-pattern>
     </servlet-mapping>
 
 </web-app>

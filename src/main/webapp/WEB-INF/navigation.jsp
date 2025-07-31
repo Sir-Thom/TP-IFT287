@@ -18,12 +18,14 @@
           Chambres
         </a>
         <div class="dropdown-menu" aria-labelledby="chambresDropdown">
-          <a class="dropdown-item" href="chambres/ajouterChambre.jsp"> Ajouter une chambre</a>
-          <a class="dropdown-item" href="supprimerChambre.jsp"> Supprimer une chambre</a>
+          <a class="dropdown-item" href="ChambreServlet?action=afficherFormAjouter" >Ajouter une chambre</a>
+          <a class="dropdown-item" href="ChambreServlet?action=afficherFormSupprimer">Supprimer une chambre</a>
+          <a class="dropdown-item" href="ChambreServlet?action=afficherFormModifier">Modifier une chambre</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="afficherChambre.jsp">Voir une chambre</a>
-          <a class="dropdown-item" href="chambres/chambresLibres.jsp">Voir les chambres de libres</a>
+          <a class="dropdown-item" href="ChambreServlet?action=afficherFormRecherche">Voir une chambre - A venir...</a>
+          <a class="dropdown-item" href="ChambreServlet?action=afficherFormChambresLibres" >Voir les chambres de libres</a>
         </div>
+
       </li>
 
       <!-- Gestion des Clients -->
@@ -33,10 +35,10 @@
            Clients
         </a>
         <div class="dropdown-menu" aria-labelledby="clientsDropdown">
-          <a class="dropdown-item" href="ajouterClient.jsp">Ajouter un client</a>
-          <a class="dropdown-item" href="supprimerClient.jsp">Supprimer un client</a>
+          <a class="dropdown-item" href="ClientServlet?action=afficherFormAjouter">Ajouter un client</a>
+          <a class="dropdown-item" href="ClientServlet?action=afficherFormAjouter" >Supprimer un client</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="afficherClient.jsp">Afficher un client</a>
+          <a class="dropdown-item" href="<%= request.getContextPath() %>/afficherClient.jsp">Afficher un client</a>
         </div>
       </li>
 
@@ -47,9 +49,9 @@
            Commodités
         </a>
         <div class="dropdown-menu" aria-labelledby="commoditesDropdown">
-          <a class="dropdown-item" href="ajouterCommodite.jsp">Ajouter une commodité</a>
-          <a class="dropdown-item" href="inclureCommodite.jsp">Inclure une commdité à chambre</a>
-          <a class="dropdown-item" href="enleverCommodite.jsp">Enlever une commodité d'une chambre</a>
+          <a class="dropdown-item" href="<%= request.getContextPath() %>/commodites/ajouterCommodite.jsp">Ajouter une commodité</a>
+          <a class="dropdown-item" href="<%= request.getContextPath() %>/commodites/inclureCommodite.jsp">Inclure une commdité à chambre</a>
+          <a class="dropdown-item" href="<%= request.getContextPath() %>/commodites/enleverCommodite.jsp">Enlever une commodité d'une chambre</a>
         </div>
       </li>
 

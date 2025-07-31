@@ -92,7 +92,7 @@
                                     </button>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="index.jsp" class="btn btn-secondary btn-block">
+                                    <a href="<%= request.getContextPath() %>/menu.jsp" class="btn btn-secondary btn-block">
                                         <i class="fas fa-arrow-left"></i> Retour au menu
                                     </a>
                                 </div>

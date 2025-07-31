@@ -1,8 +1,15 @@
+<%--
+  Created by IntelliJ IDEA.
+  User: zowes
+  Date: 2025-07-29
+  Time: 10:06 a.m.
+  To change this template use File | Settings | File Templates.
+--%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Auberg-Inn - Ajouter Chambre</title>
+  <title>Auberge-Inn - Supprimer Chambre</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -12,7 +19,7 @@
 
   <style>
     body {
-      background: url('<%= request.getContextPath() %>/assets/addRoom.jpg') no-repeat center center fixed;
+      background: url('<%= request.getContextPath() %>/assets/supprimerChambre.jpg') no-repeat center center fixed;
       background-size: cover;
       min-height: 100vh;
     }
@@ -55,53 +62,32 @@
     </div>
     <% } %>
 
-    <h3 class="text-center text-success mb-4"><i class="fas fa-bed"></i> Ajouter une nouvelle chambre</h3>
+    <h3 class="text-center text-danger mb-4"><i class="fas fa-trash-alt"></i> Supprimer une chambre</h3>
 
-    <form id="formAjoutChambre" action="<%= request.getContextPath() %>/ChambreServlet" method="POST">
-      <input type="hidden" name="action" value="ajouter">
+    <form id="formSupprimerChambre" action="<%= request.getContextPath() %>/ChambreServlet" method="POST">
+      <input type="hidden" name="action" value="supprimer">
 
       <div class="form-group">
-        <label for="nom">Nom de la chambre *</label>
+        <label for="nom">Nom de la chambre à supprimer *</label>
         <input type="text" class="form-control" id="nom" name="nom"
                value="<%= request.getAttribute("nom") != null ? request.getAttribute("nom") : "" %>"
-               placeholder="Ex: Chambre 101, Suite Deluxe" required>
+               placeholder="Ex: Chambre 101" required>
       </div>
-
-      <div class="form-group">
-        <label for="typeLit">Type de lit *</label>
-        <select class="form-control" id="typeLit" name="typeLit" required>
-          <option value="">Choisir un type de lit</option>
-          <option value="Simple" <%= "Simple".equals(request.getAttribute("typeLit")) ? "selected" : "" %>>Lit Simple</option>
-          <option value="Double" <%= "Double".equals(request.getAttribute("typeLit")) ? "selected" : "" %>>Lit Double</option>
-          <option value="Queen" <%= "Queen".equals(request.getAttribute("typeLit")) ? "selected" : "" %>>Lit Queen</option>
-          <option value="King" <%= "King".equals(request.getAttribute("typeLit")) ? "selected" : "" %>>Lit King</option>
-          <option value="Superposé" <%= "Superposé".equals(request.getAttribute("typeLit")) ? "selected" : "" %>>Lits Superposés</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="prixBase">Prix de base par nuit (CAD) *</label>
-        <div class="input-group">
-          <div class="input-group-prepend"><span class="input-group-text">$</span></div>
-          <input type="number" class="form-control" id="prixBase" name="prixBase"
-                 value="<%= request.getAttribute("prixBase") != null ? request.getAttribute("prixBase") : "" %>"
-                 step="0.01" min="0" placeholder="200.00" required>
-        </div>
-      </div>
-
 
       <hr>
 
       <div class="form-row">
         <div class="col-md-6 mb-2">
-          <button type="submit" class="btn btn-success btn-block" id="btnSubmit"><i class="fas fa-plus"></i> Ajouter</button>
+          <button type="submit" class="btn btn-danger btn-block" id="btnSubmit">
+            <i class="fas fa-trash-alt"></i> Supprimer
+          </button>
         </div>
         <div class="col-md-6 mb-2">
-          <a href="<%= request.getContextPath() %>/menu.jsp" class="btn btn-secondary btn-block"><i class="fas fa-arrow-left"></i> Retour</a>
+          <a href="<%= request.getContextPath() %>/menu.jsp" class="btn btn-secondary btn-block">
+            <i class="fas fa-arrow-left"></i> Retour
+          </a>
         </div>
       </div>
-
-
     </form>
 
   </div>
@@ -113,12 +99,22 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 
 <script>
+  function remplirNomChambre(nomChambre) {
+    document.getElementById('nom').value = nomChambre;
 
-
-  function viderFormulaire() {
-    document.getElementById('formAjoutChambre').reset();
+    // Animation de feedback
+    const input = document.getElementById('nom');
+    input.style.backgroundColor = '#f8d7da';
+    setTimeout(() => {
+      input.style.backgroundColor = '';
+    }, 1000);
   }
 
+  function viderFormulaire() {
+    document.getElementById('formSupprimerChambre').reset();
+  }
+
+  // Auto-hide du message de succès (comme la page d'ajout)
   <% if (request.getAttribute("message") != null) { %>
   setTimeout(function () {
     const message = document.getElementById('messageSuccess');
@@ -126,12 +122,15 @@
       message.style.opacity = '0';
       setTimeout(() => message.style.display = 'none', 500);
     }
+    // Vider le formulaire après succès
+    viderFormulaire();
   }, 5000);
   <% } %>
 
-  document.getElementById('formAjoutChambre').addEventListener('submit', function () {
+  // Animation du bouton lors de la soumission
+  document.getElementById('formSupprimerChambre').addEventListener('submit', function () {
     const btn = document.getElementById('btnSubmit');
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Ajout en cours...';
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Suppression en cours...';
     btn.disabled = true;
   });
 </script>

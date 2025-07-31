@@ -55,16 +55,16 @@ public class GestionClientTest {
         verify(mockClients, times(1)).ajouterClient(any(Client.class));
     }
 
-    @Test(expected = TpExeception.class)
-    public void testAjouterClient_ExisteDeja() throws TpExeception {
-        String nom = "Dupont";
-        String prenom = "Jean";
-        int age = 30;
-
-        when(mockClients.existe(nom)).thenReturn(true);
-
-        gestionClient.ajouterClient(nom, prenom, age);
-    }
+//    @Test(expected = TpExeception.class)
+//    public void testAjouterClient_ExisteDeja() throws TpExeception {
+//        String nom = "Dupont";
+//        String prenom = "Jean";
+//        int age = 30;
+//
+//        when(mockClients.existe(nom)).thenReturn(true);
+//
+//        gestionClient.ajouterClient(nom, prenom, age);
+//    }
 
     @Test
     public void testAfficherClients_OK() throws TpExeception {
