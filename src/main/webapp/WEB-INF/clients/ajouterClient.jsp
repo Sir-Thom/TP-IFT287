@@ -39,7 +39,7 @@
         <div class="col-md-6 offset-md-3">
             <div class="card">
                 <div class="card-header bg-success text-white">
-                    <h3 class="mb-0">👤 Enregistrer un nouveau client</h3>
+                    <h3 class="mb-0"> Enregistrer un nouveau client</h3>
                 </div>
                 <div class="card-body">
                     <form action="client" method="POST">

@@ -43,13 +43,15 @@ public class ChambreServlet extends HttpServlet {
                     afficherFormulaireAjouter(request, response);
                     break;
                 case "afficherFormRecherche" :
-                    afficherFormulaireRecherche(request, response);
+                    request.getRequestDispatcher("/WEB-INF/chambres/afficherChambre.jsp").forward(request, response);
+
                     break;
                 case "afficherFormChambresLibres" :
                     afficherFormulaireChambresLibres(request, response);
                     break;
                 case "afficher" :
                     afficherChambre(request, response, gestionChambre);
+
                     break;
                 case "chambresLibres" :
                     afficherChambresLibres(request, response);
@@ -102,6 +104,9 @@ public class ChambreServlet extends HttpServlet {
                 case "supprimer" :
                     supprimerChambre(request, response);
                     break;
+                case "afficher" :
+                    afficherChambre(request, response, gestionChambre);  // ← ET CELLE-CI
+                    break;
                 default : {
                     request.setAttribute("erreur", "Action POST non reconnue : " + action);
                     request.getRequestDispatcher("/menu.jsp").forward(request, response);
@@ -146,7 +151,7 @@ public class ChambreServlet extends HttpServlet {
             Chambre chambre = gestionChambre.afficherChambre(nom.trim());
             request.setAttribute("chambre", chambre);
             request.setAttribute("message", "Chambre trouvée !");
-            request.getRequestDispatcher("/menu.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/chambres/afficherChambre.jsp").forward(request, response);
 
         } catch (TpExeception e) {
             request.setAttribute("erreur", e.getMessage());
