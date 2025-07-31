@@ -2,20 +2,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Auberg-Inn - Configuration Base de Données</title>
+    <title>Auberge-Inn - Configuration Base de Données</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
+    <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 </head>
 <body class="bg-light">
 
 <%
-    // Vérifier si la BD est déjà configurée
+    // 1. Vérifier si la BD est déjà configurée
     if (com.servlet.TP.InnHelper.infoBDValide(application)) {
-        System.out.println("Base de données déjà configurée, redirection vers le menu principal.");
         // Redirection vers le menu principal si BD configurée
         response.sendRedirect("menu.jsp");
         return;
@@ -47,10 +46,10 @@
                                     Local (localhost:27017)
                                 </option>
                                 <option value="dinf" <%= "dinf".equals(request.getAttribute("serveur")) ? "selected" : "" %>>
-                                     DINF (bd-info2.dinf.usherbrooke.ca)
+                                    DINF (bd-info2.dinf.usherbrooke.ca)
                                 </option>
                                 <option value="atlas" <%= "atlas".equals(request.getAttribute("serveur")) ? "selected" : "" %>>
-                                     MongoDB Atlas
+                                    MongoDB Atlas
                                 </option>
                             </select>
                         </div>
