@@ -13,6 +13,10 @@ import tp.TpExeception;
 import tp.bdd.Connexion;
 import tp.objets.Client;
 
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
@@ -34,6 +38,45 @@ public class ClientsTest {
 
         clients = new Clients(mockConnexion);
     }
+    @Test
+    public void testGetClients_ReturnsListOfClients() {
+        Document doc1 = new Document("idClient",1).append("nom", "Dupont").append("prenom", "Jean").append("age", 30);
+        Document doc2 = new Document("idClient",2).append("nom", "Martin").append("prenom", "Claire").append("age", 25);
+
+        FindIterable<Document> mockFindIterable = mock(FindIterable.class);
+        MongoCursor<Document> mockCursor = mock(MongoCursor.class);
+
+        when(mockCollection.find()).thenReturn(mockFindIterable);
+        when(mockFindIterable.iterator()).thenReturn(mockCursor);
+
+        when(mockCursor.hasNext()).thenReturn(true, true, false);
+        when(mockCursor.next()).thenReturn(doc1, doc2);
+
+        List<Client> clientsList = clients.getClients();
+
+        assertNotNull(clientsList);
+        assertEquals(2, clientsList.size());
+        assertEquals("Dupont", clientsList.get(0).getNom());
+        assertEquals("Martin", clientsList.get(1).getNom());
+    }
+
+
+    @Test
+    public void testGetClients_EmptyCollection_ReturnsEmptyList() {
+        FindIterable<Document> mockFindIterable = mock(FindIterable.class);
+        MongoCursor<Document> mockCursor = mock(MongoCursor.class);
+
+        when(mockCollection.find()).thenReturn(mockFindIterable);
+        when(mockFindIterable.iterator()).thenReturn(mockCursor);
+        when(mockCursor.hasNext()).thenReturn(false); // aucun document
+
+        List<Client> clientsList = clients.getClients();
+
+        assertNotNull(clientsList);
+        assertTrue(clientsList.isEmpty());
+    }
+
+
 
     @Test
     public void testAjouterClientOK() throws Exception {
@@ -64,6 +107,38 @@ public class ClientsTest {
 
         clients.ajouterClient(client);
     }
+    @Test
+    public void testGetClientByNomPrenomOK() throws Exception {
+        Document doc = new Document("idClient", 1)
+                .append("nom", "Dupont")
+                .append("prenom", "Jean")
+                .append("age", 30);
+
+        FindIterable<Document> mockFindIterable = mock(FindIterable.class);
+
+        // Quand on fait find avec n'importe quel document (query), on retourne le mockFindIterable
+        when(mockCollection.find(any(Document.class))).thenReturn(mockFindIterable);
+        // Quand on fait first() sur ce FindIterable, on retourne le document
+        when(mockFindIterable.first()).thenReturn(doc);
+
+        Client result = clients.GetClientByNomPrenom("Dupont", "Jean");
+        assertNotNull(result);
+        assertEquals("Dupont", result.getNom());
+        assertEquals("Jean", result.getPrenom());
+    }
+
+    @Test
+    public void testGetClientByNomPrenomNotFound() throws Exception {
+        FindIterable<Document> mockFindIterable = mock(FindIterable.class);
+
+        when(mockCollection.find(any(Document.class))).thenReturn(mockFindIterable);
+        when(mockFindIterable.first()).thenReturn(null);
+
+        Client result = clients.GetClientByNomPrenom("Inconnu", "Test");
+        assertNull(result);
+    }
+
+
 
     @Test
     public void testExisteTrue() throws Exception {
@@ -94,7 +169,7 @@ public class ClientsTest {
         when(mockCollection.find(any(Document.class))).thenReturn(mockFindIterable);
         when(mockFindIterable.first()).thenReturn(doc);
 
-        Document result = clients.getClientById(1);
+        Document result = clients.getClientById(1).toDocument();
         assertEquals("Dupont", result.getString("nom"));
     }
 

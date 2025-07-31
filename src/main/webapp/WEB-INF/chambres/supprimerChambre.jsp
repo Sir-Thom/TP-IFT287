@@ -1,138 +1,100 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: zowes
-  Date: 2025-07-29
-  Time: 10:06 a.m.
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" isELIgnored="false"  %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Auberge-Inn - Supprimer Chambre</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Supprimer une chambre - Auberg-Inn</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-
-  <style>
-    body {
-      background: url('<%= request.getContextPath() %>/assets/supprimerChambre.jpg') no-repeat center center fixed;
-      background-size: cover;
-      min-height: 100vh;
-    }
-
-    .form-overlay {
-      background-color: rgba(255, 255, 255, 0.92);
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-      margin-top: 40px;
-    }
-
-    .message-auto-hide {
-      transition: opacity 0.5s ease-out;
-    }
-  </style>
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          crossorigin="anonymous">
 </head>
 <body>
+<div class="container">
+    <!-- Navigation -->
+    <jsp:include page="/WEB-INF/navigation.jsp" />
 
-<!-- Navigation -->
-<jsp:include page="/WEB-INF/navigation.jsp" />
 
-<!-- Contenu principal -->
-<div class="container d-flex justify-content-center align-items-center flex-column" style="min-height: 100vh;">
-  <div class="col-md-8 form-overlay">
-
-    <!-- Message succès -->
-    <% if (request.getAttribute("message") != null) { %>
-    <div class="alert alert-success alert-dismissible fade show message-auto-hide" id="messageSuccess">
-      <strong><i class="fas fa-check-circle"></i> Succès!</strong> <%= request.getAttribute("message") %>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-    </div>
-    <% } %>
-
-    <!-- Message erreur -->
-    <% if (request.getAttribute("erreur") != null) { %>
-    <div class="alert alert-danger alert-dismissible fade show" id="messageError">
-      <strong><i class="fas fa-exclamation-triangle"></i> Erreur!</strong> <%= request.getAttribute("erreur") %>
-      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span>&times;</span></button>
-    </div>
-    <% } %>
-
-    <h3 class="text-center text-danger mb-4"><i class="fas fa-trash-alt"></i> Supprimer une chambre</h3>
-
-    <form id="formSupprimerChambre" action="<%= request.getContextPath() %>/ChambreServlet" method="POST">
-      <input type="hidden" name="action" value="supprimer">
-
-      <div class="form-group">
-        <label for="nom">Nom de la chambre à supprimer *</label>
-        <input type="text" class="form-control" id="nom" name="nom"
-               value="<%= request.getAttribute("nom") != null ? request.getAttribute("nom") : "" %>"
-               placeholder="Ex: Chambre 101" required>
-      </div>
-
-      <hr>
-
-      <div class="form-row">
-        <div class="col-md-6 mb-2">
-          <button type="submit" class="btn btn-danger btn-block" id="btnSubmit">
-            <i class="fas fa-trash-alt"></i> Supprimer
-          </button>
+    <!-- Breadcrumb -->
+    <div class="row mt-4">
+        <div class="col">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/menu.jsp">Menu</a></li>
+                    <li class="breadcrumb-item active">Supprimer une chambre</li>
+                </ol>
+            </nav>
         </div>
-        <div class="col-md-6 mb-2">
-          <a href="<%= request.getContextPath() %>/menu.jsp" class="btn btn-secondary btn-block">
-            <i class="fas fa-arrow-left"></i> Retour
-          </a>
-        </div>
-      </div>
-    </form>
+    </div>
 
-  </div>
+    <!-- Messages -->
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <c:if test="${not empty message}">
+                <div class="alert alert-success alert-dismissible fade show">
+                    <strong>Succès!</strong> ${message}
+                    <button type="button" class="close" data-dismiss="alert">&times;</button>
+                </div>
+            </c:if>
+
+
+            <div class="card">
+                <div class="card-header bg-danger text-white">
+                    <h3 class="mb-0">❌ Supprimer une chambre</h3>
+                </div>
+                <div class="card-body">
+                    <form action="${pageContext.request.contextPath}/chambres" method="POST">
+                        <input type="hidden" name="action" value="supprimer">
+
+                        <div class="form-group">
+                            <label for="chambre">Sélectionnez la chambre à supprimer *</label>
+                            <select class="form-control" id="chambre" name="nom" required>
+                                <option value="">-- Sélectionnez une chambre --</option>
+                                <c:forEach items="${chambres}" var="chambre">
+                                    <option value="${chambre.nomChambre}"
+                                            <c:if test="${param.nom eq chambre.nomChambre}">selected</c:if>>
+                                            ${chambre.nomChambre} - ${chambre.typeLit} (<fmt:formatNumber value="${chambre.prixBase}" pattern="#,##0.00" />$)
+                                    </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <strong>Attention!</strong> La suppression d'une chambre est irréversible.
+                            Toutes les réservations associées seront également supprimées.
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <button type="submit" class="btn btn-danger btn-block">
+                                    <i class="fas fa-trash-alt"></i> Confirmer la suppression
+                                </button>
+                            </div>
+                            <div class="col-md-6">
+                                <a href="${pageContext.request.contextPath}/menu.jsp" class="btn btn-secondary btn-block">
+                                    <i class="fas fa-times"></i> Annuler
+                                </a>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <jsp:include page="/WEB-INF/messageErreur.jsp" />
+
 </div>
 
-<!-- Scripts Bootstrap -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-
-<script>
-  function remplirNomChambre(nomChambre) {
-    document.getElementById('nom').value = nomChambre;
-
-    // Animation de feedback
-    const input = document.getElementById('nom');
-    input.style.backgroundColor = '#f8d7da';
-    setTimeout(() => {
-      input.style.backgroundColor = '';
-    }, 1000);
-  }
-
-  function viderFormulaire() {
-    document.getElementById('formSupprimerChambre').reset();
-  }
-
-  // Auto-hide du message de succès (comme la page d'ajout)
-  <% if (request.getAttribute("message") != null) { %>
-  setTimeout(function () {
-    const message = document.getElementById('messageSuccess');
-    if (message) {
-      message.style.opacity = '0';
-      setTimeout(() => message.style.display = 'none', 500);
-    }
-    // Vider le formulaire après succès
-    viderFormulaire();
-  }, 5000);
-  <% } %>
-
-  // Animation du bouton lors de la soumission
-  document.getElementById('formSupprimerChambre').addEventListener('submit', function () {
-    const btn = document.getElementById('btnSubmit');
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Suppression en cours...';
-    btn.disabled = true;
-  });
-</script>
+<!-- Scripts -->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 </html>

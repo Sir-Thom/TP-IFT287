@@ -48,6 +48,7 @@ public class TpGestion {
 //        setGestionInterrogation(new GestionInterrogation(getConnexion()));
     }
 
+
     public void fermer() throws SQLException
     {
         // fermeture de la connexion

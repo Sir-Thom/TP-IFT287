@@ -5,7 +5,7 @@
   Time: 5:05 a.m.
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" isELIgnored="false"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -21,6 +21,7 @@
 <div class="container">
     <!-- Navigation -->
     <jsp:include page="/WEB-INF/navigation.jsp" />
+
 
     <!-- Header -->
     <div class="row mt-4">
@@ -41,21 +42,20 @@
                     <h3 class="mb-0">👤 Enregistrer un nouveau client</h3>
                 </div>
                 <div class="card-body">
-                    <form action="ClientServlet" method="POST">
+                    <form action="client" method="POST">
                         <input type="hidden" name="action" value="ajouter">
-
-                        <div class="form-group">
-                            <label for="nom">Nom de famille *</label>
-                            <input type="text" class="form-control" id="nom" name="nom"
-                                   value="<%= request.getAttribute("nom") != null ? request.getAttribute("nom") : "" %>"
-                                   placeholder="Dupont" required>
-                        </div>
 
                         <div class="form-group">
                             <label for="prenom">Prénom *</label>
                             <input type="text" class="form-control" id="prenom" name="prenom"
                                    value="<%= request.getAttribute("prenom") != null ? request.getAttribute("prenom") : "" %>"
                                    placeholder="Jean" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nom">Nom de famille *</label>
+                            <input type="text" class="form-control" id="nom" name="nom"
+                                   value="<%= request.getAttribute("nom") != null ? request.getAttribute("nom") : "" %>"
+                                   placeholder="Dupont" required>
                         </div>
 
                         <div class="form-group">
@@ -66,21 +66,7 @@
                             <small class="form-text text-muted">L'âge doit être entre 1 et 120 ans</small>
                         </div>
 
-                        <div class="form-group">
-                            <label for="email">Email (optionnel)</label>
-                            <input type="email" class="form-control" id="email" name="email"
-                                   value="<%= request.getAttribute("email") != null ? request.getAttribute("email") : "" %>"
-                                   placeholder="jean.dupont@email.com">
-                            <small class="form-text text-muted">Pour les confirmations de réservation</small>
-                        </div>
 
-                        <div class="form-group">
-                            <label for="telephone">Téléphone (optionnel)</label>
-                            <input type="tel" class="form-control" id="telephone" name="telephone"
-                                   value="<%= request.getAttribute("telephone") != null ? request.getAttribute("telephone") : "" %>"
-                                   placeholder="(819) 555-1234">
-                            <small class="form-text text-muted">Format: (819) 555-1234</small>
-                        </div>
 
                         <hr>
 
@@ -92,7 +78,7 @@
                                     </button>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="<%= request.getContextPath() %>/menu.jsp" class="btn btn-secondary btn-block">
+                                    <a href="${pageContext.request.contextPath}/" class="btn btn-secondary btn-block">
                                         <i class="fas fa-arrow-left"></i> Retour au menu
                                     </a>
                                 </div>
@@ -107,12 +93,9 @@
         </div>
     </div>
 
-    <!-- Messages d'erreur/succès -->
-    <div class="row mt-3">
-        <div class="col">
+
             <jsp:include page="/WEB-INF/messageErreur.jsp" />
-        </div>
-    </div>
+
 
 </div>
 

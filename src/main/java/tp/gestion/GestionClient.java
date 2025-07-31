@@ -27,24 +27,26 @@ public class GestionClient extends GestionTransactions {
         this.clients = clients;
         this.reservations = reservations;
     }
-
+    public Client getClientById(int idClient) throws TpExeception {
+        Client client = clients.getClientById(idClient);
+        if (client == null) {
+            throw new TpExeception("Client avec l'ID " + idClient + " n'existe pas.");
+        }
+        return client;
+    }
 
     public void ajouterClient(String nom, String prenom, int age) throws TpExeception {
-        try {
-            Client clientExistant = clients.GetClientByNomPrenom(nom, prenom);
-            if (clientExistant != null) {
-                throw new TpExeception("Le client '" + prenom + " " + nom + "' existe déjà.");
-            }
-        } catch (TpExeception e) {
-            // Si le client n'existe pas, c'est ce qu'on veut -> on continue
-            if (!e.getMessage().contains("n'existe pas")) {
-                throw e;
-            }
+        Client clientExistant = clients.GetClientByNomPrenom(nom, prenom);
+        if (clientExistant != null) {
+            throw new TpExeception("Le client '" + prenom + " " + nom + "' existe déjà.");
         }
 
-        Client nouveauClient = new Client(0, nom, prenom, age);
-        clients.ajouterClient(nouveauClient); // Ajout.
+        Client nouveauClient = new Client(0, prenom, nom, age);
+        clients.ajouterClient(nouveauClient);
     }
+
+
+
 
     public Client afficherClients(String nom,String prenom) throws TpExeception {
         Client client = clients.GetClientByNomPrenom(nom, prenom);
@@ -61,19 +63,14 @@ public class GestionClient extends GestionTransactions {
      * extra vérification lorsqu'il y a pas de client !
      */
 
-    public List<Client> getListClients() throws TpExeception {
-        try {
+    public List<Client> getListClients()  {
             return clients.getClients();
-        } catch (TpExeception e) {
-            // Ici, on log l'erreur et retourne une liste vide (plutôt que null)
-            System.err.println("Erreur lors de la récupération des clients: " + e.getMessage());
-            return new ArrayList<>();
-        }
+
     }
 
 
     public void supprimerClient(String prenom, String nom) throws TpExeception {
-        Client client = clients.GetClientByNomPrenom(prenom, nom);
+        Client client = clients.GetClientByNomPrenom(nom, prenom);
 
         if (client == null) {
             throw new TpExeception("Client introuvable");
