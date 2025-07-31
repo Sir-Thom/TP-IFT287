@@ -28,11 +28,18 @@
                     <th>Âge</th>
                 </tr>
                 </thead>
-                <tbody>
                 <c:forEach items="${clients}" var="client" varStatus="loop">
                     <tr>
                         <td>${loop.index + 1}</td>
-                        <td>${client.nom}</td>
+                        <td>
+                                <%-- Création d'une URL dynamique pour chaque client --%>
+                            <c:url var="detailsUrl" value="client">
+                                <c:param name="action" value="afficherClient"/>
+                                <c:param name="id" value="${client.prenom}|${client.nom}"/>
+                            </c:url>
+                                <%-- Le nom du client est maintenant un lien --%>
+                            <a href="${detailsUrl}">${client.nom}</a>
+                        </td>
                         <td>${client.prenom}</td>
                         <td>${client.age}</td>
                     </tr>

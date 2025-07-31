@@ -84,4 +84,13 @@ public class GestionClient extends GestionTransactions {
         clients.supprimerClient(prenom, nom);
         System.out.println("Client supprimé : " + prenom + " " + nom);
     }
+
+    public Client GetClientByNomPrenom(String nom, String prenom) {
+    try {
+            return clients.GetClientByNomPrenom(nom, prenom);
+        } catch (TpExeception e) {
+            System.err.println("Erreur lors de la récupération du client : " + e.getMessage());
+            return null; // ou gérer l'erreur d'une autre manière
+        }
+    }
 }
