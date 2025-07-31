@@ -1,14 +1,17 @@
 package com.servlet.TP;
 
 import tp.TpExeception;
+import tp.gestion.GestionClient;
 import tp.gestion.GestionReservation;
 import tp.gestion.TpGestion;
+import tp.objets.Chambre;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 import java.io.IOException;
+import java.util.List;
 
 
 public class ReservationServlet extends HttpServlet {
@@ -41,8 +44,11 @@ public class ReservationServlet extends HttpServlet {
 
         HttpSession session = request.getSession();
 
-        String prenomClient = request.getParameter("prenomClient");
-        String nomClient = request.getParameter("nomClient");
+        String clientIdentifier = request.getParameter("clientIdentifier");
+        String[] parts = clientIdentifier.split("\\|");
+        String prenomClient = parts.length > 0 ? parts[0] : "";
+        String nomClient = parts.length > 1 ? parts[1] : "";
+
         String nomChambre = request.getParameter("nomChambre");
         String dateDebut = request.getParameter("dateDebut");
         String dateFin = request.getParameter("dateFin");
@@ -64,7 +70,16 @@ public class ReservationServlet extends HttpServlet {
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Optional but good practice to wrap in a try-catch
+        // Add this check at the beginning
+        if (!InnHelper.peutProceder(getServletContext(), request, response)) {
+            InnHelper.DispatchToBDConnect(request, response);
+            return;
+        }
+
         String action = request.getParameter("action");
+        HttpSession session = request.getSession();
+        TpGestion gestion = InnHelper.getInnInterro(session);
 
         if (action == null) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Action manquante");
@@ -73,11 +88,17 @@ public class ReservationServlet extends HttpServlet {
 
         switch (action) {
             case "afficherFormAjouter":
-                // Afficher la page pour réserver
+                GestionClient gestionClient = gestion.getGestionClient(); // Simplified this line
+                // Fetch clients and chambres
+                List<tp.objets.Client> clients = gestionClient.getListClients();
+                List<Chambre> chambres = gestion.getGestionChambre().getAllChambres();
+                // Put in request scope
+                request.setAttribute("clients", clients);
+                request.setAttribute("chambres", chambres);
+                // Forward to form
                 RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/Reservation/reserver.jsp");
                 dispatcher.forward(request, response);
                 break;
-
             default:
                 response.sendError(HttpServletResponse.SC_NOT_FOUND, "Action inconnue : " + action);
                 break;

@@ -48,13 +48,19 @@
         <servlet-name>Login</servlet-name>
         <servlet-class>com.servlet.TP.Login</servlet-class>
     </servlet>
-
+    <servlet>
+        <servlet-name>Accueil</servlet-name>
+        <servlet-class>com.servlet.TP.Accueil</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Login</servlet-name>
         <url-pattern>/Login</url-pattern>
 
     </servlet-mapping>
-
+    <servlet-mapping>
+        <servlet-name>Accueil</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
     <!-- Servlet pour la gestion des chambres -->
     <servlet>
         <servlet-name>chambres</servlet-name>

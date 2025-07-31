@@ -75,9 +75,9 @@ public class Reservations extends GestionCollection {
         while (cursor.hasNext()) {
             resultats.add(new Reservation(cursor.next()));
         }
-        if (resultats.isEmpty()) {
-            throw new TpExeception("Aucune réservation trouvée pour la chambre " + idChambre + " entre " + dateDebut + " et " + dateFin);
-        }
+//       if (resultats.isEmpty()) {
+//            throw new TpExeception("Aucune réservation trouvée pour la chambre " + idChambre + " entre " + dateDebut + " et " + dateFin);
+//        }
 
         return resultats;
     }
@@ -133,6 +133,25 @@ public class Reservations extends GestionCollection {
             }
         }
         return disponibles;
+    }
+
+
+    public List<Reservation> getReservationsPourClient(String prenomClient, String nomClient) {
+        if (prenomClient == null || nomClient == null) {
+            throw new IllegalArgumentException("Le prénom et le nom du client ne doivent pas être null.");
+        }
+
+        List<Reservation> resultats = new ArrayList<>();
+
+        try (MongoCursor<Document> cursor = collectionReservations.find(
+                and(eq("prenomClient", prenomClient), eq("nomClient", nomClient))
+        ).iterator()) {
+            while (cursor.hasNext()) {
+                resultats.add(new Reservation(cursor.next()));
+            }
+        }
+
+        return resultats;
     }
 
 

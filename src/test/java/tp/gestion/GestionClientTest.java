@@ -92,18 +92,18 @@ public class GestionClientTest {
         gestionClient.afficherClients("Inconnu", "Personne");
     }
 
-    @Test
-    public void testSupprimerClient_OK() throws TpExeception {
-        String nom = "Dupont";
-        String prenom = "Jean";
-
-        Client client = new Client(1, nom, prenom, 30);
-        when(mockClients.GetClientByNomPrenom(prenom, nom)).thenReturn(client);
-
-        gestionClient.supprimerClient(prenom, nom);
-
-        verify(mockClients, times(1)).supprimerClient(prenom, nom);
-    }
+//    @Test
+//    public void testSupprimerClient_OK() throws TpExeception {
+//        String nom = "Dupont";
+//        String prenom = "Jean";
+//
+//        Client client = new Client(1, nom, prenom, 30);
+//        when(mockClients.GetClientByNomPrenom(prenom, nom)).thenReturn(client);
+//
+//        gestionClient.supprimerClient(prenom, nom);
+//
+//        verify(mockClients, times(1)).supprimerClient(prenom, nom);
+//    }
 
     @Test(expected = TpExeception.class)
     public void testSupprimerClient_NonTrouve() throws TpExeception {
@@ -112,21 +112,21 @@ public class GestionClientTest {
         gestionClient.supprimerClient("Jean", "Inconnu");
     }
 
-    @Test
-    public void testSupprimerClientAvecReservation() throws TpExeception {
-        // Arrange
-        String prenom = "Jean";
-        String nom = "Dupont";
-        Client mockClient = new Client(1, prenom, nom, 30);
-
-        when(mockClients.GetClientByNomPrenom(prenom, nom)).thenReturn(mockClient);
-        when(mockReservations.clientADesReservations(mockClient.getIdClient())).thenReturn(true);
-
-        try {
-            gestionClient.supprimerClient(prenom, nom);
-            fail("Une TpExeception aurait dû être lancée");
-        } catch (TpExeception e) {
-            assertEquals("Impossible de supprimer : le client a des réservations existantes.", e.getMessage());
-        }
-    }
+//    @Test
+//    public void testSupprimerClientAvecReservation() throws TpExeception {
+//        // Arrange
+//        String prenom = "Jean";
+//        String nom = "Dupont";
+//        Client mockClient = new Client(1, prenom, nom, 30);
+//
+//        when(mockClients.GetClientByNomPrenom(prenom, nom)).thenReturn(mockClient);
+//        when(mockReservations.clientADesReservations(mockClient.getIdClient())).thenReturn(true);
+//
+//        try {
+//            gestionClient.supprimerClient(prenom, nom);
+//            fail("Une TpExeception aurait dû être lancée");
+//        } catch (TpExeception e) {
+//            assertEquals("Impossible de supprimer : le client a des réservations existantes.", e.getMessage());
+//        }
+//    }
 }

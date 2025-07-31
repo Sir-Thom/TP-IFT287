@@ -70,4 +70,17 @@ public class GestionReservation {
 
         reservations.ajouterReservation(nouvelleReservation);
     }
+
+    public List<Reservation> getReservationsPourClient(String prenom, String nom) throws TpExeception {
+        if (prenom == null || nom == null) {
+            throw new IllegalArgumentException("Le prénom et le nom du client sont requis.");
+        }
+
+        Client client = clients.GetClientByNomPrenom(nom, prenom);
+        if (client == null) {
+            throw new TpExeception("Le client '" + prenom + " " + nom + "' n'existe pas.");
+        }
+
+        return reservations.getReservationsPourClient(prenom, nom);
+    }
 }

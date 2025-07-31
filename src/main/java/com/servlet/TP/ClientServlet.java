@@ -2,6 +2,7 @@ package com.servlet.TP;
 
 import tp.TpExeception;
 import tp.gestion.GestionClient;
+import tp.gestion.GestionReservation;
 import tp.gestion.TpGestion;
 import tp.objets.Client;
 
@@ -47,6 +48,9 @@ public class ClientServlet extends HttpServlet {
                     break;
                 case "lister":
                     listerClients(request, response);
+                    break;
+                case "afficherClient":
+                    afficherClient(request, response);
                     break;
                 default:
                     response.sendRedirect("menu.jsp");
@@ -113,6 +117,47 @@ public class ClientServlet extends HttpServlet {
         List<Client> clients = gestionClient.getListClients();
         request.setAttribute("clients", clients);
         request.getRequestDispatcher("/WEB-INF/clients/retirerClient.jsp").forward(request, response);
+    }
+
+    private void afficherClient(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException, TpExeception {
+
+        // 1. Récupérer l'identifiant du client depuis le paramètre de l'URL
+        String clientIdentifier = request.getParameter("id");
+        if (clientIdentifier == null || clientIdentifier.isEmpty()) {
+            throw new TpExeception("Aucun client n'a été spécifié.");
+        }
+
+        // 2. Extraire le prénom et le nom
+        String[] parts = clientIdentifier.split("\\|");
+        if (parts.length != 2) {
+            throw new TpExeception("L'identifiant du client est mal formaté.");
+        }
+        String prenom = parts[0];
+        String nom = parts[1];
+
+        // 3. Obtenir les objets de gestion depuis la session
+        TpGestion tpGestion = InnHelper.getInnInterro(request.getSession());
+        GestionClient gestionClient = tpGestion.getGestionClient();
+        // Assurez-vous que TpGestion peut accéder à GestionReservation
+        // par une méthode comme getGestionReservation()
+        GestionReservation gestionReservation = tpGestion.getGestionReservation();
+
+        // 4. Récupérer les données du client et de ses réservations
+        // (Ces méthodes doivent exister dans vos classes de gestion)
+        Client client = gestionClient.GetClientByNomPrenom(nom, prenom);
+        List<tp.objets.Reservation> reservations = gestionReservation.getReservationsPourClient(prenom, nom);
+
+        if (client == null) {
+            throw new TpExeception("Le client demandé n'existe pas.");
+        }
+
+        // 5. Placer les objets dans la requête pour la page JSP
+        request.setAttribute("client", client);
+        request.setAttribute("reservations", reservations);
+
+        // 6. Transférer à la nouvelle page JSP
+        request.getRequestDispatcher("/WEB-INF/clients/afficherClient.jsp").forward(request, response);
     }
 
     private void listerClients(HttpServletRequest request, HttpServletResponse response)
