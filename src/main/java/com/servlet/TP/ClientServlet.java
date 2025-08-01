@@ -122,13 +122,11 @@ public class ClientServlet extends HttpServlet {
     private void afficherClient(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, TpExeception {
 
-        // 1. Récupérer l'identifiant du client depuis le paramètre de l'URL
         String clientIdentifier = request.getParameter("id");
         if (clientIdentifier == null || clientIdentifier.isEmpty()) {
             throw new TpExeception("Aucun client n'a été spécifié.");
         }
 
-        // 2. Extraire le prénom et le nom
         String[] parts = clientIdentifier.split("\\|");
         if (parts.length != 2) {
             throw new TpExeception("L'identifiant du client est mal formaté.");
@@ -136,27 +134,21 @@ public class ClientServlet extends HttpServlet {
         String prenom = parts[0];
         String nom = parts[1];
 
-        // 3. Obtenir les objets de gestion depuis la session
         TpGestion tpGestion = InnHelper.getInnInterro(request.getSession());
         GestionClient gestionClient = tpGestion.getGestionClient();
-        // Assurez-vous que TpGestion peut accéder à GestionReservation
-        // par une méthode comme getGestionReservation()
+
         GestionReservation gestionReservation = tpGestion.getGestionReservation();
 
-        // 4. Récupérer les données du client et de ses réservations
-        // (Ces méthodes doivent exister dans vos classes de gestion)
-        Client client = gestionClient.GetClientByNomPrenom(nom, prenom);
+               Client client = gestionClient.GetClientByNomPrenom(nom, prenom);
         List<tp.objets.Reservation> reservations = gestionReservation.getReservationsPourClient(prenom, nom);
 
         if (client == null) {
             throw new TpExeception("Le client demandé n'existe pas.");
         }
 
-        // 5. Placer les objets dans la requête pour la page JSP
         request.setAttribute("client", client);
         request.setAttribute("reservations", reservations);
 
-        // 6. Transférer à la nouvelle page JSP
         request.getRequestDispatcher("/WEB-INF/clients/afficherClient.jsp").forward(request, response);
     }
 
@@ -203,14 +195,12 @@ public class ClientServlet extends HttpServlet {
             request.setAttribute("prenom", prenom);
             request.setAttribute("age", ageStr);
             request.getRequestDispatcher("/WEB-INF/clients/ajouterClient.jsp").forward(request, response);
-            // use envoyerErreur
         } catch (Exception e) {
         }
     }
 
     private void retirerClient(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, TpExeception {
-        // Récupérer l'identifiant composite du client
         String clientIdentifier = request.getParameter("clientIdentifier");
 
         if (clientIdentifier == null || clientIdentifier.trim().isEmpty()) {
@@ -232,10 +222,8 @@ public class ClientServlet extends HttpServlet {
             TpGestion tpGestion = InnHelper.getInnInterro(request.getSession());
             GestionClient gestionClient = tpGestion.getGestionClient();
 
-            // Supprimer le client en utilisant prénom et nom
             gestionClient.supprimerClient(prenom, nom);
 
-            // Recharger la liste des clients
             List<Client> clients = gestionClient.getListClients();
             request.setAttribute("clients", clients);
             request.setAttribute("message", "Le client " + prenom + " " + nom + " a été retiré avec succès.");
