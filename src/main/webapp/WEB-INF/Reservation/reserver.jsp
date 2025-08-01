@@ -5,36 +5,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Auberg-Inn - Réserver</title>
+    <title>Auberge-Inn - Réserver</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           crossorigin="anonymous">
+
+    <style>
+        body {
+            background: url('<%= request.getContextPath() %>/assets/reservation.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+        }
+
+        .form-overlay {
+            background-color: rgba(255, 255, 255, 0.92);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            margin-top: 40px;
+        }
+
+        .message-auto-hide {
+            transition: opacity 0.5s ease-out;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="../../../menu.jsp">🏨 Auberg-Inn</a>
-    </nav>
 
-    <!-- Breadcrumb -->
-    <div class="row mt-4">
-        <div class="col">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="../../../menu.jsp">Menu</a></li>
-                    <li class="breadcrumb-item active">Réserver</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
+<!-- <div class="container"> -->
+
 
     <!-- Messages -->
+
     <div class="row">
-        <div class="col-md-8 offset-md-2">
+        <div class="container d-flex justify-content-center align-items-center flex-column" style="min-height: 100vh;">
+            <div class="col-md-8 form-overlay">
             <% if (request.getAttribute("message") != null) { %>
             <div class="alert alert-success alert-dismissible fade show">
                 <strong>Succès!</strong> <%= request.getAttribute("message") %>
@@ -51,13 +59,11 @@
 
             <div class="card">
                 <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0">📅 Réserver une chambre</h3>
+                    <h3 class="mb-0">Réserver une chambre</h3>
                 </div>
                 <div class="card-body">
                     <form action="ReservationServlet" method="POST">
                         <input type="hidden" name="action" value="reserver">
-
-                        <!-- Remplacer les champs texte par des combobox -->
 
                         <div class="form-group">
                             <label for="client">Sélectionnez le client à retirer *</label>
@@ -104,7 +110,7 @@
                                 <button type="submit" class="btn btn-primary btn-block">Réserver</button>
                             </div>
                             <div class="col-md-6">
-                                <a href="../../../menu.jsp" class="btn btn-secondary btn-block">Retour au menu</a>
+                                <a href="${pageContext.request.contextPath}/menu.jsp" class="btn btn-secondary btn-block">Retour au menu</a>
                             </div>
                         </div>
 

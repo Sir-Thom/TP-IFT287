@@ -33,8 +33,10 @@
 </head>
 <body>
 <div class="container">
-    <!-- Navigation -->
-    <jsp:include page="/WEB-INF/navigation.jsp" />
+    <!-- Navigation
+    plus clean SANS la bare navigation.
+     -->
+
 
     <div class="container d-flex justify-content-center align-items-center flex-column" style="min-height: 100vh;">
         <div class="col-md-8 form-overlay">
@@ -105,8 +107,8 @@
                                     </button>
                                 </div>
                                 <div class="col-md-6">
-                                    <a href="/" class="btn btn-secondary btn-block">
-                                        <i class="fas fa-arrow-left"></i> Retour au menu
+                                    <a href="${pageContext.request.contextPath}/menu.jsp" class="btn btn-secondary btn-block">
+                                        <i class="fas fa-arrow-left"></i> Retourner
                                     </a>
                                 </div>
                             </div>
