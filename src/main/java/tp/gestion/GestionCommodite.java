@@ -52,24 +52,6 @@ public class GestionCommodite extends GestionTransactions {
     }
 
     /**
-     * Ajoute une commodité dans le système.
-     * Param 1 : id
-     * Param 2 : description
-     * param 3 : surplus
-     */
-    public void ajouterCommodite(int idCommodite, String description, double surplusPrix) throws Exception {
-        int id = idCommodite;
-
-        if (commodites.existe(id)) {
-            throw new Exception("Une commodité avec l'ID " + id + " existe déjà.");
-        }
-
-        Commodite commodite = new Commodite(id, description, surplusPrix);
-        commodites.inserer(commodite);
-        System.out.println("Commodité ajoutée : " + description + " (ID: " + id + ")");
-    }
-
-    /**
      * Ajoute une commodité à une chambre.
      */
     public void inclureCommodite(String nomChambre, int idCommodite) throws Exception {
