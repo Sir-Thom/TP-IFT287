@@ -37,6 +37,14 @@ public class CommoditeServlet extends HttpServlet {
                 case "afficherFormAjouter":
                     request.getRequestDispatcher("/WEB-INF/commodites/ajouterCommodite.jsp").forward(request, response);
                     break;
+                case "afficherFormInclure":
+                    request.getRequestDispatcher("/WEB-INF/commodites/inclureCommodite.jsp").forward(request, response);
+                    break;
+                case "afficherFormEnlever":
+                    request.getRequestDispatcher("/WEB-INF/commodites/enleverCommodite.jsp").forward(request, response);
+                    break;
+
+
 
                 default:
                     response.sendRedirect("menu.jsp");

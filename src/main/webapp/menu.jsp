@@ -417,16 +417,6 @@
       </div>
     </div>
 
-    <!-- AFFICHER LES CLIENTS -->
-    <div class="col-md-4 mb-4">
-      <div class="card menu-card text-center">
-        <div class="card-body">
-          <h5>Afficher les clients</h5>
-          <p class="text-muted">Voir la liste de tous les clients enregistrés</p>
-          <a href="client?action=lister" class="btn Bouton">Accéder</a>
-        </div>
-      </div>
-    </div>
 
     <!-- ============== GESTION DES COMMODITÉS ============== -->
     <div class="menu-section">
@@ -437,7 +427,7 @@
           <div class="card menu-card text-center">
             <div class="card-body">
               <h5>Ajouter une commodité</h5>
-              <a href="CommoditeServlet?action=afficherFormAjouter" class="btn Bouton">Accéder</a>
+              <a href="CommoditeServlet?action=afficherFormAjouter" class="btn Bouton">Ajouter</a>
             </div>
           </div>
         </div>

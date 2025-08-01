@@ -11,28 +11,34 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
           crossorigin="anonymous">
+
+    <style>
+        body {
+            background: url('<%= request.getContextPath() %>/assets/supprimerChambre.jpg') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+        }
+
+        .form-overlay {
+            background-color: rgba(255, 255, 255, 0.92);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            margin-top: 40px;
+        }
+
+        .message-auto-hide {
+            transition: opacity 0.5s ease-out;
+        }
+    </style>
+
 </head>
 <body>
 <div class="container">
-    <!-- Navigation -->
-    <jsp:include page="/WEB-INF/navigation.jsp" />
-
-
-    <!-- Breadcrumb -->
-    <div class="row mt-4">
-        <div class="col">
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="${pageContext.request.contextPath}/menu.jsp">Menu</a></li>
-                    <li class="breadcrumb-item active">Supprimer une chambre</li>
-                </ol>
-            </nav>
-        </div>
-    </div>
 
     <!-- Messages -->
-    <div class="row">
-        <div class="col-md-8 offset-md-2">
+    <div class="container d-flex justify-content-center align-items-center flex-column" style="min-height: 100vh;">
+        <div class="col-md-8 form-overlay">
             <c:if test="${not empty message}">
                 <div class="alert alert-success alert-dismissible fade show">
                     <strong>Succès!</strong> ${message}
@@ -43,7 +49,7 @@
 
             <div class="card">
                 <div class="card-header bg-danger text-white">
-                    <h3 class="mb-0">❌ Supprimer une chambre</h3>
+                    <h3 class="mb-0"> Supprimer une chambre</h3>
                 </div>
                 <div class="card-body">
                     <form action="${pageContext.request.contextPath}/chambres" method="POST">
@@ -63,19 +69,18 @@
                         </div>
 
                         <div class="alert alert-warning">
-                            <strong>Attention!</strong> La suppression d'une chambre est irréversible.
-                            Toutes les réservations associées seront également supprimées.
+                            <strong>Attention!</strong> L'équipe de démolition sera contactée une fois l'action effectuée.
                         </div>
 
                         <div class="row">
                             <div class="col-md-6">
                                 <button type="submit" class="btn btn-danger btn-block">
-                                    <i class="fas fa-trash-alt"></i> Confirmer la suppression
+                                    <i class="fas fa-trash-alt"></i> 🔥SUPPRIMER🔥
                                 </button>
                             </div>
                             <div class="col-md-6">
                                 <a href="${pageContext.request.contextPath}/menu.jsp" class="btn btn-secondary btn-block">
-                                    <i class="fas fa-times"></i> Annuler
+                                    <i class="fas fa-times"></i> Retourner
                                 </a>
                             </div>
                         </div>
