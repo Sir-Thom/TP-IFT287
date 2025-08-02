@@ -8,7 +8,7 @@ public class Commodite {
     private double surplusPrix;
 
     public Commodite() {
-        // Constructeur vide requis par certains frameworks (ex. MongoDB, JPA, etc.)
+
     }
 
     public Commodite(Document d) {

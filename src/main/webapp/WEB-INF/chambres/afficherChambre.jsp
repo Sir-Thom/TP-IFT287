@@ -154,45 +154,6 @@
             </div>
             <% } %>
 
-            <!-- Actions sur cette chambre -->
-            <div class="mt-3">
-              <h6><i class="fas fa-cogs"></i> Actions disponibles</h6>
-              <div class="btn-group-vertical w-100">
-                <a href="<%= request.getContextPath() %>/chambres?action=afficherFormRecherche=<%= chambre.getNomChambre() %>"
-                   class="btn btn-warning btn-sm">
-                  <i class="fas fa-edit"></i> Modifier cette chambre
-                </a>
-                <a href="<%= request.getContextPath() %>/CommoditeServlet?action=afficherFormRecherche=<%= chambre.getNomChambre() %>"
-                   class="btn btn-outline-success btn-sm">
-                  <i class="fas fa-plus"></i> Ajouter une commodité
-                </a>
-                <button class="btn btn-outline-danger btn-sm"
-                        onclick="confirmerSuppression('<%= chambre.getNomChambre() %>')">
-                  <i class="fas fa-trash"></i> Supprimer cette chambre
-                </button>
-                <a href="<%= request.getContextPath() %>/ReservationServlet?action=afficherFormReserver&chambre=<%= chambre.getNomChambre() %>"
-                   class="btn btn-outline-primary btn-sm">
-                  <i class="fas fa-calendar-plus"></i> Réserver cette chambre
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-footer text-muted">
-        <div class="row">
-          <div class="col-md-6">
-            <small>
-              <i class="fas fa-clock"></i> Informations à jour •
-              <i class="fas fa-shield-alt"></i> Données sécurisées
-            </small>
-          </div>
-          <div class="col-md-6 text-right">
-            <small>
-              <button class="btn btn-sm btn-outline-secondary" onclick="rechercherAutreChambre()">
-                <i class="fas fa-search-plus"></i> Rechercher une autre chambre
-              </button>
-            </small>
           </div>
         </div>
       </div>
@@ -215,8 +176,6 @@
         setTimeout(() => {
           input.style.backgroundColor = '';
         }, 1000);
-
-        // Auto-submit après un délai pour permettre de voir l'animation
         setTimeout(() => {
           document.getElementById('formRecherche').submit();
         }, 500);
@@ -243,7 +202,6 @@
         btnRechercher.disabled = true;
       });
 
-      // Auto-focus sur le champ de recherche si pas de résultat
       <% if (request.getAttribute("chambre") == null) { %>
       document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('nom').focus();

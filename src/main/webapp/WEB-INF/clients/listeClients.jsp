@@ -6,10 +6,33 @@
     <title>Liste des Clients</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
     <meta charset="UTF-8">
+
+    <style>
+        body {
+            background: url('<%= request.getContextPath() %>/assets/happyfamilylol.png') no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+        }
+
+        .form-overlay {
+            background-color: rgba(255, 255, 255, 0.92);
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            margin-top: 40px;
+        }
+
+        .message-auto-hide {
+            transition: opacity 0.5s ease-out;
+        }
+    </style>
 </head>
 <body>
-<div class="container">
-    <jsp:include page="/WEB-INF/navigation.jsp" />
+
+<!-- <div class="container"> -->
+<div class="container d-flex justify-content-center align-items-center flex-column" style="min-height: 100vh;">
+    <div class="col-md-8 form-overlay">
+
 
     <h1 class="text-center my-4">Liste des Clients</h1>
     <c:choose>
@@ -54,6 +77,8 @@
         </a>
     </div>
     <jsp:include page="/WEB-INF/messageErreur.jsp" />
+
+    </div>
 
 </div>
 </body>

@@ -49,7 +49,7 @@ public class Chambre {
         this.nomChambre = suite;
         this.idChambre = i;
         this.prixBase = v;
-        this.typeLit = "Lit simple"; // Valeur par défaut, peut être modifiée
+        this.typeLit = "Lit simple";
         this.commodites = new ArrayList<>();
     }
 
