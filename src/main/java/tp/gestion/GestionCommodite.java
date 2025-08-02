@@ -5,6 +5,7 @@ import tp.collections.Commodites;
 import tp.collections.Chambres;
 import tp.objets.Commodite;
 import tp.objets.Chambre;
+import tp.TpExeception;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ public class GestionCommodite extends GestionTransactions {
         this.commodites = new Commodites(cx);
         this.chambres = new Chambres(cx);
     }
+
     public GestionCommodite(Connexion cx, Commodites commodites, Chambres chambres) {
         super(cx);
         this.commodites = commodites;
@@ -31,10 +33,7 @@ public class GestionCommodite extends GestionTransactions {
         this.chambres = chambres;
     }
 
-
-
-
-    /** Au cas où.
+    /**
      * Ajoute une commodité dans le système.
      * Param 1 : description
      * Param 2 : surplus
@@ -124,6 +123,31 @@ public class GestionCommodite extends GestionTransactions {
     }
 
     /**
+     * Supprime complètement une commodité du système
+     */
+    public void supprimerCommodite(int idCommodite) throws Exception {
+        if (!commodites.existe(idCommodite)) {
+            throw new Exception("La commodité avec l'ID " + idCommodite + " n'existe pas.");
+        }
+
+        // Vérifier qu'aucune chambre n'utilise cette commodité
+        List<Chambre> toutesChambres = chambres.getToutesChambres();
+        for (Chambre chambre : toutesChambres) {
+            List<Integer> commoditesChambre = chambre.getCommodites();
+            if (commoditesChambre != null && commoditesChambre.contains(idCommodite)) {
+                throw new Exception("Impossible de supprimer la commodité : elle est utilisée par la chambre " + chambre.getNomChambre());
+            }
+        }
+
+        boolean supprime = commodites.supprimerCommodite(idCommodite);
+        if (!supprime) {
+            throw new Exception("Erreur lors de la suppression de la commodité.");
+        }
+
+        System.out.println("Commodité ID " + idCommodite + " supprimée avec succès.");
+    }
+
+    /**
      * Ajoute une commodité dans le système (Tp.java ajoute selon le parametre idCommodité. Ne PAS enlever MERCI!!!!! )
      * Param 1 : id
      * Param 2 : description
@@ -141,4 +165,21 @@ public class GestionCommodite extends GestionTransactions {
         System.out.println("Commodité ajoutée : " + description + " (ID: " + id + ")");
     }
 
+    /**
+     * Liste toutes les commodités du système
+     */
+    public List<Commodite> obtenirToutesLesCommodites() {
+        return commodites.obtenirToutesLesCommodites();
+    }
+
+    /**
+     * Obtient une commodité par son ID
+     */
+    public Commodite obtenirCommodite(int idCommodite) throws Exception {
+        Commodite commodite = commodites.obtenirCommodite(idCommodite);
+        if (commodite == null) {
+            throw new Exception("La commodité avec l'ID " + idCommodite + " n'existe pas.");
+        }
+        return commodite;
+    }
 }

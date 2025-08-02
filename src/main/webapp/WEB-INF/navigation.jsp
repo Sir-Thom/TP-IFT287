@@ -16,8 +16,6 @@
     Auberge-Inn
   </a>
 
-
-
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -27,14 +25,14 @@
       <!-- Gestion des Chambres -->
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="chambresDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-           Chambres
+          Chambres
         </a>
         <div class="dropdown-menu" aria-labelledby="chambresDropdown">
-          <a class="dropdown-item" href="chambres/ajouterChambre.jsp">Ajouter</a>
-          <a class="dropdown-item" href="chambres/supprimerChambre.jsp"> Supprimer</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/chambres?action=afficherFormAjouter">Ajouter</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/chambres?action=afficherFormSupprimer">Supprimer</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="afficherChambre.jsp">Voir une chambre</a>
-          <a class="dropdown-item" href="chambres/chambresLibres.jsp"> Disponibilités chambres libres</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/chambres?action=afficherFormRecherche">Voir une chambre</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/chambres?action=afficherFormChambresLibres">Disponibilités chambres libres</a>
         </div>
       </li>
 
@@ -44,11 +42,11 @@
           Clients
         </a>
         <div class="dropdown-menu" aria-labelledby="clientsDropdown">
-          <a class="dropdown-item" href="clients/ajouterClient.jsp">Ajouter</a>
-          <a class="dropdown-item" href="afficherClient.jsp"> Afficher</a>
-          <a class="dropdown-item" href="supprimerClient.jsp">️ Supprimer</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/client?action=afficherFormAjouter">Ajouter</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/client?action=lister">Afficher</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/client?action=afficherFormRetirer">Supprimer</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="listeClients.jsp"> Liste complète</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/client?action=lister">Liste complète</a>
         </div>
       </li>
 
@@ -58,26 +56,39 @@
           Commodités
         </a>
         <div class="dropdown-menu" aria-labelledby="commoditesDropdown">
-          <a class="dropdown-item" href="CommoditeServlet?action=afficherFormAjouter">Ajouter une commodité</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/CommoditeServlet?action=afficherFormAjouter">Ajouter une commodité</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="CommoditeServlet?action=afficherFormInclure">Inclure une commodité à une chambre</a>
-          <a class="dropdown-item" href="CommoditeServlet?action=afficherFormEnlever">Enlever une commodité</a>
-
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/CommoditeServlet?action=afficherFormInclure">Inclure une commodité à une chambre</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/CommoditeServlet?action=afficherFormEnlever">Enlever une commodité</a>
         </div>
       </li>
 
       <!-- Gestion des Réservations -->
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="reservationsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-           Réservations
+          Réservations
         </a>
         <div class="dropdown-menu" aria-labelledby="reservationsDropdown">
-          <a class="dropdown-item" href="reserver.jsp"> Nouvelle réservation</a>
-          <a class="dropdown-item" href="listeReservations.jsp"> Toutes les réservations</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/ReservationServlet?action=afficherFormAjouter">Nouvelle réservation</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/reservations?action=lister">Toutes les réservations</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="reservationsJour.jsp"> Aujourd'hui</a>
-          <a class="dropdown-item" href="reservationsFutures.jsp">À venir</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/reservations?action=aujourdhui">Aujourd'hui</a>
+          <a class="dropdown-item" href="${pageContext.request.contextPath}/reservations?action=futures">À venir</a>
         </div>
+      </li>
+    </ul>
+
+    <!-- Boutons de déconnexion et reconfiguration -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" href="${pageContext.request.contextPath}/Connexion?action=deconnecter">
+          <i class="fas fa-sign-out-alt"></i> Déconnecter
+        </a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="${pageContext.request.contextPath}/Connexion?action=reconfigurer">
+          <i class="fas fa-cog"></i> Reconfigurer BD
+        </a>
       </li>
     </ul>
 

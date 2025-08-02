@@ -1,11 +1,6 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: zowes
-  Date: 2025-07-29
-  Time: 9:37 a.m.
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page import="tp.objets.Commodite" %>
+<%@ page import="java.util.List" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -29,7 +24,8 @@
     <div class="col">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-          <li class="breadcrumb-item"><a href="../../menu.jsp">Menu</a></li>
+          <!-- CORRIGÉ: Lien avec scriptlet -->
+          <li class="breadcrumb-item"><a href="<%= request.getContextPath() %>/menu.jsp">Menu</a></li>
           <li class="breadcrumb-item active">Inclure Commodité</li>
         </ol>
       </nav>
@@ -37,11 +33,11 @@
   </div>
 
   <div class="row">
-    <div class="col-md-8 offset-md-2">
+    <div class="col-md-10 offset-md-1">
       <!-- Messages de succès -->
       <% if (request.getAttribute("message") != null) { %>
       <div class="alert alert-success alert-dismissible fade show">
-        <strong>Succès!</strong> <%= request.getAttribute("message") %>
+        <strong><i class="fas fa-check-circle"></i> Succès!</strong> <%= request.getAttribute("message") %>
         <button type="button" class="close" data-dismiss="alert">&times;</button>
       </div>
       <% } %>
@@ -49,7 +45,15 @@
       <!-- Messages d'erreur -->
       <% if (request.getAttribute("erreur") != null) { %>
       <div class="alert alert-danger alert-dismissible fade show">
-        <strong>Erreur!</strong> <%= request.getAttribute("erreur") %>
+        <strong><i class="fas fa-exclamation-triangle"></i> Erreur!</strong> <%= request.getAttribute("erreur") %>
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+      <% } %>
+
+      <!-- Message d'information -->
+      <% if (request.getAttribute("messageInfo") != null) { %>
+      <div class="alert alert-info alert-dismissible fade show">
+        <strong><i class="fas fa-info-circle"></i> Information!</strong> <%= request.getAttribute("messageInfo") %>
         <button type="button" class="close" data-dismiss="alert">&times;</button>
       </div>
       <% } %>
@@ -65,13 +69,60 @@
             La commodité sera disponible pour cette chambre et ajoutera son surplus au prix de base.
           </div>
 
-          <form action="../../CommoditeServlet" method="POST">
+          <!-- NOUVELLE SECTION: Commodités disponibles -->
+          <%
+            @SuppressWarnings("unchecked")
+            List<Commodite> commoditesDisponibles = (List<Commodite>) request.getAttribute("commoditesDisponibles");
+          %>
+
+          <% if (commoditesDisponibles != null && !commoditesDisponibles.isEmpty()) { %>
+          <div class="card border-info mb-4">
+            <div class="card-header bg-info text-white">
+              <h6 class="mb-0"><i class="fas fa-list"></i> Commodités disponibles (<%= commoditesDisponibles.size() %>)</h6>
+            </div>
+            <div class="card-body">
+              <div class="row">
+                <% for (Commodite commodite : commoditesDisponibles) { %>
+                <div class="col-md-6 mb-2">
+                  <div class="card border-light">
+                    <div class="card-body py-2 px-3">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <strong>ID <%= commodite.getIdCommodite() %></strong> - <%= commodite.getDescription() %>
+                          <br>
+                          <small class="text-success">+$<%= String.format("%.2f", commodite.getSurplusPrix()) %>/nuit</small>
+                        </div>
+                        <button class="btn btn-outline-success btn-sm"
+                                onclick="selectionnerCommodite(<%= commodite.getIdCommodite() %>, '<%= commodite.getDescription() %>')">
+                          <i class="fas fa-check"></i> Sélectionner
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <% } %>
+              </div>
+            </div>
+          </div>
+          <% } else { %>
+          <div class="alert alert-warning">
+            <h6><i class="fas fa-exclamation-triangle"></i> Aucune commodité disponible</h6>
+            <p class="mb-2">Vous devez d'abord créer des commodités avant de pouvoir les inclure dans des chambres.</p>
+            <a href="<%= request.getContextPath() %>/CommoditeServlet?action=afficherFormAjouter"
+               class="btn btn-warning btn-sm">
+              <i class="fas fa-plus"></i> Créer une commodité
+            </a>
+          </div>
+          <% } %>
+
+          <!-- CORRIGÉ: Action du formulaire avec scriptlet -->
+          <form action="<%= request.getContextPath() %>/CommoditeServlet" method="POST">
             <input type="hidden" name="action" value="inclure">
 
             <div class="form-group">
-              <label for="nomChambre">Nom de la chambre *</label>
-              <input type="text" class="form-control" id="nomChambre" name="nomChambre"
-                     value="<%= request.getAttribute("nomChambre") != null ? request.getAttribute("nomChambre") : "" %>"
+              <label for="chambreNom">Nom de la chambre *</label>
+              <input type="text" class="form-control" id="chambreNom" name="chambreNom"
+                     value="<%= request.getAttribute("chambreNom") != null ? request.getAttribute("chambreNom") : "" %>"
                      placeholder="Ex: Chambre 101, Suite Deluxe" required>
               <small class="form-text text-muted">
                 Le nom exact de la chambre (doit exister dans le système)
@@ -80,48 +131,37 @@
 
             <div class="form-group">
               <label for="idCommodite">ID de la commodité *</label>
-              <input type="number" class="form-control" id="idCommodite" name="idCommodite"
-                     value="<%= request.getAttribute("idCommodite") != null ? request.getAttribute("idCommodite") : "" %>"
-                     min="1" placeholder="Ex: 1, 2, 3..." required>
+              <div class="input-group">
+                <input type="number" class="form-control" id="idCommodite" name="idCommodite"
+                       value="<%= request.getAttribute("idCommodite") != null ? request.getAttribute("idCommodite") : "" %>"
+                       min="1" placeholder="Sélectionnez ci-dessus ou saisissez l'ID" required>
+                <div class="input-group-append">
+                  <button type="button" class="btn btn-outline-secondary" onclick="viderCommodite()">
+                    <i class="fas fa-times"></i> Vider
+                  </button>
+                </div>
+              </div>
               <small class="form-text text-muted">
-                L'identifiant numérique de la commodité (doit exister dans le système)
+                Utilisez les boutons "Sélectionner" ci-dessus ou saisissez directement l'ID
               </small>
             </div>
 
-            <!-- Aide pour trouver les IDs -->
+            <!-- Sélection via dropdown alternative -->
+            <% if (commoditesDisponibles != null && !commoditesDisponibles.isEmpty()) { %>
             <div class="form-group">
-              <div class="card border-light">
-                <div class="card-header bg-light">
-                  <h6 class="mb-0"><i class="fas fa-question-circle"></i> Comment trouver les IDs ?</h6>
-                </div>
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <strong>📋 Commodités courantes :</strong>
-                      <ul class="list-unstyled mt-2">
-                        <li><code>ID 1</code> - WiFi haut débit</li>
-                        <li><code>ID 2</code> - Climatisation</li>
-                        <li><code>ID 3</code> - Mini-bar</li>
-                        <li><code>ID 4</code> - Room Service 24h</li>
-                        <li><code>ID 5</code> - Balcon privé</li>
-                      </ul>
-                    </div>
-                    <div class="col-md-6">
-                      <strong>🛏️ Chambres courantes :</strong>
-                      <ul class="list-unstyled mt-2">
-                        <li>Chambre 101, 102, 103...</li>
-                        <li>Suite Deluxe</li>
-                        <li>Chambre Standard</li>
-                        <li>Chambre Familiale</li>
-                      </ul>
-                      <button type="button" class="btn btn-sm btn-outline-info" disabled>
-                        <i class="fas fa-list"></i> Voir toutes les chambres (à venir)
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <label for="commoditeSelect">Ou sélectionnez dans la liste :</label>
+              <select class="form-control" id="commoditeSelect" onchange="selectionnerDepuisDropdown()">
+                <option value="">-- Choisir une commodité --</option>
+                <% for (Commodite commodite : commoditesDisponibles) { %>
+                <option value="<%= commodite.getIdCommodite() %>"
+                        data-description="<%= commodite.getDescription() %>"
+                        data-prix="<%= commodite.getSurplusPrix() %>">
+                  ID <%= commodite.getIdCommodite() %> - <%= commodite.getDescription() %> (+$<%= String.format("%.2f", commodite.getSurplusPrix()) %>)
+                </option>
+                <% } %>
+              </select>
             </div>
+            <% } %>
 
             <!-- Raccourcis rapides -->
             <div class="form-group">
@@ -148,7 +188,7 @@
                   </button>
                 </div>
               </div>
-              <small class="form-text text-muted">Cliquez pour un remplissage automatique</small>
+              <small class="form-text text-muted">Exemples rapides pour tester</small>
             </div>
 
             <hr>
@@ -161,7 +201,8 @@
                   </button>
                 </div>
                 <div class="col-md-6">
-                  <a href="../../menu.jsp" class="btn btn-secondary btn-block">
+                  <!-- CORRIGÉ: Lien de retour avec scriptlet -->
+                  <a href="<%= request.getContextPath() %>/menu.jsp" class="btn btn-secondary btn-block">
                     <i class="fas fa-arrow-left"></i> Retour au menu
                   </a>
                 </div>
@@ -174,13 +215,15 @@
             <div class="col-md-6">
               <small>
                 <i class="fas fa-plus-circle"></i>
-                <a href="../../CommoditeServlet?action=afficherFormAjouter">Créer une nouvelle commodité</a>
+                <!-- CORRIGÉ: Lien avec scriptlet -->
+                <a href="<%= request.getContextPath() %>/CommoditeServlet?action=afficherFormAjouter">Créer une nouvelle commodité</a>
               </small>
             </div>
             <div class="col-md-6 text-right">
               <small>
                 <i class="fas fa-unlink"></i>
-                <a href="../../CommoditeServlet?action=afficherFormEnlever">Enlever une commodité</a>
+                <!-- CORRIGÉ: Lien avec scriptlet -->
+                <a href="<%= request.getContextPath() %>/CommoditeServlet?action=afficherFormEnlever">Enlever une commodité</a>
               </small>
             </div>
           </div>
@@ -199,12 +242,64 @@
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
 
 <script>
-  function remplirFormulaire(nomChambre, idCommodite) {
-    document.getElementById('nomChambre').value = nomChambre;
+  // NOUVELLE FONCTION: Sélectionner une commodité depuis les cartes
+  function selectionnerCommodite(idCommodite, description) {
     document.getElementById('idCommodite').value = idCommodite;
 
     // Animation de feedback
-    const chambreInput = document.getElementById('nomChambre');
+    const commoditeInput = document.getElementById('idCommodite');
+    commoditeInput.style.backgroundColor = '#d4edda';
+    commoditeInput.style.borderColor = '#28a745';
+
+    setTimeout(() => {
+      commoditeInput.style.backgroundColor = '';
+      commoditeInput.style.borderColor = '';
+    }, 1500);
+
+    // Notification visuelle
+    showNotification('Commodité sélectionnée : ID ' + idCommodite + ' - ' + description, 'success');
+  }
+
+  // NOUVELLE FONCTION: Sélectionner depuis la dropdown
+  function selectionnerDepuisDropdown() {
+    const select = document.getElementById('commoditeSelect');
+    const selectedValue = select.value;
+    const selectedOption = select.options[select.selectedIndex];
+
+    if (selectedValue) {
+      document.getElementById('idCommodite').value = selectedValue;
+
+      const description = selectedOption.getAttribute('data-description');
+      const prix = selectedOption.getAttribute('data-prix');
+
+      showNotification('Sélectionné : ' + description + ' (+$' + prix + '/nuit)', 'info');
+
+      // Animation
+      const commoditeInput = document.getElementById('idCommodite');
+      commoditeInput.style.backgroundColor = '#d1ecf1';
+      commoditeInput.style.borderColor = '#17a2b8';
+
+      setTimeout(() => {
+        commoditeInput.style.backgroundColor = '';
+        commoditeInput.style.borderColor = '';
+      }, 1500);
+    }
+  }
+
+  // NOUVELLE FONCTION: Vider la sélection
+  function viderCommodite() {
+    document.getElementById('idCommodite').value = '';
+    document.getElementById('commoditeSelect').value = '';
+    showNotification('Sélection effacée', 'warning');
+  }
+
+  // Fonction existante modifiée
+  function remplirFormulaire(chambreNom, idCommodite) {
+    document.getElementById('chambreNom').value = chambreNom;
+    document.getElementById('idCommodite').value = idCommodite;
+
+    // Animation de feedback
+    const chambreInput = document.getElementById('chambreNom');
     const commoditeInput = document.getElementById('idCommodite');
 
     chambreInput.style.backgroundColor = '#d4edda';
@@ -214,7 +309,36 @@
       chambreInput.style.backgroundColor = '';
       commoditeInput.style.backgroundColor = '';
     }, 1000);
+
+    showNotification('Exemple rempli : ' + chambreNom + ' + Commodité ID ' + idCommodite, 'info');
   }
+
+  // NOUVELLE FONCTION: Notifications toast
+  function showNotification(message, type) {
+    // Créer la notification
+    const alertDiv = document.createElement('div');
+    alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+    alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; max-width: 350px;';
+    alertDiv.innerHTML = `
+      <strong><i class="fas fa-info-circle"></i></strong> ${message}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    `;
+
+    // Ajouter au body
+    document.body.appendChild(alertDiv);
+
+    // Auto-suppression après 3 secondes
+    setTimeout(() => {
+      if (alertDiv.parentNode) {
+        alertDiv.parentNode.removeChild(alertDiv);
+      }
+    }, 3000);
+  }
+
+  // Auto-hide des messages de succès
+  $(document).ready(function() {
+    $('.alert-success').delay(5000).fadeOut('slow');
+  });
 </script>
 </body>
 </html>
