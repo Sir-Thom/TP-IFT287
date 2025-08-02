@@ -1,4 +1,5 @@
 package tp.collections;
+
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.result.DeleteResult;
 import org.bson.Document;
@@ -11,15 +12,15 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class Chambres  extends GestionCollection {
+public class Chambres extends GestionCollection {
 
     private final Connexion cx;
     private final MongoCollection<Document> collectionChambres;
+
     public Chambres(Connexion cx) {
         super(cx);
         this.cx = cx;
         this.collectionChambres = cx.getDatabase().getCollection("Chambres");
-
     }
 
     private int getNextId() {
@@ -47,7 +48,6 @@ public class Chambres  extends GestionCollection {
         } catch (TpExeception e) {
             throw new TpExeception("Erreur lors de la récupération de la chambre : " + e.getMessage());
         }
-
     }
 
     public Chambre getChambreById(int idChambre) {
@@ -59,26 +59,25 @@ public class Chambres  extends GestionCollection {
     public void ajouterChambre(Chambre chambre) {
         int nextId = getNextId();
         chambre.setIdChambre(nextId);
-        Document doc = new Document("idChambre", chambre.getIdChambre())
-                .append("nomChambre", chambre.getNomChambre())
-                .append("typeLit", chambre.getTypeLit())
-                .append("prixBase", chambre.getPrixBase());
+
+        // CORRECTION : Utiliser la méthode toDocument() de la chambre
+        Document doc = chambre.toDocument();
         collectionChambres.insertOne(doc);
     }
 
     public void modifierChambre(Chambre chambre) {
         Document filter = new Document("idChambre", chambre.getIdChambre());
-        Document update = new Document("$set",
-                new Document("nomChambre", chambre.getNomChambre())
-                        .append("typeLit", chambre.getTypeLit())
-                        .append("prixBase", chambre.getPrixBase()));
+
+        // CORRECTION : Utiliser la méthode toDocument() pour conserver les commodités
+        Document chambreDoc = chambre.toDocument();
+        // Retirer l'ID du document de mise à jour (on ne modifie pas l'ID)
+        chambreDoc.remove("idChambre");
+
+        Document update = new Document("$set", chambreDoc);
         collectionChambres.updateOne(filter, update);
     }
 
     public boolean supprimerChambre(String nomChambre) {
-
-
-
         DeleteResult result = collectionChambres.deleteOne(eq("nomChambre", nomChambre));
         return result.getDeletedCount() > 0;
     }
@@ -90,5 +89,4 @@ public class Chambres  extends GestionCollection {
         }
         return liste;
     }
-
 }

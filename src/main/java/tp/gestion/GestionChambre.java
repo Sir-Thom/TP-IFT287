@@ -24,7 +24,6 @@ public class GestionChambre extends GestionTransactions{
         }
         Chambre nouvelleChambre = new Chambre(0, nom, typeLit, prixBase); // id auto-généré
         chambres.ajouterChambre(nouvelleChambre);
-        System.out.println("Chambre '" + nom + "' ajoutée avec succès.");
     }
 
     public void modifierChambre(String nomActuel, String nouveauNom, String typeLit, double prixBase) throws TpExeception {
@@ -82,9 +81,7 @@ public class GestionChambre extends GestionTransactions{
         }
         return libres;
     }
-
     public List<Chambre> getAllChambres() {
         return chambres.getToutesChambres();
     }
-
 }
