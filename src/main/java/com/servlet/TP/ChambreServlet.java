@@ -2,8 +2,10 @@ package com.servlet.TP;
 
 import tp.TpExeception;
 import tp.gestion.GestionChambre;
+import tp.gestion.GestionCommodite;
 import tp.gestion.TpGestion;
 import tp.objets.Chambre;
+import tp.objets.Commodite;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -15,7 +17,6 @@ import java.sql.SQLException;
 import java.util.List;
 
 public class ChambreServlet extends HttpServlet {
-
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -44,14 +45,12 @@ public class ChambreServlet extends HttpServlet {
                     break;
                 case "afficherFormRecherche" :
                     request.getRequestDispatcher("/WEB-INF/chambres/afficherChambre.jsp").forward(request, response);
-
                     break;
                 case "afficherFormChambresLibres" :
                     afficherFormulaireChambresLibres(request, response);
                     break;
                 case "afficher" :
                     afficherChambre(request, response, gestionChambre);
-
                     break;
                 case "chambresLibres" :
                     afficherChambresLibres(request, response);
@@ -63,7 +62,6 @@ public class ChambreServlet extends HttpServlet {
                 default :
                     request.setAttribute("erreur", "Action GET non reconnue : " + action);
                     request.getRequestDispatcher("/menu.jsp").forward(request, response);
-
             }
 
         } catch (Exception e) {
@@ -105,7 +103,7 @@ public class ChambreServlet extends HttpServlet {
                     supprimerChambre(request, response);
                     break;
                 case "afficher" :
-                    afficherChambre(request, response, gestionChambre);  // ← ET CELLE-CI
+                    afficherChambre(request, response, gestionChambre);
                     break;
                 default : {
                     request.setAttribute("erreur", "Action POST non reconnue : " + action);
@@ -148,14 +146,28 @@ public class ChambreServlet extends HttpServlet {
                 throw new TpExeception("Le nom est obligatoire");
             }
 
+            // Récupérer la chambre
             Chambre chambre = gestionChambre.afficherChambre(nom.trim());
+
+            // Récupérer les commodités complètes pour cette chambre
+            List<Commodite> commoditesChambre = null;
+            try {
+                TpGestion tpGestion = InnHelper.getInnInterro(request.getSession());
+                GestionCommodite gestionCommodite = tpGestion.getGestionCommodite();
+                commoditesChambre = gestionCommodite.obtenirCommoditesChambre(chambre.getNomChambre());
+            } catch (Exception e) {
+                System.err.println("Erreur lors de la récupération des commodités : " + e.getMessage());
+                // On continue même si les commodités ne peuvent pas être récupérées
+            }
+
             request.setAttribute("chambre", chambre);
+            request.setAttribute("commoditesChambre", commoditesChambre);
             request.setAttribute("message", "Chambre trouvée !");
             request.getRequestDispatcher("/WEB-INF/chambres/afficherChambre.jsp").forward(request, response);
 
         } catch (TpExeception e) {
             request.setAttribute("erreur", e.getMessage());
-            request.getRequestDispatcher("/menu.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/chambres/afficherChambre.jsp").forward(request, response);
         }
     }
 
@@ -263,7 +275,6 @@ public class ChambreServlet extends HttpServlet {
             }
             GestionChambre gestionChambre = getGestionChambre(request);
 
-
             gestionChambre.supprimerChambre(nom.trim());
             chargerListeChambres(request);
 
@@ -274,17 +285,15 @@ public class ChambreServlet extends HttpServlet {
             try {
                 chargerListeChambres(request);
             } catch (TpExeception ex) {
-
                 request.setAttribute("erreur", "Erreur lors du chargement des chambres : " + ex.getMessage());
                 request.getRequestDispatcher("/WEB-INF/chambres/supprimerChambre.jsp").forward(request, response);
+                return;
             }
             request.setAttribute("erreur", e.getMessage());
             request.getRequestDispatcher("/WEB-INF/chambres/supprimerChambre.jsp").forward(request, response);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
-
     }
 
     // =============================
@@ -304,6 +313,7 @@ public class ChambreServlet extends HttpServlet {
     private GestionChambre getGestionChambre(HttpServletRequest request) {
         return InnHelper.getInnInterro(request.getSession()).getGestionChambre();
     }
+
     private void chargerListeChambres(HttpServletRequest request) throws TpExeception {
         HttpSession session = request.getSession();
         TpGestion tpGestion = InnHelper.getInnInterro(session);
@@ -317,7 +327,6 @@ public class ChambreServlet extends HttpServlet {
         }
 
         try {
-            // Supposons que vous avez une méthode pour récupérer toutes les chambres
             List<Chambre> chambres = gestionChambre.getAllChambres();
             request.setAttribute("chambres", chambres);
         } catch (Exception e) {
