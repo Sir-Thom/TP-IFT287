@@ -78,21 +78,7 @@
       </li>
     </ul>
 
-    <!-- Boutons de déconnexion et reconfiguration -->
-    <ul class="navbar-nav">
-      <li class="nav-item">
-        <a class="nav-link" href="${pageContext.request.contextPath}/Connexion?action=deconnecter">
-          <i class="fas fa-sign-out-alt"></i> Déconnecter
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="${pageContext.request.contextPath}/Connexion?action=reconfigurer">
-          <i class="fas fa-cog"></i> Reconfigurer BD
-        </a>
-      </li>
-    </ul>
-
-  </div>
+    </div>
 </nav>
 
 <!-- Affichage du chemin de navigation pour certaines pages -->

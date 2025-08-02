@@ -59,18 +59,13 @@ public class Chambres extends GestionCollection {
     public void ajouterChambre(Chambre chambre) {
         int nextId = getNextId();
         chambre.setIdChambre(nextId);
-
-        // CORRECTION : Utiliser la méthode toDocument() de la chambre
         Document doc = chambre.toDocument();
         collectionChambres.insertOne(doc);
     }
 
     public void modifierChambre(Chambre chambre) {
         Document filter = new Document("idChambre", chambre.getIdChambre());
-
-        // CORRECTION : Utiliser la méthode toDocument() pour conserver les commodités
         Document chambreDoc = chambre.toDocument();
-        // Retirer l'ID du document de mise à jour (on ne modifie pas l'ID)
         chambreDoc.remove("idChambre");
 
         Document update = new Document("$set", chambreDoc);

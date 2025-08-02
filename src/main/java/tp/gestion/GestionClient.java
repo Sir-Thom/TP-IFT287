@@ -90,7 +90,7 @@ public class GestionClient extends GestionTransactions {
             return clients.GetClientByNomPrenom(nom, prenom);
         } catch (TpExeception e) {
             System.err.println("Erreur lors de la récupération du client : " + e.getMessage());
-            return null; // ou gérer l'erreur d'une autre manière
+            return null;
         }
     }
 }
