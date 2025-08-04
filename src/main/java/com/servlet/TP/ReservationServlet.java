@@ -59,8 +59,16 @@ public class ReservationServlet extends HttpServlet {
         request.setAttribute("nomChambre", nomChambre);
         request.setAttribute("dateDebut", dateDebut);
         request.setAttribute("dateFin", dateFin);
-
         TpGestion gestion = InnHelper.getInnInterro(session);
+        GestionClient gestionClient = gestion.getGestionClient(); // Simplified this line
+
+        List<tp.objets.Client> clients = gestionClient.getListClients();
+        List<Chambre> chambres = gestion.getGestionChambre().getAllChambres();
+        // Put in request scope
+        request.setAttribute("clients", clients);
+        request.setAttribute("chambres", chambres);       request.setAttribute("clients", clients);
+        request.setAttribute("chambres", chambres);
+
         GestionReservation gestionReservation = gestion.getGestionReservation();
 
         gestionReservation.reserver(prenomClient, nomClient, nomChambre, dateDebut, dateFin);
